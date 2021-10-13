@@ -1,0 +1,9 @@
+.main-navbar{
+    position: sticky;
+}
+
+.plain-link{
+    margin: 0 5px;
+    color: black;
+    text-decoration: none;
+}

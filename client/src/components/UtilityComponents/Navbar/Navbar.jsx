@@ -1,16 +1,20 @@
 import React from 'react'
-import {Navbar as NavbarReact, Container, Nav, Row} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
+import {Navbar as NavbarReact, Container, Nav} from 'react-bootstrap'
 
 import './Navbar_master.css'
 
 const Navbar = () => {
     return (
-		<NavbarReact style={{backgroundColor: "#eee"}}>
-			<Container className="navbar-container">
-				<NavbarReact.Brand>Lorem Ipsum</NavbarReact.Brand>
+		<NavbarReact className="main-navbar">
+			<Container>
+				<div>
+					<NavbarReact.Brand><Link to="/" className="plain-link">Main Menu</Link></NavbarReact.Brand>
+					<NavbarReact.Brand>Name and Email</NavbarReact.Brand>
+				</div>
 				<Nav>
-					<Nav.Link >Login</Nav.Link>
-					<Nav.Link>Register</Nav.Link>
+					<Link to="/login" className="plain-link">Login</Link>
+					<Link to="/register" className="plain-link">Register</Link>
 				</Nav>
 			</Container>
 		</NavbarReact>
