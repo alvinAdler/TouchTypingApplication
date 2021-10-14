@@ -1,0 +1,29 @@
+.register-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-form{
+    width: 50%;
+    background-color: #eee;
+    border-radius: 10px;
+    padding: 2% 5%;
+    display: grid;
+    grid-template-rows: repeat(auto, 1fr);
+    grid-template-columns: repeat(auto, 1fr);
+    justify-items: center;
+}
+
+.register-form > * {
+    width: 100%;
+}
+
+.login-input{
+    padding: 5px;
+    margin: 10px;
+}
+
+.full-span{
+    grid-column: 1 / 3;
+}

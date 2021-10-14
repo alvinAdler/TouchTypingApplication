@@ -1,5 +1,7 @@
 .main-navbar{
     position: sticky;
+    top: 0;
+    z-index: 50;
 }
 
 .plain-link{

@@ -6,7 +6,7 @@ import './Navbar_master.css'
 
 const Navbar = () => {
     return (
-		<NavbarReact className="main-navbar">
+		<NavbarReact className="main-navbar" bg="light" expand="lg">
 			<Container>
 				<div>
 					<NavbarReact.Brand><Link to="/" className="plain-link">Main Menu</Link></NavbarReact.Brand>
