@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import './RegisterPage_master.css'
 
 const RegisterPage = () => {
+    
     return (
         <div className="register-container">
             <form className="register-form">

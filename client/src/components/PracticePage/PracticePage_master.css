@@ -1,0 +1,26 @@
+.practice-page-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.options-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.options-container > .btn {
+    width: 50%;
+    margin: 5px;
+    padding: 5px;
+}
+
+.btn-go{
+    margin: auto;
+    width: 20%;
+}

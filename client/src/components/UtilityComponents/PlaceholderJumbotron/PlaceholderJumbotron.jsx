@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import './PlaceholderJumbotron_master.css'
 
 const PlaceholderJumbotron = ({pageTitle = "Sample Title"}) => {
+
     return (
         <div className="jumbotron-container">
             <h1>{pageTitle}</h1>
