@@ -29,7 +29,6 @@ const PracticePage = () => {
                             <Tabs
                             value={currentTab}
                             onChange={handleTabChange}
-                            indicatorColor="secondary"
                             textColor="inherit"
                             variant="fullWidth"
                             >

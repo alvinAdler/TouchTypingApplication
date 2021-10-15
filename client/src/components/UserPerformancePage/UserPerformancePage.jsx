@@ -3,7 +3,6 @@ import {AppBar, Tabs, Tab} from '@mui/material'
 
 import './UserPerformancePage_master.css'
 
-import PlaceholderJumbotron from '../UtilityComponents/PlaceholderJumbotron/PlaceholderJumbotron'
 import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBody'
 
 const UserPerformancePage = () => {
@@ -21,7 +20,6 @@ const UserPerformancePage = () => {
                 <Tabs
                 value={currentTab}
                 onChange={handleTabChange}
-                indocatorColor="secondary"
                 textColor="inherit"
                 variant="fullWidth"
                 >
