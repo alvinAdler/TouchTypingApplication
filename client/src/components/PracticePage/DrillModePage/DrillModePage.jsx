@@ -31,7 +31,8 @@ const DrillModePage = () => {
                     <p>97.5 Percent</p>
                 </Modal.Body>
                 <Modal.Footer style={{display: "flex", justifyContent: "center"}}>
-                    <Button onClick={() => {setShowResult(false)}} style={{width: "30%"}}>Close</Button>
+                    <Button onClick={() => {setShowResult(false)}} style={{width: "30%"}}>Return to Practice Page</Button>
+                    <Button onClick={() => {setShowResult(false)}} style={{width: "30%"}}>Return to Main Menu</Button>
                 </Modal.Footer>
             </Modal>
         </div>

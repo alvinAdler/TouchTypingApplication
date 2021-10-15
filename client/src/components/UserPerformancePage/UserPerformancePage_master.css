@@ -1,0 +1,49 @@
+.summary-container, .practices-container{
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.performance-table{
+    width: 100%;
+}
+
+.performance-table * {
+    border: 2px solid black;
+    text-align: center;
+}
+
+.summary-container{
+    display: grid;
+    grid-template-rows: repeat(2, auto-fit);
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 15px;
+}
+
+.summary-container > h4{
+    grid-column: span 2;
+    text-align: center;
+}
+
+.typing-speed, .typing-accuracy{
+    background-color: #fafafa;
+    padding: 15px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: repeat(2, auto-fit);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 5px;
+}
+
+.typing-speed > h5, .typing-accuracy > h5, 
+.typing-speed > div, .typing-accuracy > div{
+    text-align: center;
+}
+
+.typing-speed > h5, .typing-accuracy > h5,
+.typing-speed > div:last-child, .typing-accuracy > div:last-child{
+    grid-column: span 2;
+}
+
+/* .typing-speed *, .typing-accuracy *{
+    border: 1px solid black;
+} */
