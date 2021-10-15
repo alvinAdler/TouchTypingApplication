@@ -6,8 +6,11 @@ import PlaceholderJumbotron from '../../UtilityComponents/PlaceholderJumbotron/P
 
 const GameModePage = () => {
     return (
-        <div>
-            <PlaceholderJumbotron pageTitle="Game Mode"/>
+        <div className="game-mode-container">
+            <div className="gameplay-canvas">
+                <span>Main Canvas for Gameplay</span>
+            </div>
+            <input className="gameplay-input" type="text" placeholder="Inputs from User" />
         </div>
     )
 }

@@ -1,0 +1,24 @@
+.drill-mode-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text-visualization, .keyboard-visualization{
+    background-color: #0d6efd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-visualization{
+    width: 100%;
+    height: 300px;
+}
+
+.keyboard-visualization{
+    width: 90%;
+    height: 200px;
+}

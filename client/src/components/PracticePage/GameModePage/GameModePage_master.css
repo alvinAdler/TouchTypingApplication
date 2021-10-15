@@ -1,0 +1,23 @@
+.game-mode-container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gameplay-canvas{
+    background-color: #0d6efd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 450px;
+}
+
+.gameplay-input{
+    width: 100%;
+    margin-top: 15px;
+    padding: 7px;
+}
+
