@@ -6,7 +6,7 @@ import './DrillModePage_master.css'
 
 const DrillModePage = () => {
 
-    const [showResult, setShowResult] = useState(true)
+    const [showResult, setShowResult] = useState(false)
 
     return (
         <div className="drill-mode-container">
