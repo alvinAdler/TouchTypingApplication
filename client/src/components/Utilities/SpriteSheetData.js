@@ -298,3 +298,208 @@ export const fireBallData = {
         }
     ]
 }
+
+export const tankData = {
+    actualWidth: 113,
+    actualHeight: 113,
+    screenWidth: 80,
+    screenHeight: 80,
+    goUp: [
+        {
+            sx: 0,
+            sy: 0
+        }
+    ],
+    goDown: [
+        {
+            sx: 0,
+            sy: 0
+        }
+    ],
+    goLeft: [
+        {
+            sx: 0,
+            sy: 0
+        }
+    ],
+    goRight: [
+        {
+            sx: 0,
+            sy: 0
+        }
+    ]
+}
+
+export const alienData = {
+    actualWidth: 32,
+    actualHeight: 32,
+    screenWidth: 32,
+    screenHeight: 32,
+    goUp: [
+        {
+            sx: 0,
+            sy: 0
+        },
+        {
+            sx: 32,
+            sy: 0
+        },
+        {
+            sx: 64,
+            sy: 0
+        },
+        {
+            sx: 0,
+            sy: 32
+        },
+        {
+            sx: 32,
+            sy: 32
+        },
+        {
+            sx: 64,
+            sy: 32
+        },
+        {
+            sx: 0,
+            sy: 64
+        },
+        {
+            sx: 32,
+            sy: 64
+        },
+    ],  
+    goDown: [
+        {
+            sx: 0,
+            sy: 0
+        },
+        {
+            sx: 32,
+            sy: 0
+        },
+        {
+            sx: 64,
+            sy: 0
+        },
+        {
+            sx: 0,
+            sy: 32
+        },
+        {
+            sx: 32,
+            sy: 32
+        },
+        {
+            sx: 64,
+            sy: 32
+        },
+        {
+            sx: 0,
+            sy: 64
+        },
+        {
+            sx: 32,
+            sy: 64
+        },
+    ],
+    goLeft: [
+        {
+            sx: 0,
+            sy: 0
+        },
+        {
+            sx: 32,
+            sy: 0
+        },
+        {
+            sx: 64,
+            sy: 0
+        },
+        {
+            sx: 0,
+            sy: 32
+        },
+        {
+            sx: 32,
+            sy: 32
+        },
+        {
+            sx: 64,
+            sy: 32
+        },
+        {
+            sx: 0,
+            sy: 64
+        },
+        {
+            sx: 32,
+            sy: 64
+        },
+    ],
+    goRight: [
+        {
+            sx: 0,
+            sy: 0
+        },
+        {
+            sx: 32,
+            sy: 0
+        },
+        {
+            sx: 64,
+            sy: 0
+        },
+        {
+            sx: 0,
+            sy: 32
+        },
+        {
+            sx: 32,
+            sy: 32
+        },
+        {
+            sx: 64,
+            sy: 32
+        },
+        {
+            sx: 0,
+            sy: 64
+        },
+        {
+            sx: 32,
+            sy: 64
+        },
+    ]
+}
+
+export const cannonBallData = {
+    actualWidth: 276,
+    actualHeight: 278,
+    screenWidth: 40,
+    screenHeight: 38,
+    goUp: [
+        {
+            sx: 0,
+            sy: 0
+        }
+    ],
+    goDown: [
+        {
+            sx: 0,
+            sy: 0
+        }
+    ],
+    goRight: [
+        {
+            sx: 0,
+            sy: 0
+        }
+    ],
+    goLeft: [
+        {
+            sx: 0,
+            sy: 0
+        }
+    ]
+}

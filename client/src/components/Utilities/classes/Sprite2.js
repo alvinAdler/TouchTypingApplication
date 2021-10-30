@@ -25,18 +25,18 @@ class Sprite2{
             this.spriteSheet,
             this.spriteData[DIRS[this.dir]][this.frameCounter].sx,
             this.spriteData[DIRS[this.dir]][this.frameCounter].sy,
-            this.spriteData.width,
-            this.spriteData.height,
+            this.spriteData.actualWidth,
+            this.spriteData.actualHeight,
 
             this.posX,
             this.posY,
-            this.spriteData.scaledWidth,
-            this.spriteData.scaledHeight
+            this.spriteData.screenWidth,
+            this.spriteData.screenHeight
         )
 
         if(this.spriteDebug){
             this.main.context.strokeStyle = "red"
-            this.main.context.strokeRect(this.posX, this.posY, this.spriteData.scaledWidth, this.spriteData.scaledHeight)
+            this.main.context.strokeRect(this.posX, this.posY, this.spriteData.screenWidth, this.spriteData.screenHeight)
         }
     }
 
