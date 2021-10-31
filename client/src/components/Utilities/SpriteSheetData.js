@@ -333,8 +333,8 @@ export const tankData = {
 export const alienData = {
     actualWidth: 32,
     actualHeight: 32,
-    screenWidth: 32,
-    screenHeight: 32,
+    screenWidth: 60,
+    screenHeight: 60,
     goUp: [
         {
             sx: 0,

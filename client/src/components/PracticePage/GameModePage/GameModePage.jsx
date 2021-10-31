@@ -7,7 +7,7 @@ import Alien from '../../Utilities/classes/Alien'
 
 import {tankData, alienData, cannonBallData} from '../../Utilities/SpriteSheetData'
 
-const FRAME_LIMIT = 15
+const FRAME_LIMIT = 10
 
 const GameModePage = () => {
 
@@ -56,7 +56,7 @@ const GameModePage = () => {
     }
 
     const initSprites = () => {
-        arrSprites.push(new Tank(
+        arrSprites.unshift(new Tank(
             "Tank",
             {
                 main: mainCanvas.current,
@@ -78,6 +78,26 @@ const GameModePage = () => {
             cannonBallData
         ))
 
+        arrSprites.unshift(new Alien(
+            "Alien",
+            {
+                main: mainCanvas.current,
+                context: mainCanvas.current.getContext("2d")
+            },
+            mainSheets["alienSpriteSheet"], alienData,
+            {
+                posX: 0,
+                posY: -90
+            },
+            {
+                velX: 8,
+                velY: 8
+            },
+            "DOWN",
+            0,
+            false
+        ))
+
         arrSprites.forEach((sprite) => {
             sprite.drawSprite()
         })
@@ -91,13 +111,21 @@ const GameModePage = () => {
         }
         clearCanvas()
 
+        console.log("Animation on")
+
         frameLoopCount = 0
         arrSprites.forEach((sprite) => {
             sprite.update()
 
             //Roughly check if a sprite hits the border of the screen
-            if(sprite.posX > mainCanvas.current.width || sprite.posX < 0 || sprite.posY > mainCanvas.current.height || sprite.posY < 0){
-                arrSprites.splice(arrSprites.indexOf(sprite), 1)
+            // if(sprite.posX > mainCanvas.current.width || sprite.posX < 0 || sprite.posY > mainCanvas.current.height || sprite.posY < 0){
+            //     arrSprites.splice(arrSprites.indexOf(sprite), 1)
+            // }
+
+            //If the bottom part of a sprite exceed the screen, stop the sprite
+            if(sprite.name === "Alien" && (sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height)){
+                sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
+                sprite.idleSprite = true
             }
         })
 
@@ -110,6 +138,7 @@ const GameModePage = () => {
 
     const stopAnimation = () => {
         window.cancelAnimationFrame(stopId)
+        console.log("Animation off")
     }
 
     const removeElementFromArray = (arr, element) => {
