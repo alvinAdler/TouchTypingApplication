@@ -6,8 +6,9 @@ import Tank from '../../Utilities/classes/Tank'
 import Alien from '../../Utilities/classes/Alien'
 
 import {tankData, alienData, cannonBallData} from '../../Utilities/SpriteSheetData'
+import { DIRS } from '../../Utilities/Dirs'
 
-const FRAME_LIMIT = 10
+const FRAME_TRANS_LIMIT = 10
 
 const GameModePage = () => {
 
@@ -18,7 +19,8 @@ const GameModePage = () => {
     let sheetsContainer = []
     let arrSprites = []
     let stopId = 0
-    let frameLoopCount = 0
+
+    let frameCounter = 0
 
     useEffect(() => {
         const onPageLoad = () => {
@@ -86,12 +88,12 @@ const GameModePage = () => {
             },
             mainSheets["alienSpriteSheet"], alienData,
             {
-                posX: 0,
-                posY: -90
+                posX: 160,
+                posY: 0
             },
             {
-                velX: 8,
-                velY: 8
+                velX: 1.2,
+                velY: 1.2
             },
             "DOWN",
             0,
@@ -103,24 +105,13 @@ const GameModePage = () => {
         })
     }
 
-    const startAnimation = () => {
-        if(frameLoopCount < FRAME_LIMIT){
-            frameLoopCount += 1
-            stopId = window.requestAnimationFrame(startAnimation)
-            return
-        }
+    const startAnimation = (timestamp) => {        
         clearCanvas()
 
         console.log("Animation on")
 
-        frameLoopCount = 0
         arrSprites.forEach((sprite) => {
-            sprite.update()
-
-            //Roughly check if a sprite hits the border of the screen
-            // if(sprite.posX > mainCanvas.current.width || sprite.posX < 0 || sprite.posY > mainCanvas.current.height || sprite.posY < 0){
-            //     arrSprites.splice(arrSprites.indexOf(sprite), 1)
-            // }
+            updateSprite(sprite)
 
             //If the bottom part of a sprite exceed the screen, stop the sprite
             if(sprite.name === "Alien" && (sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height)){
@@ -133,12 +124,32 @@ const GameModePage = () => {
             sprite.drawSprite()
         })
 
+        if(frameCounter < FRAME_TRANS_LIMIT){
+            frameCounter += 1
+        }
+        else{
+            frameCounter = 0
+        }
+
         stopId = window.requestAnimationFrame(startAnimation)
     }
 
     const stopAnimation = () => {
         window.cancelAnimationFrame(stopId)
         console.log("Animation off")
+    }
+
+    const updateSprite = (sprite) => {
+        if(!sprite.idleSprite){
+            sprite.updateSpritePos()
+        }
+        if(frameCounter === FRAME_TRANS_LIMIT){
+            if(sprite.spriteFrameCounter === sprite.spriteData[DIRS[sprite.dir]].length - 1){
+                sprite.spriteFrameCounter = 0
+                return
+            }
+            sprite.spriteFrameCounter += 1
+        }
     }
 
     const removeElementFromArray = (arr, element) => {
@@ -162,14 +173,14 @@ const GameModePage = () => {
             <input className="gameplay-input" type="text" placeholder="Inputs from User" />
             <div className="debugging-buttons">
                 <button className="btn btn-primary" onClick={initSprites}>Init Sprites</button>
-                <button className="btn btn-success" onClick={startAnimation}>Start Animation</button>
+                <button className="btn btn-success" onClick={() => window.requestAnimationFrame(startAnimation)}>Start Animation</button>
                 <button className="btn btn-danger" onClick={stopAnimation}>Stop Animation</button>
                 <button className="btn btn-danger" onClick={() => {
                     clearCanvas()
                     sheetsContainer = []
                     arrSprites = []
                     stopId = 0
-                    frameLoopCount = 0
+                    frameCounter = 0
                 }}>
                     Clear Canvas
                 </button>

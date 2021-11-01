@@ -1,7 +1,7 @@
 import { DIRS } from "../Dirs"
 
 class Sprite2{
-    constructor(name, main, spriteSheet, spriteData, initPositions, initVelocities, initDir, frameCounter, idleSprite){
+    constructor(name, main, spriteSheet, spriteData, initPositions, initVelocities, initDir, spriteFrameCounter, idleSprite){
         this.name = name
         this.main = main
         this.spriteSheet = spriteSheet
@@ -15,7 +15,7 @@ class Sprite2{
         this.idleSprite = idleSprite
         this.dir = initDir
 
-        this.frameCounter = frameCounter
+        this.spriteFrameCounter = spriteFrameCounter
 
         this.spriteDebug = true
     }
@@ -23,8 +23,8 @@ class Sprite2{
     drawSprite(){
         this.main.context.drawImage(
             this.spriteSheet,
-            this.spriteData[DIRS[this.dir]][this.frameCounter].sx,
-            this.spriteData[DIRS[this.dir]][this.frameCounter].sy,
+            this.spriteData[DIRS[this.dir]][this.spriteFrameCounter].sx,
+            this.spriteData[DIRS[this.dir]][this.spriteFrameCounter].sy,
             this.spriteData.actualWidth,
             this.spriteData.actualHeight,
 
@@ -38,17 +38,6 @@ class Sprite2{
             this.main.context.strokeStyle = "red"
             this.main.context.strokeRect(this.posX, this.posY, this.spriteData.screenWidth, this.spriteData.screenHeight)
         }
-    }
-
-    update(){
-        if(!this.idleSprite){
-            this.updateSpritePos()
-        }
-        if(this.frameCounter === this.spriteData[DIRS[this.dir]].length - 1){
-            this.frameCounter = 0
-            return
-        }
-        this.frameCounter += 1
     }
 
     updateSpritePos(){
