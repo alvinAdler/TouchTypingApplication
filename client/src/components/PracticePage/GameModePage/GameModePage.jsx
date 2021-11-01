@@ -9,6 +9,20 @@ import {tankData, alienData, cannonBallData} from '../../Utilities/SpriteSheetDa
 import { DIRS } from '../../Utilities/Dirs'
 
 const FRAME_TRANS_LIMIT = 10
+const FRAME_PER_SECOND = 60
+
+//An alien will spawn per 3 seconds
+const SPAWN_ALIEN_PER = 3
+
+const ALIEN_VELOCITY = {
+    x: 1,
+    y: 1
+}
+
+const PROJECTILE_VELOCITY = {
+    x: 2,
+    y: 2
+}
 
 const GameModePage = () => {
 
@@ -21,6 +35,7 @@ const GameModePage = () => {
     let stopId = 0
 
     let frameCounter = 0
+    let timeCounter = 0
 
     useEffect(() => {
         const onPageLoad = () => {
@@ -70,8 +85,8 @@ const GameModePage = () => {
                 posY: mainCanvas.current.height - tankData.screenHeight
             },
             {
-                velX: 10, 
-                velY: 10
+                velX: PROJECTILE_VELOCITY.x, 
+                velY: PROJECTILE_VELOCITY.y
             },
             "UP",
             0,
@@ -89,11 +104,11 @@ const GameModePage = () => {
             mainSheets["alienSpriteSheet"], alienData,
             {
                 posX: 160,
-                posY: 0
+                posY: -90
             },
             {
-                velX: 1.2,
-                velY: 1.2
+                velX: ALIEN_VELOCITY.x,
+                velY: ALIEN_VELOCITY.y
             },
             "DOWN",
             0,
@@ -109,6 +124,11 @@ const GameModePage = () => {
         clearCanvas()
 
         console.log("Animation on")
+
+        if(timeCounter >= FRAME_PER_SECOND * SPAWN_ALIEN_PER){
+            generateRandomAlien()
+            timeCounter = 0
+        }
 
         arrSprites.forEach((sprite) => {
             updateSprite(sprite)
@@ -130,6 +150,7 @@ const GameModePage = () => {
         else{
             frameCounter = 0
         }
+        timeCounter += 1
 
         stopId = window.requestAnimationFrame(startAnimation)
     }
@@ -152,11 +173,37 @@ const GameModePage = () => {
         }
     }
 
+    const generateRandomAlien = () => {
+        arrSprites.unshift(new Alien(
+            "Alien",
+            {
+                main: mainCanvas.current,
+                context: mainCanvas.current.getContext("2d")
+            },
+            mainSheets["alienSpriteSheet"], alienData,
+            {
+                posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
+                posY: -90
+            },
+            {
+                velX: ALIEN_VELOCITY.x,
+                velY: ALIEN_VELOCITY.y
+            },
+            "DOWN",
+            0,
+            false
+        ))
+    }
+
     const removeElementFromArray = (arr, element) => {
         let index = arr.indexOf(element)
         if(index > -1){
             arr.splice(index, 1)
         }
+    }
+
+    const randomInteger = (lowerBound, upperBound) => {
+        return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound
     }
 
     const printArrSprites = () => {
