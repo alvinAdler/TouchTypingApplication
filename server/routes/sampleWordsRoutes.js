@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
         res.status(200).json(...words)
     }
     catch(err){
-        res.status(500).json({message: "Something went wrong"})
+        res.status(500).json({message: "Something went wrong", errorMessage: err})
     }
 
     res.status(200).json({status: "Success", message: `The ID is: ${numberOfWords}`})

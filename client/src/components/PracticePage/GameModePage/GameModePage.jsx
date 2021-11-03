@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react'
+import axios from 'axios'
 
 import './GameModePage_master.css'
 
@@ -27,6 +28,7 @@ const PROJECTILE_VELOCITY = {
 const GameModePage = () => {
 
     const [mainSheets, setMainSheets] = useState({})
+    const [listOfWords, setListOfWords] = useState([])
 
     const mainCanvas = useRef(null)
 
@@ -214,6 +216,19 @@ const GameModePage = () => {
         mainCanvas.current.getContext("2d").clearRect(0, 0, mainCanvas.current.width, mainCanvas.current.height)
     }
 
+    const getListOfWords = () => {
+        axios({
+            method: "GET",
+            url: "http://localhost:5000/sampleWords"
+        })
+        .then((res) => {
+            setListOfWords(res.data.words)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
+    }
+
     return (
         <div className="game-mode-container">
             <canvas className="gameplay-canvas" ref={mainCanvas} style={{backgroundImage: "url(/images/canvasBackground.png)"}}></canvas>
@@ -232,6 +247,7 @@ const GameModePage = () => {
                     Clear Canvas
                 </button>
                 <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
+                <button className="btn btn-primary" onClick={getListOfWords}>Check Sample Words</button>
             </div>
         </div>
     )
