@@ -56,10 +56,27 @@ const GameModePage = () => {
                 })
                 setMainSheets(temp)
             })
+
+            axios({
+                method: "GET",
+                url: "http://localhost:5000/words/gameMode/easy"
+            })
+            .then((res) => {
+                setListOfWords(res.data.result)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
         }
 
         onPageLoad()
     }, [])
+
+    useEffect(() => {
+        if(Object.keys(mainSheets).length !== 0){
+            initSprites()
+        }
+    }, [mainSheets])
 
     const addNewSpriteSheet = (sheetName, sheetLocation) => {
         const promise = new Promise((resolve) => {
@@ -122,7 +139,7 @@ const GameModePage = () => {
         })
     }
 
-    const startAnimation = (timestamp) => {        
+    const startAnimation = () => {        
         clearCanvas()
 
         console.log("Animation on")
@@ -216,17 +233,8 @@ const GameModePage = () => {
         mainCanvas.current.getContext("2d").clearRect(0, 0, mainCanvas.current.width, mainCanvas.current.height)
     }
 
-    const getListOfWords = () => {
-        axios({
-            method: "GET",
-            url: "http://localhost:5000/sampleWords"
-        })
-        .then((res) => {
-            setListOfWords(res.data.words)
-        })
-        .catch((err) => {
-            console.error(err)
-        })
+    const sample = () => {
+        initSprites()
     }
 
     return (
@@ -247,7 +255,7 @@ const GameModePage = () => {
                     Clear Canvas
                 </button>
                 <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
-                <button className="btn btn-primary" onClick={getListOfWords}>Check Sample Words</button>
+                <button className="btn btn-warning" onClick={sample}>Some button that initialize the sprites</button>
             </div>
         </div>
     )
