@@ -8,6 +8,7 @@ import Alien from '../../Utilities/classes/Alien'
 
 import {tankData, alienData, cannonBallData} from '../../Utilities/SpriteSheetData'
 import { DIRS } from '../../Utilities/Dirs'
+import { randomInteger } from '../../Utilities/functions'
 
 const FRAME_TRANS_LIMIT = 10
 const FRAME_PER_SECOND = 60
@@ -27,6 +28,7 @@ const PROJECTILE_VELOCITY = {
 
 const GameModePage = () => {
 
+    const [developerMode, setDeveloperMode] = useState(true)
     const [mainSheets, setMainSheets] = useState({})
     const [listOfWords, setListOfWords] = useState([])
 
@@ -59,7 +61,7 @@ const GameModePage = () => {
 
             axios({
                 method: "GET",
-                url: "http://localhost:5000/words/gameMode/easy"
+                url: "http://localhost:5000/words/gameMode/hard"
             })
             .then((res) => {
                 setListOfWords(res.data.result)
@@ -131,7 +133,8 @@ const GameModePage = () => {
             },
             "DOWN",
             0,
-            false
+            false,
+            listOfWords
         ))
 
         arrSprites.forEach((sprite) => {
@@ -210,7 +213,8 @@ const GameModePage = () => {
             },
             "DOWN",
             0,
-            false
+            false,
+            listOfWords
         ))
     }
 
@@ -221,10 +225,6 @@ const GameModePage = () => {
         }
     }
 
-    const randomInteger = (lowerBound, upperBound) => {
-        return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound
-    }
-
     const printArrSprites = () => {
         console.log(arrSprites)
     }
@@ -233,30 +233,27 @@ const GameModePage = () => {
         mainCanvas.current.getContext("2d").clearRect(0, 0, mainCanvas.current.width, mainCanvas.current.height)
     }
 
-    const sample = () => {
-        initSprites()
-    }
-
     return (
         <div className="game-mode-container">
             <canvas className="gameplay-canvas" ref={mainCanvas} style={{backgroundImage: "url(/images/canvasBackground.png)"}}></canvas>
             <input className="gameplay-input" type="text" placeholder="Inputs from User" />
-            <div className="debugging-buttons">
-                <button className="btn btn-primary" onClick={initSprites}>Init Sprites</button>
-                <button className="btn btn-success" onClick={() => window.requestAnimationFrame(startAnimation)}>Start Animation</button>
-                <button className="btn btn-danger" onClick={stopAnimation}>Stop Animation</button>
-                <button className="btn btn-danger" onClick={() => {
-                    clearCanvas()
-                    sheetsContainer = []
-                    arrSprites = []
-                    stopId = 0
-                    frameCounter = 0
-                }}>
-                    Clear Canvas
-                </button>
-                <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
-                <button className="btn btn-warning" onClick={sample}>Some button that initialize the sprites</button>
-            </div>
+            {(developerMode && Object.keys(mainSheets).length > 0) && 
+                <div className="debugging-buttons">
+                    <button className="btn btn-primary" onClick={initSprites}>Init Sprites</button>
+                    <button className="btn btn-success" onClick={() => window.requestAnimationFrame(startAnimation)}>Start Animation</button>
+                    <button className="btn btn-danger" onClick={stopAnimation}>Stop Animation</button>
+                    <button className="btn btn-danger" onClick={() => {
+                        clearCanvas()
+                        sheetsContainer = []
+                        stopId = 0
+                        frameCounter = 0
+                        arrSprites = []
+                    }}>
+                        Clear Canvas
+                    </button>
+                    <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
+                </div>
+            }
         </div>
     )
 }
