@@ -476,8 +476,8 @@ export const alienData = {
 export const cannonBallData = {
     actualWidth: 276,
     actualHeight: 278,
-    screenWidth: 40,
-    screenHeight: 38,
+    screenWidth: 30,
+    screenHeight: 28,
     goUp: [
         {
             sx: 0,

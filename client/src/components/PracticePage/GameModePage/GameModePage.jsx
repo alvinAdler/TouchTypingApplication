@@ -25,10 +25,10 @@ const PROJECTILE_VELOCITY = {
     x: 2,
     y: 2
 }
+const DEVELOPER_MODE = true
 
 const GameModePage = () => {
 
-    const [developerMode, setDeveloperMode] = useState(true)
     const [mainSheets, setMainSheets] = useState({})
     const [listOfWords, setListOfWords] = useState([])
 
@@ -46,6 +46,17 @@ const GameModePage = () => {
             mainCanvas.current.width = mainCanvas.current.offsetWidth
             mainCanvas.current.height = mainCanvas.current.offsetHeight
 
+            axios({
+                method: "GET",
+                url: "http://localhost:5000/words/gameMode/hard"
+            })
+            .then((res) => {
+                setListOfWords(res.data.result)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+
             addNewSpriteSheet("alienSpriteSheet", "/images/spriteSheets/greenAlien.png")
             addNewSpriteSheet("cannonBallSpriteSheet", "/images/spriteSheets/cannonBall.png")
             addNewSpriteSheet("tankSpriteSheet", "/images/spriteSheets/tank.png")
@@ -58,24 +69,13 @@ const GameModePage = () => {
                 })
                 setMainSheets(temp)
             })
-
-            axios({
-                method: "GET",
-                url: "http://localhost:5000/words/gameMode/hard"
-            })
-            .then((res) => {
-                setListOfWords(res.data.result)
-            })
-            .catch((err) => {
-                console.error(err)
-            })
         }
 
         onPageLoad()
     }, [])
 
     useEffect(() => {
-        if(Object.keys(mainSheets).length !== 0){
+        if(Object.keys(mainSheets).length === 3){
             initSprites()
         }
     }, [mainSheets])
@@ -124,7 +124,7 @@ const GameModePage = () => {
             },
             mainSheets["alienSpriteSheet"], alienData,
             {
-                posX: 160,
+                posX: (mainCanvas.current.width / 2) - (tankData.screenWidth / 2),
                 posY: -90
             },
             {
@@ -233,11 +233,15 @@ const GameModePage = () => {
         mainCanvas.current.getContext("2d").clearRect(0, 0, mainCanvas.current.width, mainCanvas.current.height)
     }
 
+    const shootCannon = () => {
+        arrSprites[arrSprites.length - 1].shootProjectile(arrSprites)
+    }
+
     return (
         <div className="game-mode-container">
             <canvas className="gameplay-canvas" ref={mainCanvas} style={{backgroundImage: "url(/images/canvasBackground.png)"}}></canvas>
             <input className="gameplay-input" type="text" placeholder="Inputs from User" />
-            {(developerMode && Object.keys(mainSheets).length > 0) && 
+            {DEVELOPER_MODE && 
                 <div className="debugging-buttons">
                     <button className="btn btn-primary" onClick={initSprites}>Init Sprites</button>
                     <button className="btn btn-success" onClick={() => window.requestAnimationFrame(startAnimation)}>Start Animation</button>
@@ -252,6 +256,7 @@ const GameModePage = () => {
                         Clear Canvas
                     </button>
                     <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
+                    <button className="btn btn-danger" onClick={shootCannon}>Shoot cannon</button>
                 </div>
             }
         </div>
