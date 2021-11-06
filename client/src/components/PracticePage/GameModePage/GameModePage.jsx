@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react'
+import React, {useState, useRef, useEffect, createRef} from 'react'
 import axios from 'axios'
 
 import './GameModePage_master.css'
@@ -31,20 +31,33 @@ const GameModePage = () => {
 
     const [mainSheets, setMainSheets] = useState({})
     const [listOfWords, setListOfWords] = useState([])
-
+    
+    const keyword = useRef("")
     const mainCanvas = useRef(null)
+    const sheetsContainer = useRef([])
+    const arrSprites = useRef([])
+    const stopId = useRef([])
+    const frameCounter = useRef(0)
+    const timeCounter = useRef(0)
 
-    let sheetsContainer = []
-    let arrSprites = []
-    let stopId = 0
-
-    let frameCounter = 0
-    let timeCounter = 0
 
     useEffect(() => {
         const onPageLoad = () => {
             mainCanvas.current.width = mainCanvas.current.offsetWidth
             mainCanvas.current.height = mainCanvas.current.offsetHeight
+
+            addNewSpriteSheet("alienSpriteSheet", "/images/spriteSheets/greenAlien.png")
+            addNewSpriteSheet("cannonBallSpriteSheet", "/images/spriteSheets/cannonBall.png")
+            addNewSpriteSheet("tankSpriteSheet", "/images/spriteSheets/tank.png")
+
+            Promise.all(sheetsContainer.current)
+            .then((resolves) => {
+                const temp = {}
+                resolves.forEach((item) => {
+                    temp[item.sheetName] = item.image
+                })
+                setMainSheets(temp)
+            })
 
             axios({
                 method: "GET",
@@ -55,19 +68,6 @@ const GameModePage = () => {
             })
             .catch((err) => {
                 console.error(err)
-            })
-
-            addNewSpriteSheet("alienSpriteSheet", "/images/spriteSheets/greenAlien.png")
-            addNewSpriteSheet("cannonBallSpriteSheet", "/images/spriteSheets/cannonBall.png")
-            addNewSpriteSheet("tankSpriteSheet", "/images/spriteSheets/tank.png")
-
-            Promise.all(sheetsContainer)
-            .then((resolves) => {
-                const temp = {}
-                resolves.forEach((item) => {
-                    temp[item.sheetName] = item.image
-                })
-                setMainSheets(temp)
             })
         }
 
@@ -90,11 +90,11 @@ const GameModePage = () => {
             }
         })
 
-        sheetsContainer.push(promise)
+        sheetsContainer.current.push(promise)
     }
 
     const initSprites = () => {
-        arrSprites.unshift(new Tank(
+        arrSprites.current.unshift(new Tank(
             "Tank",
             {
                 main: mainCanvas.current,
@@ -116,28 +116,7 @@ const GameModePage = () => {
             cannonBallData
         ))
 
-        arrSprites.unshift(new Alien(
-            "Alien",
-            {
-                main: mainCanvas.current,
-                context: mainCanvas.current.getContext("2d")
-            },
-            mainSheets["alienSpriteSheet"], alienData,
-            {
-                posX: (mainCanvas.current.width / 2) - (tankData.screenWidth / 2),
-                posY: -90
-            },
-            {
-                velX: ALIEN_VELOCITY.x,
-                velY: ALIEN_VELOCITY.y
-            },
-            "DOWN",
-            0,
-            false,
-            listOfWords
-        ))
-
-        arrSprites.forEach((sprite) => {
+        arrSprites.current.forEach((sprite) => {
             sprite.drawSprite()
         })
     }
@@ -147,12 +126,12 @@ const GameModePage = () => {
 
         console.log("Animation on")
 
-        if(timeCounter >= FRAME_PER_SECOND * SPAWN_ALIEN_PER){
+        if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER){
             generateRandomAlien()
-            timeCounter = 0
+            timeCounter.current = 0
         }
 
-        arrSprites.forEach((sprite) => {
+        arrSprites.current.forEach((sprite) => {
             updateSprite(sprite)
 
             //If the bottom part of a sprite exceed the screen, stop the sprite
@@ -160,25 +139,30 @@ const GameModePage = () => {
                 sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
                 sprite.idleSprite = true
             }
+            else if(sprite.name === "Cannon Ball" && (sprite.posY <= 0)){
+                removeElementFromArray(arrSprites.current, sprite)
+            }
         })
 
-        arrSprites.forEach((sprite) => {
+        console.log(`Current value is: ${keyword.current.value}`)
+
+        arrSprites.current.forEach((sprite) => {
             sprite.drawSprite()
         })
 
-        if(frameCounter < FRAME_TRANS_LIMIT){
-            frameCounter += 1
+        if(frameCounter.current < FRAME_TRANS_LIMIT){
+            frameCounter.current += 1
         }
         else{
-            frameCounter = 0
+            frameCounter.current = 0
         }
-        timeCounter += 1
+        timeCounter.current += 1
 
-        stopId = window.requestAnimationFrame(startAnimation)
+        stopId.current = window.requestAnimationFrame(startAnimation)
     }
 
     const stopAnimation = () => {
-        window.cancelAnimationFrame(stopId)
+        window.cancelAnimationFrame(stopId.current)
         console.log("Animation off")
     }
 
@@ -186,7 +170,7 @@ const GameModePage = () => {
         if(!sprite.idleSprite){
             sprite.updateSpritePos()
         }
-        if(frameCounter === FRAME_TRANS_LIMIT){
+        if(frameCounter.current === FRAME_TRANS_LIMIT){
             if(sprite.spriteFrameCounter === sprite.spriteData[DIRS[sprite.dir]].length - 1){
                 sprite.spriteFrameCounter = 0
                 return
@@ -196,7 +180,7 @@ const GameModePage = () => {
     }
 
     const generateRandomAlien = () => {
-        arrSprites.unshift(new Alien(
+        arrSprites.current.unshift(new Alien(
             "Alien",
             {
                 main: mainCanvas.current,
@@ -226,7 +210,7 @@ const GameModePage = () => {
     }
 
     const printArrSprites = () => {
-        console.log(arrSprites)
+        console.log(arrSprites.current)
     }
 
     const clearCanvas = () => {
@@ -234,13 +218,18 @@ const GameModePage = () => {
     }
 
     const shootCannon = () => {
-        arrSprites[arrSprites.length - 1].shootProjectile(arrSprites)
+        arrSprites.current[arrSprites.current.length - 1].shootProjectile(arrSprites.current)
     }
 
     return (
         <div className="game-mode-container">
             <canvas className="gameplay-canvas" ref={mainCanvas} style={{backgroundImage: "url(/images/canvasBackground.png)"}}></canvas>
-            <input className="gameplay-input" type="text" placeholder="Inputs from User" />
+            <input 
+                className = "gameplay-input" 
+                type = "text" 
+                placeholder = "Inputs from User"
+                ref = {keyword}
+            />
             {DEVELOPER_MODE && 
                 <div className="debugging-buttons">
                     <button className="btn btn-primary" onClick={initSprites}>Init Sprites</button>
@@ -248,15 +237,17 @@ const GameModePage = () => {
                     <button className="btn btn-danger" onClick={stopAnimation}>Stop Animation</button>
                     <button className="btn btn-danger" onClick={() => {
                         clearCanvas()
-                        sheetsContainer = []
-                        stopId = 0
-                        frameCounter = 0
-                        arrSprites = []
+                        sheetsContainer.current = []
+                        stopId.current = 0
+                        frameCounter.current = 0
+                        arrSprites.current = []
+                        timeCounter.current = 0
                     }}>
                         Clear Canvas
                     </button>
                     <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
                     <button className="btn btn-danger" onClick={shootCannon}>Shoot cannon</button>
+                    <button className="btn btn-danger" onClick={() => keyword.current.value = ""}>Clear Inputs</button>
                 </div>
             }
         </div>
