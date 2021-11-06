@@ -39,6 +39,7 @@ const GameModePage = () => {
     const stopId = useRef([])
     const frameCounter = useRef(0)
     const timeCounter = useRef(0)
+    const sampleArray = useRef([])
 
 
     useEffect(() => {
@@ -134,17 +135,30 @@ const GameModePage = () => {
         arrSprites.current.forEach((sprite) => {
             updateSprite(sprite)
 
-            //If the bottom part of a sprite exceed the screen, stop the sprite
-            if(sprite.name === "Alien" && (sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height)){
-                sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
-                sprite.idleSprite = true
+            //* if the bottom part of a sprite exceed the screen, stop the sprite
+            if(sprite.name === "Alien"){
+                if(sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height){
+                    sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
+                    sprite.idleSprite = true
+                }
+
+                //* check if the current sprite has the same word with the keyword
+                if(isKeywordMatch(sprite)){
+                    sampleArray.current.push(sprite)
+
+                    //* Move the tank aligned with the current sprite. Tank is always located at the last index
+                    let tank = arrSprites.current[arrSprites.current.length - 1]
+                    tank.posX = sprite.posX - (tank.spriteData.screenWidth / 2) + (sprite.spriteData.screenWidth / 2)
+                    shootCannon()
+
+                    clearInput()
+                    console.log(sampleArray.current)
+                }
             }
             else if(sprite.name === "Cannon Ball" && (sprite.posY <= 0)){
                 removeElementFromArray(arrSprites.current, sprite)
             }
         })
-
-        console.log(`Current value is: ${keyword.current.value}`)
 
         arrSprites.current.forEach((sprite) => {
             sprite.drawSprite()
@@ -202,6 +216,10 @@ const GameModePage = () => {
         ))
     }
 
+    const isKeywordMatch = (sprite) => {
+        return sprite.selectedWord === keyword.current.value
+    }
+
     const removeElementFromArray = (arr, element) => {
         let index = arr.indexOf(element)
         if(index > -1){
@@ -219,6 +237,10 @@ const GameModePage = () => {
 
     const shootCannon = () => {
         arrSprites.current[arrSprites.current.length - 1].shootProjectile(arrSprites.current)
+    }
+
+    const clearInput = () => {
+        keyword.current.value = ""
     }
 
     return (
@@ -246,8 +268,8 @@ const GameModePage = () => {
                         Clear Canvas
                     </button>
                     <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
-                    <button className="btn btn-danger" onClick={shootCannon}>Shoot cannon</button>
-                    <button className="btn btn-danger" onClick={() => keyword.current.value = ""}>Clear Inputs</button>
+                    <button className="btn btn-secondary" onClick={shootCannon}>Shoot cannon</button>
+                    <button className="btn btn-danger" onClick={clearInput}>Clear Input</button>
                 </div>
             }
         </div>
