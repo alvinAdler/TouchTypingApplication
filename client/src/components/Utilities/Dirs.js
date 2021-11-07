@@ -2,7 +2,8 @@ export const DIRS = {
     UP: "goUp",
     LEFT: "goLeft",
     DOWN: "goDown",
-    RIGHT: "goRight"
+    RIGHT: "goRight",
+    DESTROY: "destroy"
 }
 
 export const DIRS_REV = {

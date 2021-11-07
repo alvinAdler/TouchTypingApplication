@@ -10,7 +10,7 @@ import {tankData, alienData, cannonBallData} from '../../Utilities/SpriteSheetDa
 import { DIRS } from '../../Utilities/Dirs'
 import { randomInteger } from '../../Utilities/functions'
 
-const FRAME_TRANS_LIMIT = 10
+const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
 //An alien will spawn per 3 seconds
@@ -135,9 +135,13 @@ const GameModePage = () => {
 
             possibleCollision.current.forEach((item) => {
                 if(isColliding(item.alien, item.cannonBall)){
-                    arrSprites.current[arrSprites.current.indexOf(item.alien)].idleSprite = true
+                    let currentAlien = arrSprites.current[arrSprites.current.indexOf(item.alien)]
                     removeElementFromArray(arrSprites.current, item.cannonBall)
                     removeElementFromArray(possibleCollision.current, item)
+
+                    currentAlien.idleSprite = true
+                    currentAlien.dir = "DESTROY"
+                    currentAlien.spriteFrameCounter = 0
                 }
             })
 
@@ -197,7 +201,11 @@ const GameModePage = () => {
         }
         if(frameCounter.current === FRAME_TRANS_LIMIT){
             if(sprite.spriteFrameCounter === sprite.spriteData[DIRS[sprite.dir]].length - 1){
-                sprite.spriteFrameCounter = 0
+                if(sprite.dir === "DESTROY"){
+                    removeElementFromArray(arrSprites.current, sprite)
+                }else{
+                    sprite.spriteFrameCounter = 0
+                }
                 return
             }
             sprite.spriteFrameCounter += 1
@@ -214,7 +222,7 @@ const GameModePage = () => {
             mainSheets["alienSpriteSheet"], alienData,
             {
                 posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
-                posY: 0
+                posY: -90
             },
             {
                 velX: ALIEN_VELOCITY.x,
@@ -223,7 +231,7 @@ const GameModePage = () => {
             "DOWN",
             0,
             false,
-            listOfWords
+            listOfWords[randomInteger(0, listOfWords.length - 1)]
         ))
     }
 
