@@ -21,10 +21,6 @@ const ALIEN_VELOCITY = {
     y: 1
 }
 
-const PROJECTILE_VELOCITY = {
-    x: 2,
-    y: 2
-}
 const DEVELOPER_MODE = true
 
 const GameModePage = () => {
@@ -32,15 +28,16 @@ const GameModePage = () => {
     const [mainSheets, setMainSheets] = useState({})
     const [listOfWords, setListOfWords] = useState([])
     
-    const keyword = useRef("")
+    const keyword = useRef()
     const mainCanvas = useRef(null)
     const sheetsContainer = useRef([])
     const arrSprites = useRef([])
     const stopId = useRef([])
     const frameCounter = useRef(0)
     const timeCounter = useRef(0)
-    const sampleArray = useRef([])
+    const sampleArr = useRef([])
 
+    const possibleCollision = useRef([])
 
     useEffect(() => {
         const onPageLoad = () => {
@@ -107,8 +104,9 @@ const GameModePage = () => {
                 posY: mainCanvas.current.height - tankData.screenHeight
             },
             {
-                velX: PROJECTILE_VELOCITY.x, 
-                velY: PROJECTILE_VELOCITY.y
+                //* Tank does not move. 
+                velX: 0, 
+                velY: 0
             },
             "UP",
             0,
@@ -135,6 +133,14 @@ const GameModePage = () => {
         arrSprites.current.forEach((sprite) => {
             updateSprite(sprite)
 
+            possibleCollision.current.forEach((item) => {
+                if(isColliding(item.alien, item.cannonBall)){
+                    arrSprites.current[arrSprites.current.indexOf(item.alien)].idleSprite = true
+                    removeElementFromArray(arrSprites.current, item.cannonBall)
+                    removeElementFromArray(possibleCollision.current, item)
+                }
+            })
+
             //* if the bottom part of a sprite exceed the screen, stop the sprite
             if(sprite.name === "Alien"){
                 if(sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height){
@@ -144,15 +150,20 @@ const GameModePage = () => {
 
                 //* check if the current sprite has the same word with the keyword
                 if(isKeywordMatch(sprite)){
-                    sampleArray.current.push(sprite)
+
+                    sampleArr.current.push(sprite)
 
                     //* Move the tank aligned with the current sprite. Tank is always located at the last index
                     let tank = arrSprites.current[arrSprites.current.length - 1]
                     tank.posX = sprite.posX - (tank.spriteData.screenWidth / 2) + (sprite.spriteData.screenWidth / 2)
                     shootCannon()
 
+                    possibleCollision.current.push({
+                        alien: sprite,
+                        cannonBall: arrSprites.current[0]
+                    })
+
                     clearInput()
-                    console.log(sampleArray.current)
                 }
             }
             else if(sprite.name === "Cannon Ball" && (sprite.posY <= 0)){
@@ -203,7 +214,7 @@ const GameModePage = () => {
             mainSheets["alienSpriteSheet"], alienData,
             {
                 posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
-                posY: -90
+                posY: 0
             },
             {
                 velX: ALIEN_VELOCITY.x,
@@ -218,6 +229,17 @@ const GameModePage = () => {
 
     const isKeywordMatch = (sprite) => {
         return sprite.selectedWord === keyword.current.value
+    }
+
+    const isColliding = (sprite1, sprite2) => {
+        if((sprite1.posX <= (sprite2.posX + sprite2.spriteData.screenWidth)) && 
+        ((sprite1.posX + sprite1.spriteData.screenWidth) >= sprite2.posX) &&
+        (sprite1.posY <= (sprite2.posY + sprite2.spriteData.screenHeight)) &&
+        ((sprite1.posY + sprite1.spriteData.screenHeight) >= sprite2.posY))
+        {
+            return true
+        }
+        return false
     }
 
     const removeElementFromArray = (arr, element) => {
@@ -236,6 +258,7 @@ const GameModePage = () => {
     }
 
     const shootCannon = () => {
+        //* Grab the tank. The tank will always become the last element.
         arrSprites.current[arrSprites.current.length - 1].shootProjectile(arrSprites.current)
     }
 
@@ -270,6 +293,10 @@ const GameModePage = () => {
                     <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
                     <button className="btn btn-secondary" onClick={shootCannon}>Shoot cannon</button>
                     <button className="btn btn-danger" onClick={clearInput}>Clear Input</button>
+                    <button className="btn btn-primary" onClick={() => {
+                        console.log("Possible collisions are: ")
+                        console.log(possibleCollision.current)
+                    }}>Check Sprite</button>
                 </div>
             }
         </div>
