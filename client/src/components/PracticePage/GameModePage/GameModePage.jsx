@@ -35,7 +35,6 @@ const GameModePage = () => {
     const stopId = useRef([])
     const frameCounter = useRef(0)
     const timeCounter = useRef(0)
-    const sampleArr = useRef([])
 
     const possibleCollision = useRef([])
 
@@ -147,15 +146,15 @@ const GameModePage = () => {
 
             //* if the bottom part of a sprite exceed the screen, stop the sprite
             if(sprite.name === "Alien"){
+                //* If an alien already reached the land, then stop the alien and adjust the posY of the alien to match the land
                 if(sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height){
                     sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
                     sprite.idleSprite = true
+                    arrSprites.current[arrSprites.current.indexOf(sprite)].dir = "HITSGROUND"
                 }
 
                 //* check if the current sprite has the same word with the keyword
-                if(isKeywordMatch(sprite)){
-
-                    sampleArr.current.push(sprite)
+                if(isKeywordMatch(sprite) && sprite.dir !== "HITSGROUND"){
 
                     //* Move the tank aligned with the current sprite. Tank is always located at the last index
                     let tank = arrSprites.current[arrSprites.current.length - 1]

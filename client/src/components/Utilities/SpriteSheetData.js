@@ -471,6 +471,40 @@ export const alienData = {
             sy: 64
         },
     ],
+    hitsGround: [
+        {
+            sx: 0,
+            sy: 0
+        },
+        {
+            sx: 32,
+            sy: 0
+        },
+        {
+            sx: 64,
+            sy: 0
+        },
+        {
+            sx: 0,
+            sy: 32
+        },
+        {
+            sx: 32,
+            sy: 32
+        },
+        {
+            sx: 64,
+            sy: 32
+        },
+        {
+            sx: 0,
+            sy: 64
+        },
+        {
+            sx: 32,
+            sy: 64
+        },
+    ],
     destroy: [
         {
             sx: 0,

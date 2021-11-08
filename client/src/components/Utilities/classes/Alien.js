@@ -11,6 +11,13 @@ class Alien extends Sprite2{
         super.drawSprite()
         
         //* As the sprite is being drawn, we also want to embed some words to the sprite.
+        //* However, if the sprite already hits the ground, then don't draw the selected word
+        if(this.dir !== "HITSGROUND"){
+            this.drawSelectedWord()
+        }
+    }
+
+    drawSelectedWord(){
         this.main.context.font = "normal 20px Arial"
         this.main.context.fillStyle = "white"
         this.main.context.textAlign = "center"
