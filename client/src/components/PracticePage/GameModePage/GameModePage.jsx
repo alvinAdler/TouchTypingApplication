@@ -14,7 +14,7 @@ import { randomInteger } from '../../Utilities/functions'
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-//An alien will spawn per 3 seconds
+//An alien will spawn per 2 seconds
 const SPAWN_ALIEN_PER = 2
 
 const ALIEN_VELOCITY = {
@@ -130,6 +130,7 @@ const GameModePage = () => {
 
         console.log("Animation on")
 
+        //Checking the end game (whether the player lose or win)
         if(landedAliens.current.length >= HEALTH){
             stopAnimation()
             Swal.fire({
@@ -154,6 +155,24 @@ const GameModePage = () => {
             timeCounter.current = 0
         }
 
+        //* Check for sprites that has the word that the user type
+        let matchingSprites = checkKeywordExistence()
+        if(matchingSprites.length > 0){
+
+            let sprite = matchingSprites[matchingSprites.length - 1]
+            let tank = arrSprites.current[arrSprites.current.length - 1]
+
+            tank.posX = sprite.posX - (tank.spriteData.screenWidth / 2) + (sprite.spriteData.screenWidth / 2)
+            shootCannon()
+
+            possibleCollision.current.push({
+                alien: sprite,
+                cannonBall: arrSprites.current[0]
+            })
+
+            clearInput()
+        }
+
         arrSprites.current.forEach((sprite) => {
             updateSprite(sprite)
 
@@ -175,35 +194,16 @@ const GameModePage = () => {
                 }
             })
 
-            //* if the bottom part of a sprite exceed the screen, stop the sprite
-            if(sprite.name === "Alien" && sprite.dir !== "HITSGROUND"){
+            //* If an alien already reached the land, then stop the alien and adjust the posY of the alien to match the land
+            if(sprite.name === "Alien" && sprite.dir !== "HITSGROUND" && (sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height)){
+                sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
+                sprite.idleSprite = true
+                arrSprites.current[arrSprites.current.indexOf(sprite)].dir = "HITSGROUND"
 
-                //* If an alien already reached the land, then stop the alien and adjust the posY of the alien to match the land
-                if(sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height){
-                    sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
-                    sprite.idleSprite = true
-                    arrSprites.current[arrSprites.current.indexOf(sprite)].dir = "HITSGROUND"
-
-                    //* Push the current item to a specific array.
-                    landedAliens.current.push(sprite)
-                }
-
-                //* check if the current sprite has the same word with the keyword
-                if(isKeywordMatch(sprite)){
-
-                    //* Move the tank aligned with the current sprite. Tank is always located at the last index
-                    let tank = arrSprites.current[arrSprites.current.length - 1]
-                    tank.posX = sprite.posX - (tank.spriteData.screenWidth / 2) + (sprite.spriteData.screenWidth / 2)
-                    shootCannon()
-
-                    possibleCollision.current.push({
-                        alien: sprite,
-                        cannonBall: arrSprites.current[0]
-                    })
-
-                    clearInput()
-                }
+                //* Push the current item to a specific array.
+                landedAliens.current.push(sprite)
             }
+            //Just in case if the cannonball goes offscreen
             else if(sprite.name === "Cannon Ball" && (sprite.posY <= 0)){
                 removeElementFromArray(arrSprites.current, sprite)
             }
@@ -213,6 +213,7 @@ const GameModePage = () => {
             sprite.drawSprite()
         })
 
+        //* Update frame once every *FRAME_TRANS_LIMIT*. This will take effect in the updateSprite function.
         if(frameCounter.current < FRAME_TRANS_LIMIT){
             frameCounter.current += 1
         }
@@ -269,8 +270,8 @@ const GameModePage = () => {
         ))
     }
 
-    const isKeywordMatch = (sprite) => {
-        return sprite.selectedWord === keyword.current.value
+    const checkKeywordExistence = () => {
+        return arrSprites.current.filter((sprite) => ((sprite.selectedWord === keyword.current.value) && sprite.dir !== "HITSGROUND"))
     }
 
     const isColliding = (sprite1, sprite2) => {
