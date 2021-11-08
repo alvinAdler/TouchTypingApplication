@@ -15,7 +15,7 @@ const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
 //An alien will spawn per 3 seconds
-const SPAWN_ALIEN_PER = 3
+const SPAWN_ALIEN_PER = 2
 
 const ALIEN_VELOCITY = {
     x: 1,
@@ -23,6 +23,7 @@ const ALIEN_VELOCITY = {
 }
 
 const HEALTH = 3
+const ALIEN_MAX_HIT_COUNT = 30
 
 const DEVELOPER_MODE = true
 
@@ -39,9 +40,9 @@ const GameModePage = () => {
     const stopId = useRef([])
     const frameCounter = useRef(0)
     const timeCounter = useRef(0)
-    const landedAliens = useRef([])
-
     const possibleCollision = useRef([])
+    const landedAliens = useRef([])
+    const alienHitCount = useRef(0)
 
     useEffect(() => {
         const onPageLoad = () => {
@@ -138,6 +139,15 @@ const GameModePage = () => {
             })
             return
         }
+        else if(alienHitCount.current === ALIEN_MAX_HIT_COUNT){
+            stopAnimation()
+            Swal.fire({
+                icon: "success",
+                title: "Congratulations!",
+                text: "You completed the game"
+            })
+            return
+        }
 
         if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER){
             generateRandomAlien()
@@ -157,10 +167,11 @@ const GameModePage = () => {
                     removeElementFromArray(possibleCollision.current, item)
 
                     //*Change the animation of the alien to become the "destroyed" animation. 
-
                     currentAlien.idleSprite = true
                     currentAlien.dir = "DESTROY"
                     currentAlien.spriteFrameCounter = 0
+
+                    alienHitCount.current += 1
                 }
             })
 
