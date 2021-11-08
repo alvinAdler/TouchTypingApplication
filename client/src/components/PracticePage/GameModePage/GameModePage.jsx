@@ -1,5 +1,6 @@
-import React, {useState, useRef, useEffect, createRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 import './GameModePage_master.css'
 
@@ -21,12 +22,15 @@ const ALIEN_VELOCITY = {
     y: 1
 }
 
+const HEALTH = 3
+
 const DEVELOPER_MODE = true
 
 const GameModePage = () => {
 
     const [mainSheets, setMainSheets] = useState({})
     const [listOfWords, setListOfWords] = useState([])
+    const [sampleState, setSampleState] = useState("sample")
     
     const keyword = useRef()
     const mainCanvas = useRef(null)
@@ -35,6 +39,7 @@ const GameModePage = () => {
     const stopId = useRef([])
     const frameCounter = useRef(0)
     const timeCounter = useRef(0)
+    const landedAliens = useRef([])
 
     const possibleCollision = useRef([])
 
@@ -124,6 +129,16 @@ const GameModePage = () => {
 
         console.log("Animation on")
 
+        if(landedAliens.current.length >= HEALTH){
+            stopAnimation()
+            Swal.fire({
+                icon: "error",
+                title: "Aaww you lose!",
+                text: "You were doing good though"
+            })
+            return
+        }
+
         if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER){
             generateRandomAlien()
             timeCounter.current = 0
@@ -134,9 +149,14 @@ const GameModePage = () => {
 
             possibleCollision.current.forEach((item) => {
                 if(isColliding(item.alien, item.cannonBall)){
+                    //* If the cannonball collides with the alien, remove the cannonball from --
+                    //* -- the array of sprites and remove the current item from the array of items that might collide.
+
                     let currentAlien = arrSprites.current[arrSprites.current.indexOf(item.alien)]
                     removeElementFromArray(arrSprites.current, item.cannonBall)
                     removeElementFromArray(possibleCollision.current, item)
+
+                    //*Change the animation of the alien to become the "destroyed" animation. 
 
                     currentAlien.idleSprite = true
                     currentAlien.dir = "DESTROY"
@@ -145,16 +165,20 @@ const GameModePage = () => {
             })
 
             //* if the bottom part of a sprite exceed the screen, stop the sprite
-            if(sprite.name === "Alien"){
+            if(sprite.name === "Alien" && sprite.dir !== "HITSGROUND"){
+
                 //* If an alien already reached the land, then stop the alien and adjust the posY of the alien to match the land
                 if(sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height){
                     sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
                     sprite.idleSprite = true
                     arrSprites.current[arrSprites.current.indexOf(sprite)].dir = "HITSGROUND"
+
+                    //* Push the current item to a specific array.
+                    landedAliens.current.push(sprite)
                 }
 
                 //* check if the current sprite has the same word with the keyword
-                if(isKeywordMatch(sprite) && sprite.dir !== "HITSGROUND"){
+                if(isKeywordMatch(sprite)){
 
                     //* Move the tank aligned with the current sprite. Tank is always located at the last index
                     let tank = arrSprites.current[arrSprites.current.length - 1]
@@ -298,12 +322,6 @@ const GameModePage = () => {
                         Clear Canvas
                     </button>
                     <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
-                    <button className="btn btn-secondary" onClick={shootCannon}>Shoot cannon</button>
-                    <button className="btn btn-danger" onClick={clearInput}>Clear Input</button>
-                    <button className="btn btn-primary" onClick={() => {
-                        console.log("Possible collisions are: ")
-                        console.log(possibleCollision.current)
-                    }}>Check Sprite</button>
                 </div>
             }
         </div>
