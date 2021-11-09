@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { useLocation } from 'react-router-dom'
 
 import './GameModePage_master.css'
 
@@ -14,14 +15,6 @@ import { randomInteger } from '../../Utilities/functions'
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-//An alien will spawn per 2 seconds
-const SPAWN_ALIEN_PER = 2
-
-const ALIEN_VELOCITY = {
-    x: 1,
-    y: 1
-}
-
 const HEALTH = 3
 const ALIEN_MAX_HIT_COUNT = 30
 
@@ -29,20 +22,24 @@ const DEVELOPER_MODE = true
 
 const GameModePage = () => {
 
+    const SPAWN_ALIEN_PER = useRef(0)
+    const ALIEN_VELOCITY = useRef(0)
+
     const [mainSheets, setMainSheets] = useState({})
     const [listOfWords, setListOfWords] = useState([])
-    const [sampleState, setSampleState] = useState("sample")
     
-    const keyword = useRef()
+    const userInput = useRef()
     const mainCanvas = useRef(null)
     const sheetsContainer = useRef([])
     const arrSprites = useRef([])
-    const stopId = useRef([])
+    const stopId = useRef(0)
     const frameCounter = useRef(0)
     const timeCounter = useRef(0)
     const possibleCollision = useRef([])
     const landedAliens = useRef([])
     const alienHitCount = useRef(0)
+
+    const location = useLocation()
 
     useEffect(() => {
         const onPageLoad = () => {
@@ -64,10 +61,13 @@ const GameModePage = () => {
 
             axios({
                 method: "GET",
-                url: "http://localhost:5000/words/gameMode/hard"
+                url: `http://localhost:5000/api/words/gameMode/${location.state.diff}`
             })
             .then((res) => {
-                setListOfWords(res.data.result)
+                setListOfWords(res.data.words)
+                SPAWN_ALIEN_PER.current = res.data.alienDropRate
+                ALIEN_VELOCITY.current = res.data.alienSpeed
+                console.log(res)
             })
             .catch((err) => {
                 console.error(err)
@@ -94,6 +94,16 @@ const GameModePage = () => {
         })
 
         sheetsContainer.current.push(promise)
+    }
+
+    const defaultVariables = () => {
+        arrSprites.current = []
+        stopId.current = 0
+        frameCounter.current = 0
+        timeCounter.current = 0
+        possibleCollision.current = []
+        landedAliens.current = []
+        alienHitCount.current = 0
     }
 
     const initSprites = () => {
@@ -131,26 +141,25 @@ const GameModePage = () => {
         console.log("Animation on")
 
         //Checking the end game (whether the player lose or win)
-        if(landedAliens.current.length >= HEALTH){
+        let isGameEnd = (landedAliens.current.length >= HEALTH) || (alienHitCount.current === ALIEN_MAX_HIT_COUNT)
+
+        if(isGameEnd){
             stopAnimation()
-            Swal.fire({
-                icon: "error",
-                title: "Aaww you lose!",
-                text: "You were doing good though"
-            })
-            return
-        }
-        else if(alienHitCount.current === ALIEN_MAX_HIT_COUNT){
-            stopAnimation()
+            defaultVariables()
+
             Swal.fire({
                 icon: "success",
-                title: "Congratulations!",
+                title: "Game Over!",
                 text: "You completed the game"
             })
+            .then(() => {
+                initSprites()
+            })
+
             return
         }
 
-        if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER){
+        if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER.current){
             generateRandomAlien()
             timeCounter.current = 0
         }
@@ -260,8 +269,8 @@ const GameModePage = () => {
                 posY: -90
             },
             {
-                velX: ALIEN_VELOCITY.x,
-                velY: ALIEN_VELOCITY.y
+                velX: ALIEN_VELOCITY.current,
+                velY: ALIEN_VELOCITY.current
             },
             "DOWN",
             0,
@@ -271,7 +280,7 @@ const GameModePage = () => {
     }
 
     const checkKeywordExistence = () => {
-        return arrSprites.current.filter((sprite) => ((sprite.selectedWord === keyword.current.value) && sprite.dir !== "HITSGROUND"))
+        return arrSprites.current.filter((sprite) => ((sprite.selectedWord === userInput.current.value) && sprite.dir !== "HITSGROUND"))
     }
 
     const isColliding = (sprite1, sprite2) => {
@@ -306,7 +315,7 @@ const GameModePage = () => {
     }
 
     const clearInput = () => {
-        keyword.current.value = ""
+        userInput.current.value = ""
     }
 
     return (
@@ -316,7 +325,7 @@ const GameModePage = () => {
                 className = "gameplay-input" 
                 type = "text" 
                 placeholder = "Inputs from User"
-                ref = {keyword}
+                ref = {userInput}
             />
             {DEVELOPER_MODE && 
                 <div className="debugging-buttons">

@@ -19,7 +19,7 @@ db.on("error", (err) => console.error(err))
 db.once("open", () => console.log("Connected to Databse"))
 
 app.use("/sampleWords", sampleWordsRouter)
-app.use("/words", wordsRouter)
+app.use("/api/words", wordsRouter)
 
 
 app.listen(5000, () => console.log("Server started"))

@@ -24,18 +24,18 @@ router.get("/:mode/:selection", async (req, res) => {
     const result = await WordsModel.findOne({}, {[`${req.params.mode}`]: 1})
 
     const availableSelection = result[req.params.mode][req.params.selection]
-    let selectedWords = []
+    let practiceSetupData = {}
 
     switch(req.params.mode){
         case "gameMode":
-            selectedWords = [...availableSelection]
+            practiceSetupData = availableSelection
             break;
         case "drillMode":
             if(req.params.selection === "allKeys"){
                 /* TODO
                     AllKeys was supposed to be either keys from all rows or some sentences. Change this later.
                 */
-                selectedWords = [...availableSelection]
+                practiceSetupData = [...availableSelection]
                 break;
             }
             for(let num=0; num<50; num++){
@@ -43,12 +43,11 @@ router.get("/:mode/:selection", async (req, res) => {
                 for(let num=0; num < randomInteger(3, 4); num++){
                     temp += availableSelection[randomInteger(0, availableSelection.length - 1)]
                 }
-                selectedWords.push(temp)
             }
             break;
     }
 
-    res.status(200).json({result: selectedWords})
+    res.status(200).json({...practiceSetupData})
 })
 
 module.exports = router
