@@ -15,9 +15,6 @@ import { randomInteger } from '../../Utilities/functions'
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-const HEALTH = 3
-const ALIEN_MAX_HIT_COUNT = 30
-
 const DEVELOPER_MODE = true
 
 const GameModePage = () => {
@@ -38,7 +35,7 @@ const GameModePage = () => {
     const timeCounter = useRef(0)
     const possibleCollision = useRef([])
     const landedAliens = useRef([])
-    const alienHitCount = useRef(0)
+    const alienHitCount = useRef(30)
     const userHealthCopy = useRef(3)
 
     const location = useLocation()
@@ -104,10 +101,12 @@ const GameModePage = () => {
         timeCounter.current = 0
         possibleCollision.current = []
         landedAliens.current = []
-        alienHitCount.current = 0
+        alienHitCount.current = 30
     }
 
     const initSprites = () => {
+        clearCanvas()
+
         arrSprites.current.unshift(new Tank(
             "Tank",
             {
@@ -131,6 +130,8 @@ const GameModePage = () => {
             cannonBallData
         ))
 
+        drawAlienHitCount()
+
         arrSprites.current.forEach((sprite) => {
             sprite.drawSprite()
         })
@@ -139,10 +140,12 @@ const GameModePage = () => {
     const startAnimation = () => {        
         clearCanvas()
 
+        drawAlienHitCount()
+
         console.log("Animation on")
 
         //Checking the end game (whether the player lose or win)
-        let isGameEnd = (userHealthCopy.current === 0) || (alienHitCount.current === ALIEN_MAX_HIT_COUNT)
+        let isGameEnd = (userHealthCopy.current === 0) || (alienHitCount.current === 0)
 
         if(isGameEnd){
             stopAnimation()
@@ -200,7 +203,7 @@ const GameModePage = () => {
                     currentAlien.dir = "DESTROY"
                     currentAlien.spriteFrameCounter = 0
 
-                    alienHitCount.current += 1
+                    alienHitCount.current -= 1
                 }
             })
 
@@ -295,6 +298,17 @@ const GameModePage = () => {
             return true
         }
         return false
+    }
+
+    const drawAlienHitCount = () => {
+        let canvasContext = mainCanvas.current.getContext("2d")
+
+        canvasContext.font = "normal 250px monospace"
+        canvasContext.fillStyle = "rgba(255, 255, 255, 0.2)"
+        canvasContext.textAlign = "center"
+        canvasContext.textBaseLine = "center"
+
+        canvasContext.fillText(alienHitCount.current.toString(), mainCanvas.current.width / 2, mainCanvas.current.height / 2)
     }
 
     const removeElementFromArray = (arr, element) => {

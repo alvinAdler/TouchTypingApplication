@@ -1,5 +1,4 @@
 import Sprite2 from "./Sprite2"
-import { randomInteger } from "../functions"
 
 class Alien extends Sprite2{
     constructor(name, main, spriteSheet, spriteData, initPositions, initVelocities, initDir, frameCounter, idleSprite, selectedWord){
