@@ -39,6 +39,11 @@ const PracticePage = () => {
         })
     }
 
+    const camelCaseToSentenceCase = (text) => {
+        let afterRegex = text.replace(/([A-Z])/g, " $1")
+        return afterRegex.charAt(0).toUpperCase() + afterRegex.slice(1)
+    }
+
     return (
         <div className="practice-page-container">
             <Switch>
@@ -74,8 +79,8 @@ const PracticePage = () => {
                                 <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "hard"})}>Hard</button>
                             </div>
                         </MaterialTabBody>
-                        <p style={{margin: 0}}>Selected mode: {selectedPractice.mode}</p>
-                        <p style={{margin: 0}}>Selected lesson: {selectedPractice.selection}</p>
+                        <p style={{margin: 0}}>Selected mode: {camelCaseToSentenceCase(selectedPractice.mode)}</p>
+                        <p style={{margin: 0}}>Selected lesson: {camelCaseToSentenceCase(selectedPractice.selection)}</p>
                         <button className="btn-go btn btn-primary" onClick={preparePageChange}>Go</button>
                     </>
                 )}/>
