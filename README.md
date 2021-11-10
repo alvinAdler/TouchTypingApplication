@@ -41,4 +41,4 @@ All sections below must be executed in the different tabs / window of a terminal
 
     1. Open a terminal.
     1. Go to the server folder.
-    1. Type and execute `npm startDev` command.
+    1. Type and execute `npm run startDev` command.
