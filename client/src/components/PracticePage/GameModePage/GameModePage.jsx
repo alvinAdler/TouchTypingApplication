@@ -27,6 +27,7 @@ const GameModePage = () => {
 
     const [mainSheets, setMainSheets] = useState({})
     const [listOfWords, setListOfWords] = useState([])
+    const [userHealth, setUserHealth] = useState(3)
     
     const userInput = useRef()
     const mainCanvas = useRef(null)
@@ -38,6 +39,7 @@ const GameModePage = () => {
     const possibleCollision = useRef([])
     const landedAliens = useRef([])
     const alienHitCount = useRef(0)
+    const userHealthCopy = useRef(3)
 
     const location = useLocation()
 
@@ -67,7 +69,6 @@ const GameModePage = () => {
                 setListOfWords(res.data.words)
                 SPAWN_ALIEN_PER.current = res.data.alienDropRate
                 ALIEN_VELOCITY.current = res.data.alienSpeed
-                console.log(res)
             })
             .catch((err) => {
                 console.error(err)
@@ -141,7 +142,7 @@ const GameModePage = () => {
         console.log("Animation on")
 
         //Checking the end game (whether the player lose or win)
-        let isGameEnd = (landedAliens.current.length >= HEALTH) || (alienHitCount.current === ALIEN_MAX_HIT_COUNT)
+        let isGameEnd = (userHealthCopy.current === 0) || (alienHitCount.current === ALIEN_MAX_HIT_COUNT)
 
         if(isGameEnd){
             stopAnimation()
@@ -211,6 +212,8 @@ const GameModePage = () => {
 
                 //* Push the current item to a specific array.
                 landedAliens.current.push(sprite)
+                setUserHealth(prevState => prevState - 1)
+                userHealthCopy.current -= 1
             }
             //Just in case if the cannonball goes offscreen
             else if(sprite.name === "Cannon Ball" && (sprite.posY <= 0)){
@@ -320,6 +323,14 @@ const GameModePage = () => {
 
     return (
         <div className="game-mode-container">
+            <div className="user-lifes-container">
+                {Array.from(Array(userHealth)).map((item, index) => {
+                    console.log(userHealth)
+                    return(
+                        <img key={index} src="/images/userLifes.png" alt="Picture have not been found" />
+                    )
+                })}
+            </div>
             <canvas className="gameplay-canvas" ref={mainCanvas} style={{backgroundImage: "url(/images/canvasBackground.png)"}}></canvas>
             <input 
                 className = "gameplay-input" 
@@ -343,6 +354,7 @@ const GameModePage = () => {
                         Clear Canvas
                     </button>
                     <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
+                    <button className="btn btn-danger" onClick={() => console.log(userHealth)}>Check user health</button>
                 </div>
             }
         </div>

@@ -12,13 +12,24 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
     border: 1px solid black;
-
 }
 
 .gameplay-input{
     width: 100%;
     margin-top: 15px;
     padding: 7px;
+}
+
+.user-lifes-container{
+    align-self: stretch;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.2rem;
+}
+
+.user-lifes-container > img{
+    width: 2.8rem;
+    margin: 0 0.2rem;
 }
 
 .debugging-buttons{
