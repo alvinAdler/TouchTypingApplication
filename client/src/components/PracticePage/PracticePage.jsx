@@ -12,8 +12,8 @@ const PracticePage = () => {
 
     const [currentTab, setCurrentTab] = useState(0)
     const [selectedPractice, setSelectedPractice] = useState({
-        mode: "Drill Mode",
-        selection: "Home Row"
+        mode: "drillMode",
+        selection: "homeRow"
     })
     const routeMatch = useRouteMatch()
     const history = useHistory()

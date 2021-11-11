@@ -1,12 +1,37 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import {useLocation} from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import axios from 'axios'
 
 import './DrillModePage_master.css'
 
 const DrillModePage = () => {
 
     const [showResult, setShowResult] = useState(false)
+    const [listOfWords, setListOfWords] = useState([])
+
+    const location = useLocation()
+
+    useEffect(() => {
+        const onPageLoad = () => {
+            axios({
+                method: "GET",
+                url: `http://localhost:5000/api/words/drillMode/${location.state.diff}`
+            })
+            .then((res) => {
+                setListOfWords(res.data.words)
+            })
+        }
+
+        onPageLoad()
+    }, [])
+
+    useEffect(() => {
+        if(listOfWords.length > 0){
+            console.log(listOfWords)
+        }
+    }, [listOfWords])
 
     return (
         <div className="drill-mode-container">
