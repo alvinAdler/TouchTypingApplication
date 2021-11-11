@@ -6,6 +6,16 @@ const randomInteger = (lowerBound, upperBound) => {
     return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound
 }
 
+const pictCharactersToWords = (quant, arrayOrigin, arrayDest) => {
+    for(let num = 0; num < quant; num++){
+        let temp = ""
+        for(let innerNum = 0; innerNum < randomInteger(3, 4); innerNum++){
+            temp += arrayOrigin[randomInteger(0, arrayOrigin.length - 1)]
+        }
+        arrayDest.push(temp)
+    }
+}
+
 router.get("/:mode/:selection", async (req, res) => {
 
     const validModes = ["gameMode", "drillMode"]
@@ -22,27 +32,23 @@ router.get("/:mode/:selection", async (req, res) => {
     }
 
     const result = await WordsModel.findOne({}, {[`${req.params.mode}`]: 1})
-
-    const availableSelection = result[req.params.mode][req.params.selection]
+    
+    const availableSelection = result[req.params.mode]
     let practiceSetupData = {}
 
     switch(req.params.mode){
         case "gameMode":
-            practiceSetupData = availableSelection
+            practiceSetupData = availableSelection[req.params.selection]
             break;
         case "drillMode":
+            practiceSetupData.words = []
+
             if(req.params.selection === "allKeys"){
-                /* TODO
-                    AllKeys was supposed to be either keys from all rows or some sentences. Change this later.
-                */
-                practiceSetupData = [...availableSelection]
-                break;
+                let allKeysArr = [...availableSelection["homeRow"], ...availableSelection["topRow"], ...availableSelection["bottomRow"], ...availableSelection["numberRow"]]
+                pictCharactersToWords(50, allKeysArr, practiceSetupData.words)
             }
-            for(let num=0; num<50; num++){
-                let temp = ""
-                for(let num=0; num < randomInteger(3, 4); num++){
-                    temp += availableSelection[randomInteger(0, availableSelection.length - 1)]
-                }
+            else{
+                pictCharactersToWords(50, availableSelection[req.params.selection], practiceSetupData.words)
             }
             break;
     }
