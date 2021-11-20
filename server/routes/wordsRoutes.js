@@ -50,6 +50,7 @@ router.get("/:mode/:selection", async (req, res) => {
             else{
                 pictCharactersToWords(50, availableSelection[req.params.selection], practiceSetupData.words)
             }
+            practiceSetupData.words = practiceSetupData.words.join(" ")
             break;
     }
 

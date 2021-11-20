@@ -3,22 +3,103 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    border: 3px solid red;
 }
 
-.text-visualization, .keyboard-visualization{
-    background-color: #0d6efd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.text-visualization{
+.word-wrapper{
+    border: 3px solid green;
+    height: 30vh;
     width: 100%;
-    height: 300px;
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    position: relative;
 }
 
-.keyboard-visualization{
-    width: 90%;
-    height: 200px;
+.word-wrapper::before,
+.word-wrapper::after{
+    /* background-color: purple; */
+    position: absolute;
+    content: "";
+    display: inline;
+    z-index: 10;
+    width: 25%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+.word-wrapper::before{
+    left: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+}
+
+.word-wrapper::after{
+    right: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));    
+}
+
+.animated-text-container{
+    width: max-content;
+    font: 1.5rem monospace;
+    padding: 0;
+    white-space: nowrap;
+    transition: all 100ms ease;
+    overflow: visible;
+    position: relative;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    /* border: 3px solid blue; */
+}
+
+.word-wrapper span{
+    display: inline-block;
+    /* border: 1px solid purple; */
+    text-align: center;
+    width: 1rem;
+    height: 100%;
+    transition: all 100ms ease;     
+}
+
+.pointer{
+    background-color: red;
+    z-index: 15;
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    left: 50%;
+    top: 55%;
+}
+
+.pointer::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 98%;
+    border-bottom: 10px solid red;
+    border-left: 8.2px solid transparent;
+    border-right: 8.2px solid transparent;
+}
+
+.current{
+    font-weight: bold;
+}
+
+.word-true{
+    color: #04ff00;
+}
+
+.word-false{
+    /* color: #ff0000; */
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.text-hint-container{
+    border: 3px solid blue;
+    text-align: center;
 }

@@ -1,15 +1,24 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {useLocation} from 'react-router-dom'
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
 import axios from 'axios'
 
 import './DrillModePage_master.css'
 
+import useKey from '../../Utilities/useKey'
+import fingersMappingData from '../../Utilities/fingersMappingData'
+
 const DrillModePage = () => {
 
-    const [showResult, setShowResult] = useState(false)
-    const [listOfWords, setListOfWords] = useState([])
+    const [listOfWords, setListOfWords] = useState("")
+    const [userInput, setUserInput] = useState("")
+    const [indicator, setIndicator] = useState(false)
+
+    const sampleRef = useRef()
+    const sampleCounter = useRef(16)
+    const currentLetter = useRef("")
+    const anotherCounter = useRef(0)
+
+    let isFalseDetected = false
 
     const location = useLocation()
 
@@ -20,6 +29,7 @@ const DrillModePage = () => {
                 url: `http://localhost:5000/api/words/drillMode/${location.state.diff}`
             })
             .then((res) => {
+                currentLetter.current = res.data.words[0]
                 setListOfWords(res.data.words)
             })
         }
@@ -27,39 +37,57 @@ const DrillModePage = () => {
         onPageLoad()
     }, [])
 
-    useEffect(() => {
-        if(listOfWords.length > 0){
-            console.log(listOfWords)
+    useKey((ev, key) => {
+        if(key === currentLetter.current){
+            setIndicator(false)
+            anotherCounter.current += 1
+            
+            sampleRef.current.style.transform = `translateX(-${sampleCounter.current}px)`
+            sampleCounter.current += 16
+            
+            currentLetter.current = listOfWords[anotherCounter.current]
+            setUserInput((prev) => prev + key)
         }
-    }, [listOfWords])
+        else{
+            setIndicator(true)
+        }
+    })
 
     return (
         <div className="drill-mode-container">
-            <div className="text-visualization">
-                <span>Text Visualization Section</span>
+            <div className="word-wrapper">
+                <p ref={sampleRef} className="animated-text-container">
+                    {listOfWords.split("").map((item, index) => {
+
+                        if(userInput.charAt(index) === item && !isFalseDetected){
+                            return <span className="word-true" key={index}>{item}</span>
+                        }
+                        else if(anotherCounter.current === index){
+                            if(indicator){
+                                return(
+                                    <span className="word-false current" key={index}>
+                                        {item === " " ? 
+                                        <span>&nbsp;</span>
+                                        :
+                                        item
+                                        }    
+                                    </span>
+                                )
+                            }
+
+                            return <span className="current" key={index}>{item}</span>
+                        }
+
+                        return(
+                            <span key={index}>{item}</span>
+                        )
+                    })}
+                </p>
+                <div className="pointer"></div>
             </div>
-            <p>Left Hand, Index Finger</p>
-            <div className="keyboard-visualization">
-                <span>Keyboard Visualization Section</span>
+            <div className="text-hint-container">
+                <span>{(currentLetter.current !== "" && currentLetter.current !== undefined) && fingersMappingData[currentLetter.current.toLowerCase()].text}</span>
             </div>
-            <Modal show={showResult} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Header style={{display: "flex", justifyContent: "center"}}>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        User Performance Result
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <h4>Typing Speed</h4>
-                    <p>70 Words per Minute</p>
-                    <hr className="my-4" />
-                    <h4>Typing Accuracy</h4>
-                    <p>97.5 Percent</p>
-                </Modal.Body>
-                <Modal.Footer style={{display: "flex", justifyContent: "center"}}>
-                    <Button onClick={() => {setShowResult(false)}} style={{width: "30%"}}>Return to Practice Page</Button>
-                    <Button onClick={() => {setShowResult(false)}} style={{width: "30%"}}>Return to Main Menu</Button>
-                </Modal.Footer>
-            </Modal>
         </div>
     )
 }
