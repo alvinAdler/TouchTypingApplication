@@ -3,7 +3,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     border: 3px solid red;
 }
 
@@ -102,4 +102,26 @@
 .text-hint-container{
     border: 3px solid blue;
     text-align: center;
+}
+
+.keyboard-wrapper{
+    width: 60rem;
+    border: 3px solid orange;
+    display: block;
+}
+
+.keyboard-row{
+    border: 3px solid green;
+    margin: 2px 0;
+}
+
+.key{
+    display: inline-block;
+    border: 3px solid purple;
+    padding: 0.25rem;
+    text-align: center;
+}
+
+.char{
+    width: 3rem;
 }

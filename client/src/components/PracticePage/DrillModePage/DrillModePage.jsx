@@ -88,6 +88,81 @@ const DrillModePage = () => {
             <div className="text-hint-container">
                 <span>{(currentLetter.current !== "" && currentLetter.current !== undefined) && fingersMappingData[currentLetter.current.toLowerCase()].text}</span>
             </div>
+            <div className="keyboard-wrapper">
+                <div className="keyboard-row number-row">
+                    <span className="key char">`</span>
+                    <span className="key char">1</span>
+                    <span className="key char">2</span>
+                    <span className="key char">3</span>
+                    <span className="key char">4</span>
+                    <span className="key char">5</span>
+                    <span className="key char">6</span>
+                    <span className="key char">7</span>
+                    <span className="key char">8</span>
+                    <span className="key char">9</span>
+                    <span className="key char">0</span>
+                    <span className="key char">-</span>
+                    <span className="key char">=</span>
+                    <span className="key">Backspace</span>
+                </div>
+                <div className="keyboard-row top-row">
+                    <span className="key">Tab</span>
+                    <span className="key char">q</span>
+                    <span className="key char">w</span>
+                    <span className="key char">e</span>
+                    <span className="key char">r</span>
+                    <span className="key char">t</span>
+                    <span className="key char">y</span>
+                    <span className="key char">u</span>
+                    <span className="key char">i</span>
+                    <span className="key char">o</span>
+                    <span className="key char">p</span>
+                    <span className="key char">[</span>
+                    <span className="key char">]</span>
+                    <span className="key char">\</span>
+                </div>
+                <div className="keyboard-row home-row">
+                    <span className="key">CAPS</span>
+                    <span className="key char">a</span>
+                    <span className="key char">s</span>
+                    <span className="key char">d</span>
+                    <span className="key char">f</span>
+                    <span className="key char">g</span>
+                    <span className="key char">h</span>
+                    <span className="key char">i</span>
+                    <span className="key char">j</span>
+                    <span className="key char">k</span>
+                    <span className="key char">l</span>
+                    <span className="key char">;</span>
+                    <span className="key char">'</span>
+                    <span className="key">Ent</span>
+                </div>
+                <div className="keyboard-row bottom-row">
+                    <span className="key">Shift</span>
+                    <span className="key char">z</span>
+                    <span className="key char">x</span>
+                    <span className="key char">c</span>
+                    <span className="key char">v</span>
+                    <span className="key char">b</span>
+                    <span className="key char">n</span>
+                    <span className="key char">m</span>
+                    <span className="key char">,</span>
+                    <span className="key char">.</span>
+                    <span className="key char">/</span>
+                    <span className="key">Shift</span>
+                </div>
+                <div className="keyboard-row utility-row">
+                    <span className="key">Ctrl</span>
+                    <span className="key">Fn</span>
+                    <span className="key">Win</span>
+                    <span className="key">Alt</span>
+                    <span className="key">SPACE</span>
+                    <span className="key">Alt</span>
+                    <span className="key">Fn</span>
+                    <span className="key">Win</span>
+                    <span className="key">Ctrl</span>
+                </div>
+            </div>
         </div>
     )
 }
