@@ -95,7 +95,7 @@ const DrillModePage = () => {
                         <div key={indexOuter} className="keyboard-row utility-row">
                             {keysArrary[indexOuter].map((item, indexInner) => {
                                 return(
-                                    <span key={indexInner} className={`${fingersMappingData[item].keyClassName} ${item === currentLetter.current && "key-image-current"}`}>{item}</span>
+                                    <span key={indexInner} className={`${fingersMappingData[item].keyClassName} ${item === currentLetter.current && `key-image-current ${fingersMappingData[item].highlighted}`}`}>{item}</span>
                                 )
                             })}
                         </div>

@@ -4,6 +4,17 @@
     --key-yellow: #FFF47D;
     --key-green: #C2F784;
     --key-blue: #84B4F7;
+    --key-util: #d0d6d2;
+
+    --highlighted-red: #eb4034;
+    --highlighted-orange: #eba234;
+    --highlighted-yellow: #f3fa1e;
+    --highlighted-green: #34eb59;
+    --highlighted-blue: #2285e4;
+    --highlighted-util: #a6a6a6;
+
+    --slim-white: #F2F2F2;
+    --slim-black: #2b2b2b;
 }
 
 *, *::before, *::after{

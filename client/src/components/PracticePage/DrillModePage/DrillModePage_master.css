@@ -106,8 +106,10 @@
 
 .keyboard-wrapper{
     width: 45rem;
-    border: 3px solid orange;
     display: block;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background-color: var(--slim-white);
 }
 
 .keyboard-row{
@@ -119,7 +121,6 @@
 
 .key{
     display: inline-block;
-    /* border: 3px solid purple; */
     margin: 1px 3px;
     padding: 0.25rem;
     text-align: center;
@@ -130,6 +131,7 @@
 
 .size-sm{
     width: 2.8rem;
+    height: 2.3rem;
     /* width: 7.14%; */
 }
 
@@ -147,7 +149,8 @@
 }
 
 .size-util{
-    width: 3.5rem;
+    width: 3rem;
+    height: 2.3rem;
 }
 
 .space{
@@ -156,34 +159,58 @@
 
 .little-finger-key{
     background-color: var(--key-red);
-    border: 3px solid var(--key-red);
+    border: 1px solid var(--slim-black);
 }
 
 .ring-finger-key{
     background-color: var(--key-orange);
-    border: 3px solid var(--key-orange);
+    border: 1px solid var(--slim-black);
 }
 
 .middle-finger-key{
     background-color: var(--key-yellow);
-    border: 3px solid var(--key-yellow);
+    border: 1px solid var(--slim-black);
 }
 
 .index-left-key{
     background-color: var(--key-green);
-    border: 3px solid var(--key-green);
+    border: 1px solid var(--slim-black);
 }
 
 .index-right-key{
     background-color: var(--key-blue);
-    border: 3px solid var(--key-blue);
+    border: 1px solid var(--slim-black);
 }
 
 .util-key{
-    background-color: #f2f2f2;
+    background-color: var(--key-util);
 }
 
 .key-image-current{
-    background-color: #2b2b2b;
-    color: #f2f2f2;
+    color: white;
+    font-weight: bold;
+}
+
+.highlighted-little-finger{
+    background-color: var(--highlighted-red);
+}
+
+.highlighted-ring-finger{
+    background-color: var(--highlighted-orange);
+}
+
+.highlighted-middle-finger{
+    background-color: var(--highlighted-yellow);
+}
+
+.highlighted-index-left{
+    background-color: var(--highlighted-green);
+}
+
+.highlighted-index-right{
+    background-color: var(--highlighted-blue);
+}
+
+.highlighted-util{
+    background-color: var(--highlighted-util);
 }
