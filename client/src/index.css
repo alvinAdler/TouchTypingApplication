@@ -1,3 +1,11 @@
+:root{
+    --key-red: #F6A9A9;
+    --key-orange: #FFBF86;
+    --key-yellow: #FFF47D;
+    --key-green: #C2F784;
+    --key-blue: #84B4F7;
+}
+
 *, *::before, *::after{
     margin: 0;
     padding: 0;
