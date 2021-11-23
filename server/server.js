@@ -6,6 +6,7 @@ const cors = require("cors")
 
 const sampleWordsRouter = require("./routes/sampleWordsRoutes")
 const wordsRouter = require("./routes/wordsRoutes")
+const usersRouter = require("./routes/usersRoutes")
 
 const app = express()
 
@@ -20,6 +21,7 @@ db.once("open", () => console.log("Connected to Databse"))
 
 app.use("/sampleWords", sampleWordsRouter)
 app.use("/api/words", wordsRouter)
+app.use("/users", usersRouter)
 
 
 app.listen(5000, () => console.log("Server started"))
