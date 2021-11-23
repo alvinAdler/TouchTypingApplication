@@ -1,20 +1,69 @@
 import React, {useState} from 'react'
+import axios from 'axios'
 
 import './RegisterPage_master.css'
 
 const RegisterPage = () => {
+
+    const [userInput, setUserInput] = useState({
+        username: "",
+        password: "",
+        confirmPassword: ""
+    })
+
+    const registerUser = (ev) => {
+        ev.preventDefault()
+
+        if(userInput.password !== userInput.confirmPassword){
+            console.log("Password does not match. Please re-check")
+            return
+        }
+
+        axios({
+            method: "POST",
+            url: "http://localhost:5000/users/register",
+            headers: {
+                "content-type": "application/json"
+            },
+            data: {
+                username: userInput.username,
+                password: userInput.password
+            }
+        })
+        .then((res) => {
+            if(res.status === 201 && res.data.isRegistered){
+                console.log("User has been successfully registered")
+            }
+        })
+        .catch((err) => {
+            console.log(err.response)
+        })
+    }
     
     return (
         <div className="register-container">
-            <form className="register-form">
+            <form className="register-form" onSubmit={registerUser}>
                 <h2 className="full-span" style={{textAlign: "center"}}>Register</h2>
                 <hr className="my-4 full-span" />
-                <input className="login-input" type="text" placeholder="Firstname"/>
-                <input className="login-input" type="text" placeholder="Lastname"/>
-                <input className="login-input full-span" type="text" placeholder="Username"/>
-                <input className="login-input" type="text" placeholder="Password"/>
-                <input className="login-input" type="text" placeholder="Confirm Password"/>
-                <button className="btn btn-primary full-span">Register</button>
+                <input 
+                className="login-input full-span" 
+                type="text" 
+                placeholder="Username"
+                onChange={(ev) => setUserInput({...userInput, username: ev.target.value})}
+                />
+                <input 
+                className="login-input" 
+                type="password" 
+                placeholder="Password"
+                onChange={(ev) => setUserInput({...userInput, password: ev.target.value})}
+                />
+                <input 
+                className="login-input" 
+                type="password" 
+                placeholder="Confirm Password"
+                onChange={(ev) => setUserInput({...userInput, confirmPassword: ev.target.value})}
+                />
+                <button type="submit" className="btn btn-primary full-span">Register</button>
             </form>
         </div>
     )

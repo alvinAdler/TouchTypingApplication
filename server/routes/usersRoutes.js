@@ -10,7 +10,8 @@ router.post("/login", async (req, res) => {
     const user = await UsersModel.findOne({username: req.body.username})
     if(user == null){
         return res.status(400).json({
-            message: "Can not find user"
+            message: "Can not find user",
+            isLoggedIn: false
         })
     }
 
@@ -18,11 +19,16 @@ router.post("/login", async (req, res) => {
         if(await bcrypt.compare(req.body.password, user.password)){
             return res.status(200).json({
                 message: "Logged in",
-                user: user
+                user: {
+                    id: user._id,
+                    username: user.username
+                },
+                isLoggedIn: true
             })
         }else{
             return res.status(400).json({
-                message: "Credentials incorrect"
+                message: "Credentials incorrect",
+                isLoggedIn: false
             })
         }
     }
@@ -63,6 +69,7 @@ router.post("/register", async (req, res) => {
             }
 
             res.status(201).json({
+                isRegistered: true,
                 message: "Successfully registered user",
                 user: doc
             })
