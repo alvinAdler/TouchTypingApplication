@@ -17,7 +17,7 @@ const tokenAuthenticationMWare = (req, res, next) => {
             })
         }
 
-        req.user = user
+        req.user = {username: user.username, _id: user._id}
         next()
     })
 

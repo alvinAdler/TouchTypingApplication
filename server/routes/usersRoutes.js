@@ -10,6 +10,7 @@ const tokenAuthenticationMWare = require("../utilities/tokenAuthenticationMWare"
 
 router.get("/getUsers", tokenAuthenticationMWare, (req, res) => {
     res.status(200).json({
+        status: true,
         message: "Yeay you have made it!",
         user: req.user
     })
