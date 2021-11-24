@@ -21,7 +21,7 @@ const RegisterPage = () => {
 
         axios({
             method: "POST",
-            url: "http://localhost:5000/users/register",
+            url: "http://localhost:5500/register",
             headers: {
                 "content-type": "application/json"
             },

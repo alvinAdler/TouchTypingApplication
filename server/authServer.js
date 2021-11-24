@@ -11,7 +11,9 @@ const RefreshTokensModel = require("./models/refreshTokensModel")
 
 const app = express()
 
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:3000"
+}))
 app.use(express.json())
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -208,5 +210,11 @@ app.post("/register", async (req, res) => {
     }
 })
 
+app.get("/sample", (req, res) => {
+    res.status(200).json({
+        message: "Sample request received"
+    })
+})
 
-app.listen(6000, () => console.log("Server started"))
+
+app.listen(5500, () => console.log("Server started"))

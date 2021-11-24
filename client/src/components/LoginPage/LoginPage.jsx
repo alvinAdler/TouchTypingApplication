@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 import './LoginPage_master.css'
 
@@ -15,7 +16,7 @@ const LoginPage = () => {
 
         axios({
             method: "POST",
-            url: "http://localhost:5000/users/login",
+            url: "http://localhost:5500/login",
             headers: {
                 'content-type': 'application/json'
             },
@@ -28,7 +29,27 @@ const LoginPage = () => {
             console.log(res.data)
             if(res.status === 200 && res.data.isLoggedIn === true){
                 console.log("Successfully logged in")
+
+                Cookies.set("authorToken", res.data.authToken)
+                Cookies.set("refreshToken", res.data.refreshToken)
             }
+        })
+        .catch((err) => {
+            console.log(err.response)
+        })
+    }
+
+    const sampleRequest = () => {
+        axios({
+            method: "GET",
+            url: "http://localhost:5000/users/getUsers",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": `Bearer ${Cookies.get("authorToken")}`
+            }
+        })
+        .then((res) => {
+            console.log(res.data)
         })
         .catch((err) => {
             console.log(err.response)
@@ -51,6 +72,7 @@ const LoginPage = () => {
                 onChange = {(ev) => setUserInput({...userInput, password: ev.target.value})}
                 />
                 <button type="submit" className="btn btn-primary">Login</button>
+                <button type="button" className="btn btn-primary" onClick={sampleRequest}>Sample</button>
             </form>
         </div>
     )
