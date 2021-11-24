@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import './LoginPage_master.css'
+
+import AuthContext from '../context/AuthContext'
 
 const LoginPage = () => {
 
@@ -10,6 +13,9 @@ const LoginPage = () => {
         username: "",
         password: ""
     })
+
+    const history = useHistory()
+    const authorize = useContext(AuthContext)
 
     const logUserIn = (ev) => {
         ev.preventDefault()
@@ -26,16 +32,18 @@ const LoginPage = () => {
             }
         })
         .then((res) => {
-            console.log(res.data)
             if(res.status === 200 && res.data.isLoggedIn === true){
                 console.log("Successfully logged in")
 
                 Cookies.set("authorToken", res.data.authToken)
                 Cookies.set("refreshToken", res.data.refreshToken)
+
+                authorize.setAuth(true)
+                history.push("/")
             }
         })
         .catch((err) => {
-            console.log(err.response)
+            console.log(err)
         })
     }
 

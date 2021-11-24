@@ -7,6 +7,7 @@ import './PracticePage_master.css'
 import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBody'
 import DrillModePage from './DrillModePage/DrillModePage'
 import GameModePage from './GameModePage/GameModePage'
+import ProtectedRoute from '../UtilityComponents/ProtectedRoute/ProtectedRoute'
 
 const PracticePage = () => {
 
@@ -84,8 +85,11 @@ const PracticePage = () => {
                         <button className="btn-go btn btn-primary" onClick={preparePageChange}>Go</button>
                     </>
                 )}/>
-                <Route path={`${routeMatch.path}/drillMode`} render={() => <DrillModePage/>}/>
-                <Route path={`${routeMatch.path}/gameMode`} render={() => <GameModePage/>}/>
+                {/* <Route path={`${routeMatch.path}/drillMode`} render={() => <DrillModePage/>}/>
+                <Route path={`${routeMatch.path}/gameMode`} render={() => <GameModePage/>}/> */}
+                
+                <ProtectedRoute path={`${routeMatch.path}/drillMode`} component={DrillModePage}/>
+                <ProtectedRoute path={`${routeMatch.path}/drillMode`} component={GameModePage}/>
             </Switch>
         </div>
     )
