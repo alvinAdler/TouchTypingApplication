@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
 import { Carousel } from 'react-bootstrap'
-import swal from 'sweetalert2'
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
+import axios from 'axios'
 
 import './App.css';
 
@@ -15,6 +15,7 @@ import UserPerformancePage from './components/UserPerformancePage/UserPerformanc
 import TutorialPage from './components/TutorialPage/TutorialPage';
 import ProtectedRoute from './components/UtilityComponents/ProtectedRoute/ProtectedRoute';
 import ProtectedLogin from './components/UtilityComponents/ProtectedRoute/ProtectedLogin';
+import { checkToken } from './components/Utilities/functions'
 
 const App = () => {
 
@@ -22,12 +23,52 @@ const App = () => {
 
 	const history = useHistory()
 
-	const changePageTo = (pageDir) => {
+	// useEffect(() => {
+    //     const onPageMount = () => {
 
-		if(Cookies.get("authorToken") === undefined && Cookies.get("refreshToken") === undefined){
-			return console.log("User has not logged in")
+	// 		if(Cookies.get("authorToken") === undefined && Cookies.get("refreshToken") === undefined){
+	// 			console.log("User has not logged in")
+	// 			return 
+	// 		}
+
+    //         axios({
+    //             method: "POST",
+	// 			url: "http://localhost:5500/verify",
+	// 			headers: {
+	// 				"Authorization": `Bearer ${Cookies.get("authorToken")}`
+	// 			}
+    //         })
+	// 		.then((res) => {
+	// 			if(res.status === 200 && res.data.status){
+	// 				console.log(res.data.message)
+	// 				setAuth(true)
+	// 			}
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err.response)
+	// 		})
+    //     }
+
+    //     onPageMount()
+    // }, [])
+
+	const changePageTo = async (pageDir) => {
+
+		try{
+			const response = await checkToken()
+
+			if(!response.data.status){
+				console.log(response.data.message)
+				console.log("User has not logged in change page")
+				return
+			}
+		}	
+		catch(err){
+			console.log(err.message)
+			return
 		}
 
+		console.log("I reached here")
 		history.push(pageDir)
 	}
 
@@ -81,13 +122,15 @@ const App = () => {
 							</div>
 						</Route>
 
-						{/* <Route path="/login" render={() => <LoginPage/>}/>
-						<Route path="/register" render={() => <RegisterPage/>}/>
-						<Route path="/practice" render={() => <PracticePage/>}/>
-						<Route path="/userPerformance" render={() => <UserPerformancePage/>}/>
-						<Route path="/tutorial" render={() => <TutorialPage/>}/> */}
+						<Route path="/login" exact render={() => <LoginPage/>}/>
+						{/*
+						<Route path="/register" exact render={() => <RegisterPage/>}/>
+						<Route path="/practice" exact render={() => <PracticePage/>}/>
+						<Route path="/userPerformance" exact render={() => <UserPerformancePage/>}/>
+						<Route path="/tutorial" exact render={() => <TutorialPage/>}/> 
+						*/}
 
-						<ProtectedLogin path="/login" component={LoginPage}/>
+						{/* <ProtectedLogin path="/login" component={LoginPage}/> */}
 						<ProtectedRoute path="/register" component={RegisterPage}/>
 						<ProtectedRoute path="/practice" component={PracticePage}/>
 						<ProtectedRoute path="/userPerformance" component={UserPerformancePage}/>

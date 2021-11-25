@@ -85,11 +85,12 @@ const PracticePage = () => {
                         <button className="btn-go btn btn-primary" onClick={preparePageChange}>Go</button>
                     </>
                 )}/>
+
                 {/* <Route path={`${routeMatch.path}/drillMode`} render={() => <DrillModePage/>}/>
                 <Route path={`${routeMatch.path}/gameMode`} render={() => <GameModePage/>}/> */}
                 
                 <ProtectedRoute path={`${routeMatch.path}/drillMode`} component={DrillModePage}/>
-                <ProtectedRoute path={`${routeMatch.path}/drillMode`} component={GameModePage}/>
+                <ProtectedRoute path={`${routeMatch.path}/gameMode`} component={GameModePage}/>
             </Switch>
         </div>
     )

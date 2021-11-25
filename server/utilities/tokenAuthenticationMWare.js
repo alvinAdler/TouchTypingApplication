@@ -6,6 +6,7 @@ const tokenAuthenticationMWare = (req, res, next) => {
 
     if(token == null){
         return res.status(401).json({
+            status: false,
             message: "No access. You don't provide a token"
         })
     }
@@ -13,6 +14,7 @@ const tokenAuthenticationMWare = (req, res, next) => {
     jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
         if(err){
             return res.status(403).json({
+                status: false,
                 message: "No access. Your token is invalid"
             })
         }

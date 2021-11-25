@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken")
 
 const UsersModel = require("./models/usersModel")
 const RefreshTokensModel = require("./models/refreshTokensModel")
+const tokenAuthenticationMWare = require("./utilities/tokenAuthenticationMWare")
 
 const app = express()
 
@@ -210,9 +211,10 @@ app.post("/register", async (req, res) => {
     }
 })
 
-app.get("/sample", (req, res) => {
-    res.status(200).json({
-        message: "Sample request received"
+app.post("/verify", tokenAuthenticationMWare, (req, res) => {
+    return res.status(200).json({
+        status: true,
+        message: "Token is still valid"
     })
 })
 

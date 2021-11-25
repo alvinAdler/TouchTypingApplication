@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -47,23 +47,6 @@ const LoginPage = () => {
         })
     }
 
-    const sampleRequest = () => {
-        axios({
-            method: "GET",
-            url: "http://localhost:5000/users/getUsers",
-            headers: {
-                "Content-type": "application/json",
-                "Authorization": `Bearer ${Cookies.get("authorToken")}`
-            }
-        })
-        .then((res) => {
-            console.log(res.data)
-        })
-        .catch((err) => {
-            console.log(err.response)
-        })
-    }
-
     return (
         <div className="login-container">
             <form className="login-form" onSubmit={logUserIn}>
@@ -80,7 +63,6 @@ const LoginPage = () => {
                 onChange = {(ev) => setUserInput({...userInput, password: ev.target.value})}
                 />
                 <button type="submit" className="btn btn-primary">Login</button>
-                <button type="button" className="btn btn-primary" onClick={sampleRequest}>Sample</button>
             </form>
         </div>
     )

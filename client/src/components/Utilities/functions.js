@@ -1,3 +1,6 @@
+import Cookies from 'js-cookie'
+import axios from 'axios'
+
 const partition = (partArr, left, right) => {
     let pivot = partArr[right]
     let leftBorder = left - 1
@@ -31,4 +34,25 @@ export const quickSort = (arr, left, right) => {
 
 export const randomInteger = (lowerBound, upperBound) => {
     return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound
+}
+
+export const checkToken = async () => {
+
+    if(Cookies.get("authorToken") === undefined && Cookies.get("refreshToken") === undefined){
+        console.log("User has not logged in")
+        return {
+            data: {
+                status: false,
+                message: "No token provided"
+            }
+        }
+    }
+
+    return await axios({
+        method: "POST",
+        url: "http://localhost:5500/verify",
+        headers: {
+            "Authorization": `Bearer ${Cookies.get("authorToken")}`
+        }
+    })
 }
