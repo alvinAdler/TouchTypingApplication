@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie'
-import axios from 'axios'
 
 const partition = (partArr, left, right) => {
     let pivot = partArr[right]
@@ -36,7 +35,7 @@ export const randomInteger = (lowerBound, upperBound) => {
     return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound
 }
 
-export const checkToken = async () => {
+export const checkToken = () => {
 
     if(Cookies.get("authorToken") === undefined && Cookies.get("refreshToken") === undefined){
         console.log("User has not logged in")
@@ -48,11 +47,27 @@ export const checkToken = async () => {
         }
     }
 
-    return await axios({
-        method: "POST",
-        url: "http://localhost:5500/verify",
-        headers: {
-            "Authorization": `Bearer ${Cookies.get("authorToken")}`
+    return {
+        data: {
+            status: true,
+            message: "Sucess"
         }
-    })
+    }
+}
+
+export const deleteCookies = () => {
+    if(checkToken().data.status){
+        Object.keys(Cookies.get()).forEach((cookieName) => {
+            Cookies.remove(cookieName)
+        })
+        return {
+            status: true,
+            message: "Cookies have been deleted"
+        }
+    }
+
+    return {
+        status: true,
+        message: "Cookies does not exist"
+    }
 }

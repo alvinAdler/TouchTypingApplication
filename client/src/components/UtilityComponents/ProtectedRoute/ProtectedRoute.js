@@ -8,25 +8,9 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
 
     const authorize = useContext(AuthContext)
 
-    const [authenticated, setAuthenticated] = useState(false);
-
-    useEffect(() => {
-        console.log('Ini UseEffect')
-
-        const authentication = async () => {
-            const response = await isAuthenticated();
-
-            console.log({response});
-
-            setAuthenticated(response);
-        }
-        
-        authentication();
-    })
-
-    const isAuthenticated = async () => {
+    const isAuthenticated = () => {
         try{
-			const response = await checkToken()
+			const response = checkToken()
             console.log(response)
 			if(!response.data.status){
                 console.log("The token is invalid")
@@ -36,9 +20,6 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
             }
 		}	
 		catch(err){
-			// console.log(err.message)
-            // console.log("here")
-            console.log("loiasjdfiljsda;f;klj")
             console.log(err.message)
             return false
 		}
@@ -49,13 +30,10 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
             {...rest}
             exact
             render = { () =>  {
-                // console.log(aisAuthenticated())
-                // const result = isAuthenticated();
-
-                console.log({authenticated})
+                const result = isAuthenticated();
 
                 return(
-                        authenticated ? 
+                    result ? 
                     <Component/>
                     :
                     <Redirect to="/login"/>
