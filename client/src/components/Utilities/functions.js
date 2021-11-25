@@ -134,3 +134,10 @@ export const modifyUserCookie = (dataName, currentData) => {
 export const getUserCookie = () => {
     return JSON.parse(Cookies.get("appData"))
 }
+
+export const capitalizeString = (currentString) => {
+    if(currentString === ""){
+        return ""
+    }
+    return currentString.charAt(0).toUpperCase() + currentString.slice(1)
+}

@@ -4,14 +4,14 @@ const jwt = require("jsonwebtoken")
 
 const router = express.Router()
 
-const UsersModel = require("../models/usersModel")
+// const UsersModel = require("../models/usersModel")
 const tokenAuthenticationMWare = require("../utilities/tokenAuthenticationMWare")
 
 
-router.get("/getUsers", tokenAuthenticationMWare, (req, res) => {
+router.get("/getUserIdentity", tokenAuthenticationMWare, (req, res) => {
     res.status(200).json({
         status: true,
-        message: "Yeay you have made it!",
+        message: "User has been fetched successfully",
         user: req.user
     })
 })

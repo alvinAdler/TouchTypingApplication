@@ -3,6 +3,7 @@ import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import { Carousel } from 'react-bootstrap'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 import './App.css';
 
@@ -63,17 +64,25 @@ const App = () => {
 			const response = checkToken()
 
 			if(!response.data.status){
-				console.log(response.data.message)
-				console.log("User has not logged in change page")
+				swal.fire({
+					icon: "error",
+					title: "An error has occurred!",
+					text: "Please login to access the main features",
+					confirmButtonColor: "#2285e4"
+				})
 				return
 			}
 		}	
 		catch(err){
 			console.log(err.message)
+			swal.fire({
+				icon: "error",
+				title: "An error has occurred!",
+				text: `${err.message}`
+			})
 			return
 		}
 
-		console.log("I reached here")
 		history.push(pageDir)
 	}
 
@@ -125,9 +134,6 @@ const App = () => {
 								<button type="button" onClick={() => changePageTo("/userPerformance")}>User Performance Page</button>
 								<button type="button" onClick={() => changePageTo("/tutorial")}>Tutorial Page</button>
 							</div>
-							<button className="btn btn-primary" onClick={() => modifyUserCookie("username", "alvin")}>Sample 1</button>
-							<button className="btn btn-primary" onClick={() => modifyUserCookie("password", "adler")}>Sample 2</button>
-							<button className="btn btn-success" onClick={() => console.log(JSON.parse(Cookies.get("appData")))}>Print</button>
 						</Route>
 
 						<ProtectedLogin path="/login" component={LoginPage}/>
