@@ -1,4 +1,7 @@
+import { useContext } from 'react'
 import Cookies from 'js-cookie'
+import axios from 'axios'
+import swal from 'sweetalert2'
 
 const partition = (partArr, left, right) => {
     let pivot = partArr[right]
@@ -70,4 +73,44 @@ export const deleteCookies = () => {
         status: true,
         message: "Cookies does not exist"
     }
+}
+
+export const markLastVisitedPath = (currentPath) => {
+    Cookies.set("lastPath", currentPath)
+}
+
+export const logoutUser = (authorize) => {
+    swal.fire({
+        icon: "question",
+        title: "Confirmation",
+        text: "Are you sure to logout?",
+        cancelButtonColor: "#eb4034",
+        showCancelButton: true,
+        confirmButtonColor: "#2285e4",
+        confirmButtonText: "Yes"
+    })
+    .then((res) => {
+        if(res.isConfirmed){
+            axios({
+                method: "POST",
+                url: "http://localhost:5500/logout",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                data: {
+                    refreshToken: Cookies.get("refreshToken")
+                }
+            })
+            .then((res) => {
+                if(res.data.status){
+                    deleteCookies()
+                    authorize.setAuth(false)
+                    window.location.reload()
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    })
 }

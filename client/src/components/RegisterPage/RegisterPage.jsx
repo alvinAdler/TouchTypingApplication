@@ -1,7 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 import './RegisterPage_master.css'
+
+import { markLastVisitedPath } from '../Utilities/functions'
 
 const RegisterPage = () => {
 
@@ -10,6 +13,12 @@ const RegisterPage = () => {
         password: "",
         confirmPassword: ""
     })
+
+    const location = useLocation()
+
+    useEffect(() => {
+        markLastVisitedPath(location.pathname)
+    }, [])
 
     const registerUser = (ev) => {
         ev.preventDefault()

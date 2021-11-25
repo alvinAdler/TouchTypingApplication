@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react'
-import {useLocation} from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 import './DrillModePage_master.css'
@@ -7,6 +7,7 @@ import './DrillModePage_master.css'
 import useKey from '../../Utilities/useKey'
 import fingersMappingData from '../../Utilities/fingersMappingData'
 import keysArrary from '../../Utilities/keysArray'
+import { markLastVisitedPath } from '../../Utilities/functions'
 
 const DrillModePage = () => {
 
@@ -25,6 +26,9 @@ const DrillModePage = () => {
 
     useEffect(() => {
         const onPageLoad = () => {
+
+            markLastVisitedPath(location.pathname)
+
             axios({
                 method: "GET",
                 url: `http://localhost:5000/api/words/drillMode/${location.state.diff}`

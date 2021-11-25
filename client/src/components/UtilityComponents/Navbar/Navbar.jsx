@@ -5,10 +5,15 @@ import { Navbar as NavbarReact, Container, Nav } from 'react-bootstrap'
 import './Navbar_master.css'
 
 import AuthContext from '../../context/AuthContext'
+import { logoutUser } from '../../Utilities/functions'
 
 const Navbar = () => {
 
 	const authorize = useContext(AuthContext)
+
+	const executeLogout = () => {
+		logoutUser(authorize)
+	}
 
     return (
 		<NavbarReact className="main-navbar" bg="light" expand="lg">
@@ -19,7 +24,7 @@ const Navbar = () => {
 				</div>
 				<Nav>
 					{authorize.auth ?
-					<Link to="/login" className="plain-link">Logout</Link>
+					<span className="plain-link" onClick={executeLogout}>Logout</span>
 					:
 					<Link to="/login" className="plain-link">Login</Link>
 					}

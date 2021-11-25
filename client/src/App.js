@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Route, Switch, useHistory } from 'react-router-dom'
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import { Carousel } from 'react-bootstrap'
+import Cookies from 'js-cookie'
+import axios from 'axios'
 
 import './App.css';
 
@@ -13,13 +15,47 @@ import UserPerformancePage from './components/UserPerformancePage/UserPerformanc
 import TutorialPage from './components/TutorialPage/TutorialPage';
 import ProtectedRoute from './components/UtilityComponents/ProtectedRoute/ProtectedRoute';
 import ProtectedLogin from './components/UtilityComponents/ProtectedRoute/ProtectedLogin';
-import { checkToken, deleteCookies } from './components/Utilities/functions'
+import { checkToken } from './components/Utilities/functions'
 
 const App = () => {
 
 	const [auth, setAuth] = useState(false)
 
 	const history = useHistory()
+	const location = useLocation()
+
+	useEffect(() => {
+        const onPageMount = () => {
+
+			if(Cookies.get("authorToken") === undefined && Cookies.get("refreshToken") === undefined){
+				console.log("User has not logged in")
+				return 
+			}
+
+            axios({
+                method: "POST",
+				url: "http://localhost:5500/verify",
+				headers: {
+					"Authorization": `Bearer ${Cookies.get("authorToken")}`
+				}
+            })
+			.then((res) => {
+				if(res.status === 200 && res.data.status){
+					console.log(res.data.message)
+					setAuth(true)
+
+					if(Cookies.get("lastPath") !== undefined && location.pathname !== "/"){
+						history.push(Cookies.get("lastPath"))
+					}
+				}
+			})
+			.catch((err) => {
+				console.log(err.response)
+			})
+        }
+
+        onPageMount()
+    }, [])
 
 	const changePageTo = (pageDir) => {
 
@@ -92,7 +128,7 @@ const App = () => {
 						</Route>
 
 						<ProtectedLogin path="/login" component={LoginPage}/>
-						<ProtectedRoute path="/register" component={RegisterPage}/>
+						<ProtectedLogin path="/register" component={RegisterPage}/>
 						<ProtectedRoute path="/practice" component={PracticePage}/>
 						<ProtectedRoute path="/userPerformance" component={UserPerformancePage}/>
 						<ProtectedRoute path="/tutorial" component={TutorialPage}/>

@@ -1,13 +1,20 @@
-import React, {useState} from 'react'
-import {AppBar, Tabs, Tab} from '@mui/material'
+import React, { useState, useEffect } from 'react'
+import { AppBar, Tabs, Tab } from '@mui/material'
+import { useLocation } from 'react-router-dom'
 
 import './UserPerformancePage_master.css'
 
 import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBody'
+import { markLastVisitedPath } from '../Utilities/functions'
 
 const UserPerformancePage = () => {
 
     const [currentTab, setCurrentTab] = useState(0)
+    const location = useLocation()
+
+    useEffect(() => {
+        markLastVisitedPath(location.pathname)
+    }, [])
 
     const handleTabChange = (ev, selectedTab) => {
         setCurrentTab(selectedTab)

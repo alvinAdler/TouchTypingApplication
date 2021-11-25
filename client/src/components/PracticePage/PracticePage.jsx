@@ -1,6 +1,6 @@
-import React, {useState, useContext} from 'react'
-import {AppBar, Tabs, Tab} from '@mui/material'
-import {Route, Switch, useRouteMatch, useHistory} from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { AppBar, Tabs, Tab } from '@mui/material'
+import { Route, Switch, useRouteMatch, useHistory, useLocation } from 'react-router-dom'
 
 import './PracticePage_master.css'
 
@@ -9,7 +9,9 @@ import DrillModePage from './DrillModePage/DrillModePage'
 import GameModePage from './GameModePage/GameModePage'
 import ProtectedRoute from '../UtilityComponents/ProtectedRoute/ProtectedRoute'
 
-const PracticePage = () => {
+import { markLastVisitedPath } from '../Utilities/functions'
+
+const PracticePage = (props) => {
 
     const [currentTab, setCurrentTab] = useState(0)
     const [selectedPractice, setSelectedPractice] = useState({
@@ -18,6 +20,11 @@ const PracticePage = () => {
     })
     const routeMatch = useRouteMatch()
     const history = useHistory()
+    const location = useLocation()
+
+    useEffect(() => {
+        markLastVisitedPath(location.pathname)
+    }, [])
 
     const handleTabChange = (event, selectedTab) => {
         setCurrentTab(selectedTab)
@@ -85,9 +92,6 @@ const PracticePage = () => {
                         <button className="btn-go btn btn-primary" onClick={preparePageChange}>Go</button>
                     </>
                 )}/>
-
-                {/* <Route path={`${routeMatch.path}/drillMode`} render={() => <DrillModePage/>}/>
-                <Route path={`${routeMatch.path}/gameMode`} render={() => <GameModePage/>}/> */}
                 
                 <ProtectedRoute path={`${routeMatch.path}/drillMode`} component={DrillModePage}/>
                 <ProtectedRoute path={`${routeMatch.path}/gameMode`} component={GameModePage}/>

@@ -1,8 +1,7 @@
-import React, {useState, useRef, useEffect, useContext} from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useLocation } from 'react-router-dom'
-import Cookies from 'js-cookie'
 
 import './GameModePage_master.css'
 
@@ -10,9 +9,9 @@ import Tank from '../../Utilities/classes/Tank'
 import Alien from '../../Utilities/classes/Alien'
 import AuthContext from '../../context/AuthContext'
 
-import {tankData, alienData, cannonBallData} from '../../Utilities/SpriteSheetData'
+import { tankData, alienData, cannonBallData } from '../../Utilities/SpriteSheetData'
 import { DIRS } from '../../Utilities/Dirs'
-import { randomInteger } from '../../Utilities/functions'
+import { randomInteger, markLastVisitedPath } from '../../Utilities/functions'
 
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
@@ -41,11 +40,11 @@ const GameModePage = () => {
     const userHealthCopy = useRef(3)
 
     const location = useLocation()
-    const authorize = useContext(AuthContext)
 
     useEffect(() => {
         const onPageLoad = () => {
 
+            markLastVisitedPath(location.pathname)
 
             mainCanvas.current.width = mainCanvas.current.offsetWidth
             mainCanvas.current.height = mainCanvas.current.offsetHeight

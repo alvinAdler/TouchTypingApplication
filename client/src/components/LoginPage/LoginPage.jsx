@@ -1,11 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
 import './LoginPage_master.css'
 
 import AuthContext from '../context/AuthContext'
+import { markLastVisitedPath } from '../Utilities/functions'
 
 const LoginPage = () => {
 
@@ -16,6 +17,11 @@ const LoginPage = () => {
 
     const history = useHistory()
     const authorize = useContext(AuthContext)
+    const location = useLocation()
+
+    // useEffect(() => {
+    //     markLastVisitedPath(location.pathname)
+    // }, [])
 
     const logUserIn = (ev) => {
         ev.preventDefault()
