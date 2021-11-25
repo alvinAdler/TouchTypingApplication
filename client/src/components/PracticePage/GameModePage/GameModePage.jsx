@@ -11,7 +11,7 @@ import AuthContext from '../../context/AuthContext'
 
 import { tankData, alienData, cannonBallData } from '../../Utilities/SpriteSheetData'
 import { DIRS } from '../../Utilities/Dirs'
-import { randomInteger, markLastVisitedPath } from '../../Utilities/functions'
+import { randomInteger, markLastVisitedPath, getUserCookie } from '../../Utilities/functions'
 
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
@@ -46,6 +46,8 @@ const GameModePage = () => {
 
             markLastVisitedPath(location.pathname)
 
+            console.log(getUserCookie())
+
             mainCanvas.current.width = mainCanvas.current.offsetWidth
             mainCanvas.current.height = mainCanvas.current.offsetHeight
 
@@ -64,7 +66,7 @@ const GameModePage = () => {
 
             axios({
                 method: "GET",
-                url: `http://localhost:5000/api/words/gameMode/${location.state.diff}`
+                url: `http://localhost:5000/api/words/gameMode/${getUserCookie().practice.selection}`
             })
             .then((res) => {
                 setListOfWords(res.data.words)
@@ -106,6 +108,8 @@ const GameModePage = () => {
         possibleCollision.current = []
         landedAliens.current = []
         alienHitCount.current = 30
+
+        setUserHealth(3)
     }
 
     const initSprites = () => {

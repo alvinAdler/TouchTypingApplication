@@ -114,3 +114,23 @@ export const logoutUser = (authorize) => {
         }
     })
 }
+
+export const modifyUserCookie = (dataName, currentData) => {
+    if(Cookies.get("appData") === undefined){
+        const userData = {}
+        userData[dataName] = currentData
+
+        Cookies.set("appData", JSON.stringify(userData))
+        return
+    }
+
+    const existingData = JSON.parse(Cookies.get("appData"))
+    
+    existingData[dataName] = currentData
+
+    Cookies.set("appData", JSON.stringify(existingData))
+}
+
+export const getUserCookie = () => {
+    return JSON.parse(Cookies.get("appData"))
+}

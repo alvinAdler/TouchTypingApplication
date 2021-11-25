@@ -9,7 +9,7 @@ import DrillModePage from './DrillModePage/DrillModePage'
 import GameModePage from './GameModePage/GameModePage'
 import ProtectedRoute from '../UtilityComponents/ProtectedRoute/ProtectedRoute'
 
-import { markLastVisitedPath } from '../Utilities/functions'
+import { markLastVisitedPath, modifyUserCookie } from '../Utilities/functions'
 
 const PracticePage = (props) => {
 
@@ -39,6 +39,9 @@ const PracticePage = (props) => {
     }
 
     const preparePageChange = () => {
+
+        modifyUserCookie("practice", selectedPractice)
+
         history.push({
             pathname: `${routeMatch.path}/${selectedPractice.mode}`,
             state: {

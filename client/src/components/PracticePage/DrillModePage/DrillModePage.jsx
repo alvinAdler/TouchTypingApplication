@@ -7,7 +7,7 @@ import './DrillModePage_master.css'
 import useKey from '../../Utilities/useKey'
 import fingersMappingData from '../../Utilities/fingersMappingData'
 import keysArrary from '../../Utilities/keysArray'
-import { markLastVisitedPath } from '../../Utilities/functions'
+import { markLastVisitedPath, getUserCookie } from '../../Utilities/functions'
 
 const DrillModePage = () => {
 
@@ -29,9 +29,11 @@ const DrillModePage = () => {
 
             markLastVisitedPath(location.pathname)
 
+            console.log(getUserCookie())
+
             axios({
                 method: "GET",
-                url: `http://localhost:5000/api/words/drillMode/${location.state.diff}`
+                url: `http://localhost:5000/api/words/drillMode/${getUserCookie().practice.selection}`
             })
             .then((res) => {
                 currentLetter.current = res.data.words[0]

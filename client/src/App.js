@@ -15,7 +15,7 @@ import UserPerformancePage from './components/UserPerformancePage/UserPerformanc
 import TutorialPage from './components/TutorialPage/TutorialPage';
 import ProtectedRoute from './components/UtilityComponents/ProtectedRoute/ProtectedRoute';
 import ProtectedLogin from './components/UtilityComponents/ProtectedRoute/ProtectedLogin';
-import { checkToken } from './components/Utilities/functions'
+import { checkToken, modifyUserCookie } from './components/Utilities/functions'
 
 const App = () => {
 
@@ -125,6 +125,9 @@ const App = () => {
 								<button type="button" onClick={() => changePageTo("/userPerformance")}>User Performance Page</button>
 								<button type="button" onClick={() => changePageTo("/tutorial")}>Tutorial Page</button>
 							</div>
+							<button className="btn btn-primary" onClick={() => modifyUserCookie("username", "alvin")}>Sample 1</button>
+							<button className="btn btn-primary" onClick={() => modifyUserCookie("password", "adler")}>Sample 2</button>
+							<button className="btn btn-success" onClick={() => console.log(JSON.parse(Cookies.get("appData")))}>Print</button>
 						</Route>
 
 						<ProtectedLogin path="/login" component={LoginPage}/>
