@@ -1,6 +1,6 @@
 .drill-mode-container{
 
-    --key-scale-width: 0.5rem;
+    --key-scale-width: 1.2rem;
 
     height: 100%;
     width: 100%;
@@ -108,7 +108,8 @@
 }
 
 .keyboard-wrapper{
-    width: clamp(45rem, 60vw, 65rem);
+    width: clamp(45rem, 70%, 70rem);
+    /* width: 53rem; */
     display: block;
     padding: 1.5rem;
     border-radius: 0.5rem;
