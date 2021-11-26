@@ -1,17 +1,31 @@
 :root{
-    --key-red: #F6A9A9;
+    /* --key-red: #F6A9A9;
     --key-orange: #FFBF86;
     --key-yellow: #FFF47D;
     --key-green: #C2F784;
     --key-blue: #84B4F7;
+    --key-util: #d0d6d2; */
+
+    --key-red: #f2c9c9;
+    --key-orange: #f2dec9;
+    --key-yellow: #f2f1c9;
+    --key-green: #c9f2cd;
+    --key-blue: #cac9f2;
     --key-util: #d0d6d2;
 
-    --highlighted-red: #eb4034;
+    /* --highlighted-red: #eb4034;
     --highlighted-orange: #eba234;
     --highlighted-yellow: #f3fa1e;
     --highlighted-green: #34eb59;
     --highlighted-blue: #2285e4;
-    --highlighted-util: #a6a6a6;
+    --highlighted-util: #a6a6a6 */
+    ;
+    --highlighted-red: #b32e2e;
+    --highlighted-orange: #b3792e;
+    --highlighted-yellow: #9ea600;
+    --highlighted-green: #2eb339;
+    --highlighted-blue: #2e46b3;
+    --highlighted-util: #454545;
 
     --slim-white: #F2F2F2;
     --slim-black: #2b2b2b;

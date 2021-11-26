@@ -141,3 +141,17 @@ export const capitalizeString = (currentString) => {
     }
     return currentString.charAt(0).toUpperCase() + currentString.slice(1)
 }
+
+export const countWord =  (word) => {
+    let result = Math.floor(word.length / 5)
+
+    return result % 5 >= 5 ? result + 1 : result
+}
+
+export const changeTimeFormat = (seconds) => {
+    return new Date(seconds * 1000).toISOString().substr(14, 5)
+}
+
+export const changeAccuracyFormat = (accuracy) => {
+    return `${accuracy}%`
+}

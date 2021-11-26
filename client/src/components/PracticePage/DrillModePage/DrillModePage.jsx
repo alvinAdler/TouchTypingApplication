@@ -7,18 +7,33 @@ import './DrillModePage_master.css'
 import useKey from '../../Utilities/useKey'
 import fingersMappingData from '../../Utilities/fingersMappingData'
 import keysArrary from '../../Utilities/keysArray'
-import { markLastVisitedPath, getUserCookie } from '../../Utilities/functions'
+import { 
+    markLastVisitedPath, 
+    getUserCookie, 
+    countWord, changeTimeFormat, 
+    changeAccuracyFormat 
+} from '../../Utilities/functions'
+
+const DEVELOPER_MODE = true
+const TIMER_INTERVAL = 1000 //ms
 
 const DrillModePage = () => {
 
     const [listOfWords, setListOfWords] = useState("")
     const [userInput, setUserInput] = useState("")
     const [indicator, setIndicator] = useState(false)
+    const [timer, setTimer] = useState(0)
 
     const sampleRef = useRef()
     const sampleCounter = useRef(16)
     const currentLetter = useRef("")
     const anotherCounter = useRef(0)
+    const interval = useRef()
+    const userInputCopy = useRef("")
+
+    const isStarted = useRef(false)
+    const typingAccuracy = useRef(0)
+    const errorCount = useRef(0)
 
     let isFalseDetected = false
 
@@ -28,8 +43,6 @@ const DrillModePage = () => {
         const onPageLoad = () => {
 
             markLastVisitedPath(location.pathname)
-
-            console.log(getUserCookie())
 
             axios({
                 method: "GET",
@@ -45,6 +58,12 @@ const DrillModePage = () => {
     }, [])
 
     useKey((ev, key) => {
+
+        if(!isStarted.current){
+            isStarted.current = true
+            startTimer()
+        }
+
         if(key === currentLetter.current){
             setIndicator(false)
             anotherCounter.current += 1
@@ -54,11 +73,33 @@ const DrillModePage = () => {
             
             currentLetter.current = listOfWords[anotherCounter.current]
             setUserInput((prev) => prev + key)
+            userInputCopy.current = userInputCopy.current + key
         }
         else{
+            if(!indicator){
+                errorCount.current += 1
+            }
             setIndicator(true)
         }
     })
+
+    const startTimer = () => {
+        interval.current = setInterval(evaluationFunction, TIMER_INTERVAL);
+    }
+
+    const stopTimer = () => {
+        clearInterval(interval.current)
+    }
+
+    const evaluationFunction = () => {
+        
+        //* Check for typing accuracy
+        let currentNumOfLetters = userInputCopy.current.length
+        console.log(`Current number of letters: ${currentNumOfLetters}`)
+        typingAccuracy.current = errorCount.current === 0 ? 100 : 100 - ((errorCount.current / currentNumOfLetters) * 100).toFixed(1)
+
+        setTimer((prevTimer) => prevTimer + 1)
+    }
 
     return (
         <div className="drill-mode-container">
@@ -108,6 +149,30 @@ const DrillModePage = () => {
                     )
                 })}
             </div>
+            <div className="typing-utilities">
+                <div className="sub-utility">
+                    <p>Timer</p>
+                    <span>{changeTimeFormat(timer)}</span>
+                </div>
+                <div className="sub-utility">
+                    <p>Words Per Minute</p>
+                    <span>Sample</span>
+                </div>
+                <div className="sub-utility">
+                    <p>Accuracy</p>
+                    <span>{changeAccuracyFormat(typingAccuracy.current)}</span>
+                </div>
+                <div className="sub-utility">
+                    <p>Error Count</p>
+                    <span>{errorCount.current}</span>
+                </div>
+            </div>
+            {DEVELOPER_MODE && 
+                <div className="developer-drill-tools">
+                    {/* <button className="btn btn-primary" onClick={startTimer}>Start Timer</button> */}
+                    <button className="btn btn-danger" onClick={stopTimer} disabled={!isStarted.current}>Stop Timer</button>
+                </div>
+            }
         </div>
     )
 }

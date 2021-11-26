@@ -29,10 +29,6 @@ const Navbar = () => {
 				})
 				.then((res) => {
 					setUserIdentity(res.data.user)
-					console.log(res)
-					console.log(res.data)
-					console.log(res.data.user)
-					console.log(res.data.user.username)
 				})
 				.catch((err) => {
 					console.log(err.response)
