@@ -109,6 +109,7 @@ const GameModePage = () => {
         landedAliens.current = []
         alienHitCount.current = 30
 
+        userHealthCopy.current = 3
         setUserHealth(3)
     }
 
@@ -145,7 +146,10 @@ const GameModePage = () => {
         })
     }
 
-    const startAnimation = () => {        
+    const startAnimation = () => {  
+
+        userInput.current.focus()
+
         clearCanvas()
 
         drawAlienHitCount()
@@ -359,6 +363,7 @@ const GameModePage = () => {
                 type = "text" 
                 placeholder = "Inputs from User"
                 ref = {userInput}
+                onChange = {() => console.log(userInput.current.value)}
             />
             {DEVELOPER_MODE && 
                 <div className="debugging-buttons">
