@@ -6,20 +6,29 @@ const randomInteger = (lowerBound, upperBound) => {
     return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound
 }
 
-const pictCharactersToWords = (quant, arrayOrigin, arrayDest) => {
-    for(let num = 0; num < quant; num++){
-        let temp = ""
-        for(let innerNum = 0; innerNum < randomInteger(3, 4); innerNum++){
-            temp += arrayOrigin[randomInteger(0, arrayOrigin.length - 1)]
+const pictCharactersToWords = (quant, arrayOrigin, arrayDest, isCollectionOfWords) => {
+    console.log(arrayOrigin)
+    if(isCollectionOfWords){
+        for(let num = 0; num < quant; num++){
+            let temp = arrayOrigin[randomInteger(0, arrayOrigin.length - 1)]
+            arrayDest.push(temp)
         }
-        arrayDest.push(temp)
+    }
+    else{
+        for(let num = 0; num < quant; num++){
+            let temp = ""
+            for(let innerNum = 0; innerNum < randomInteger(3, 4); innerNum++){
+                temp += arrayOrigin[randomInteger(0, arrayOrigin.length - 1)]
+            }
+            arrayDest.push(temp)
+        }
     }
 }
 
 router.get("/:mode/:selection", async (req, res) => {
 
     const validModes = ["gameMode", "drillMode"]
-    const validSelections = ["easy", "medium", "hard", "topRow", "homeRow", "bottomRow", "numberRow", "allKeys"]
+    const validSelections = ["easy", "medium", "hard", "topRow", "homeRow", "bottomRow", "numberRow", "allKeys", "commonWords"]
 
     if(!validModes.includes(req.params.mode)){
         res.status(400).json({message: "Mode invalid. Mode must be either 'gameMode' or 'drillMode'"})
@@ -43,16 +52,24 @@ router.get("/:mode/:selection", async (req, res) => {
         case "drillMode":
             practiceSetupData.words = []
 
-            if(req.params.selection === "allKeys"){
-                let allKeysArr = [...availableSelection["homeRow"], ...availableSelection["topRow"], ...availableSelection["bottomRow"], ...availableSelection["numberRow"]]
-                pictCharactersToWords(50, allKeysArr, practiceSetupData.words)
+            switch(req.params.selection){
+                case "allKeys":
+                    let allKeysArr = [...availableSelection["homeRow"], ...availableSelection["topRow"], ...availableSelection["bottomRow"], ...availableSelection["numberRow"]]
+                    pictCharactersToWords(50, allKeysArr, practiceSetupData.words, false)
+                    break;
+                case "commonWords":
+                    pictCharactersToWords(50, availableSelection[req.params.selection], practiceSetupData.words, true)
+                    break;
+                default:
+                    pictCharactersToWords(50, availableSelection[req.params.selection], practiceSetupData.words, false)
+                    break;
             }
-            else{
-                pictCharactersToWords(50, availableSelection[req.params.selection], practiceSetupData.words)
-            }
+
+ 
             practiceSetupData.words = practiceSetupData.words.join(" ")
             break;
     }
+
 
     res.status(200).json({...practiceSetupData})
 })

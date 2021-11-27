@@ -80,6 +80,7 @@ const PracticePage = (props) => {
                                 <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "bottomRow"})}>Bottom Row</button>
                                 <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "numberRow"})}>Number Row</button>
                                 <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "allKeys"})}>All Keyboard Keys</button>
+                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "commonWords"})}>Common Words</button>
                             </div>
                         </MaterialTabBody>
                         <MaterialTabBody currentTab={currentTab} tabIndex={1}>
