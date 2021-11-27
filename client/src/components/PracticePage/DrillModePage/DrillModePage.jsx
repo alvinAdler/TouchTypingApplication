@@ -10,8 +10,9 @@ import keysArrary from '../../Utilities/keysArray'
 import { 
     markLastVisitedPath, 
     getUserCookie, 
-    countWord, changeTimeFormat, 
-    changeAccuracyFormat 
+    changeTimeFormat, 
+    changeAccuracyFormat ,
+    grossWpm
 } from '../../Utilities/functions'
 
 const DEVELOPER_MODE = true
@@ -30,10 +31,12 @@ const DrillModePage = () => {
     const anotherCounter = useRef(0)
     const interval = useRef()
     const userInputCopy = useRef("")
+    const timerCopy = useRef(1)
 
     const isStarted = useRef(false)
     const typingAccuracy = useRef(0)
     const errorCount = useRef(0)
+    const wordsPerMinute = useRef(0)
 
     let isFalseDetected = false
 
@@ -95,10 +98,13 @@ const DrillModePage = () => {
         
         //* Check for typing accuracy
         let currentNumOfLetters = userInputCopy.current.length
-        console.log(`Current number of letters: ${currentNumOfLetters}`)
         typingAccuracy.current = errorCount.current === 0 ? 100 : 100 - ((errorCount.current / currentNumOfLetters) * 100).toFixed(1)
 
+        //* Check for wpm
+        wordsPerMinute.current = grossWpm(userInputCopy.current, timerCopy.current / 60)
+
         setTimer((prevTimer) => prevTimer + 1)
+        timerCopy.current += 1
     }
 
     return (
@@ -156,7 +162,7 @@ const DrillModePage = () => {
                 </div>
                 <div className="sub-utility">
                     <p>Words Per Minute</p>
-                    <span>Sample</span>
+                    <span>{`${wordsPerMinute.current} wpm`}</span>
                 </div>
                 <div className="sub-utility">
                     <p>Accuracy</p>

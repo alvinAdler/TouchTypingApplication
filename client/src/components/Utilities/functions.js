@@ -155,3 +155,7 @@ export const changeTimeFormat = (seconds) => {
 export const changeAccuracyFormat = (accuracy) => {
     return `${accuracy}%`
 }
+
+export const grossWpm = (numOfChars, minutes) => {
+    return (countWord(numOfChars) / minutes).toFixed(1)
+}
