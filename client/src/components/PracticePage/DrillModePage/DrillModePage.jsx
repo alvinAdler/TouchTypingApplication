@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 import './DrillModePage_master.css'
 
@@ -68,15 +69,32 @@ const DrillModePage = () => {
         }
 
         if(key === currentLetter.current){
+
             setIndicator(false)
+
+            userInputCopy.current = userInputCopy.current + key
+            //* Then the words are over
+            if(userInputCopy.current.length === listOfWords.length){
+                stopTimer()
+                swal.fire({
+                    icon: "success",
+                    title: "Congratulations!",
+                    text: "You have completed the stage",
+                    confirmButtonColor: "#2285e4"
+                })
+                setUserInput((prev) => prev + key)
+                return
+            }
+
             anotherCounter.current += 1
-            
+
             sampleRef.current.style.transform = `translateX(-${sampleCounter.current}px)`
             sampleCounter.current += 16
-            
+
             currentLetter.current = listOfWords[anotherCounter.current]
+
             setUserInput((prev) => prev + key)
-            userInputCopy.current = userInputCopy.current + key
+
         }
         else{
             if(!indicator){

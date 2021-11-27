@@ -7,7 +7,6 @@ const randomInteger = (lowerBound, upperBound) => {
 }
 
 const pictCharactersToWords = (quant, arrayOrigin, arrayDest, isCollectionOfWords) => {
-    console.log(arrayOrigin)
     if(isCollectionOfWords){
         for(let num = 0; num < quant; num++){
             let temp = arrayOrigin[randomInteger(0, arrayOrigin.length - 1)]
@@ -58,7 +57,7 @@ router.get("/:mode/:selection", async (req, res) => {
                     pictCharactersToWords(50, allKeysArr, practiceSetupData.words, false)
                     break;
                 case "commonWords":
-                    pictCharactersToWords(50, availableSelection[req.params.selection], practiceSetupData.words, true)
+                    pictCharactersToWords(10, availableSelection[req.params.selection], practiceSetupData.words, true)
                     break;
                 default:
                     pictCharactersToWords(50, availableSelection[req.params.selection], practiceSetupData.words, false)
