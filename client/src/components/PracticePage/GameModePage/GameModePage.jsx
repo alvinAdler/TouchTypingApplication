@@ -7,7 +7,6 @@ import './GameModePage_master.css'
 
 import Tank from '../../Utilities/classes/Tank'
 import Alien from '../../Utilities/classes/Alien'
-import AuthContext from '../../context/AuthContext'
 
 import { tankData, alienData, cannonBallData } from '../../Utilities/SpriteSheetData'
 import { DIRS } from '../../Utilities/Dirs'
@@ -45,8 +44,6 @@ const GameModePage = () => {
         const onPageLoad = () => {
 
             markLastVisitedPath(location.pathname)
-
-            console.log(getUserCookie())
 
             mainCanvas.current.width = mainCanvas.current.offsetWidth
             mainCanvas.current.height = mainCanvas.current.offsetHeight
@@ -100,6 +97,29 @@ const GameModePage = () => {
         sheetsContainer.current.push(promise)
     }
 
+    const drawScoreLines = () => {
+        let canvasContext = mainCanvas.current.getContext("2d")
+        let lineHeightLimit = mainCanvas.current.height / 3
+
+        canvasContext.beginPath()
+        canvasContext.strokeStyle = "green"
+        canvasContext.moveTo(0, lineHeightLimit)
+        canvasContext.lineTo(mainCanvas.current.width, lineHeightLimit)
+        canvasContext.stroke()
+
+        canvasContext.beginPath()
+        canvasContext.strokeStyle = "yellow"
+        canvasContext.moveTo(0, lineHeightLimit * 2)
+        canvasContext.lineTo(mainCanvas.current.width, lineHeightLimit * 2)
+        canvasContext.stroke()
+
+        canvasContext.beginPath()
+        canvasContext.strokeStyle = "red"
+        canvasContext.moveTo(0, lineHeightLimit * 3)
+        canvasContext.lineTo(mainCanvas.current.width, lineHeightLimit * 3)
+        canvasContext.stroke()
+    }
+
     const defaultVariables = () => {
         arrSprites.current = []
         stopId.current = 0
@@ -141,6 +161,10 @@ const GameModePage = () => {
 
         drawAlienHitCount()
 
+        if(DEVELOPER_MODE){
+            drawScoreLines()
+        }
+
         arrSprites.current.forEach((sprite) => {
             sprite.drawSprite()
         })
@@ -153,6 +177,10 @@ const GameModePage = () => {
         clearCanvas()
 
         drawAlienHitCount()
+        
+        if(DEVELOPER_MODE){
+            drawScoreLines()
+        }
 
         console.log("Animation on")
 
@@ -351,7 +379,6 @@ const GameModePage = () => {
         <div className="game-mode-container">
             <div className="user-lifes-container">
                 {Array.from(Array(userHealth)).map((item, index) => {
-                    console.log(userHealth)
                     return(
                         <img key={index} src="/images/userLifes.png" alt="Picture have not been found" />
                     )
@@ -382,6 +409,7 @@ const GameModePage = () => {
                     </button>
                     <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
                     <button className="btn btn-danger" onClick={() => console.log(userHealth)}>Check user health</button>
+                    <button className="btn btn-primary" onClick={drawScoreLines}>Draw score lines</button>
                 </div>
             }
         </div>
