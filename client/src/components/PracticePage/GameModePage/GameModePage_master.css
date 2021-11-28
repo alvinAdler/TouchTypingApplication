@@ -20,16 +20,32 @@
     padding: 7px;
 }
 
-.user-lifes-container{
-    align-self: stretch;
+.gameplay-menus{
     display: flex;
-    justify-content: flex-end;
+    width: 100%;
+    border: 3px solid blue;
     margin-bottom: 0.2rem;
+    flex-direction: row;
+}
+
+.user-lifes-container{
+    margin-left: auto;
+    display: flex;
+    border: 3px solid red;
 }
 
 .user-lifes-container > img{
     width: 2.8rem;
     margin: 0 0.2rem;
+}
+
+.user-score{
+    border: 3px solid green;
+    display: flex;
+}
+
+.user-score > *{
+    margin: auto;
 }
 
 .debugging-buttons{

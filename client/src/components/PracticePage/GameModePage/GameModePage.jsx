@@ -17,6 +17,10 @@ const FRAME_PER_SECOND = 60
 
 const DEVELOPER_MODE = true
 
+const SCORE_HIGH = 300
+const SCORE_MID = 200
+const SCORE_LOW = 100
+
 const GameModePage = () => {
 
     const SPAWN_ALIEN_PER = useRef(0)
@@ -25,6 +29,7 @@ const GameModePage = () => {
     const [mainSheets, setMainSheets] = useState({})
     const [listOfWords, setListOfWords] = useState([])
     const [userHealth, setUserHealth] = useState(3)
+    const [userScoreCount, setUserScoreCount] = useState(0)
     
     const userInput = useRef()
     const mainCanvas = useRef(null)
@@ -37,6 +42,8 @@ const GameModePage = () => {
     const landedAliens = useRef([])
     const alienHitCount = useRef(30)
     const userHealthCopy = useRef(3)
+    const stopGeneratingAlien = useRef(false)
+    const canvasScoreBoundaries = useRef({high: 0, mid: 0, low: 0})
 
     const location = useLocation()
 
@@ -47,6 +54,13 @@ const GameModePage = () => {
 
             mainCanvas.current.width = mainCanvas.current.offsetWidth
             mainCanvas.current.height = mainCanvas.current.offsetHeight
+
+            let lineHeightLimit = mainCanvas.current.height / 3
+            canvasScoreBoundaries.current = {
+                high: lineHeightLimit,
+                mid: lineHeightLimit * 2,
+                low: lineHeightLimit * 3
+            }
 
             addNewSpriteSheet("alienSpriteSheet", "/images/spriteSheets/greenAlien.png")
             addNewSpriteSheet("cannonBallSpriteSheet", "/images/spriteSheets/cannonBall.png")
@@ -99,24 +113,23 @@ const GameModePage = () => {
 
     const drawScoreLines = () => {
         let canvasContext = mainCanvas.current.getContext("2d")
-        let lineHeightLimit = mainCanvas.current.height / 3
 
         canvasContext.beginPath()
         canvasContext.strokeStyle = "green"
-        canvasContext.moveTo(0, lineHeightLimit)
-        canvasContext.lineTo(mainCanvas.current.width, lineHeightLimit)
+        canvasContext.moveTo(0, canvasScoreBoundaries.current.high)
+        canvasContext.lineTo(mainCanvas.current.width, canvasScoreBoundaries.current.high)
         canvasContext.stroke()
 
         canvasContext.beginPath()
         canvasContext.strokeStyle = "yellow"
-        canvasContext.moveTo(0, lineHeightLimit * 2)
-        canvasContext.lineTo(mainCanvas.current.width, lineHeightLimit * 2)
+        canvasContext.moveTo(0, canvasScoreBoundaries.current.mid)
+        canvasContext.lineTo(mainCanvas.current.width, canvasScoreBoundaries.current.mid)
         canvasContext.stroke()
 
         canvasContext.beginPath()
         canvasContext.strokeStyle = "red"
-        canvasContext.moveTo(0, lineHeightLimit * 3)
-        canvasContext.lineTo(mainCanvas.current.width, lineHeightLimit * 3)
+        canvasContext.moveTo(0, canvasScoreBoundaries.current.low)
+        canvasContext.lineTo(mainCanvas.current.width, canvasScoreBoundaries.current.low)
         canvasContext.stroke()
     }
 
@@ -130,6 +143,7 @@ const GameModePage = () => {
         alienHitCount.current = 30
 
         userHealthCopy.current = 3
+        setUserScoreCount(0)
         setUserHealth(3)
     }
 
@@ -204,8 +218,10 @@ const GameModePage = () => {
         }
 
         if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER.current){
-            generateRandomAlien()
             timeCounter.current = 0
+            if(!stopGeneratingAlien.current){
+                generateRandomAlien()
+            }
         }
 
         //* Check for sprites that has the word that the user type
@@ -222,6 +238,8 @@ const GameModePage = () => {
                 alien: sprite,
                 cannonBall: arrSprites.current[0]
             })
+
+            evaluateScore({x: matchingSprites[0].posX, y: matchingSprites[0].posY})
 
             clearInput()
         }
@@ -325,8 +343,27 @@ const GameModePage = () => {
         ))
     }
 
+    const toggleIdeStateAllSprites = () => {
+        stopGeneratingAlien.current = !stopGeneratingAlien.current
+        for(let index=0; index<arrSprites.current.length - 1; index++){
+            arrSprites.current[index].changeIdleState()
+        }
+    }
+
     const checkKeywordExistence = () => {
         return arrSprites.current.filter((sprite) => ((sprite.selectedWord === userInput.current.value) && sprite.dir !== "HITSGROUND"))
+    }
+
+    const evaluateScore = (spriteLocation) => {
+        if(spriteLocation.y <= canvasScoreBoundaries.current.high){
+            setUserScoreCount(prevScore => prevScore + SCORE_HIGH)
+        }
+        else if(spriteLocation.y <= canvasScoreBoundaries.current.mid){
+            setUserScoreCount(prevScore => prevScore + SCORE_MID)
+        }
+        else if(spriteLocation.y <= canvasScoreBoundaries.current.low){
+            setUserScoreCount(prevScore => prevScore + SCORE_LOW)
+        }
     }
 
     const isColliding = (sprite1, sprite2) => {
@@ -377,20 +414,25 @@ const GameModePage = () => {
 
     return (
         <div className="game-mode-container">
-            <div className="user-lifes-container">
-                {Array.from(Array(userHealth)).map((item, index) => {
-                    return(
-                        <img key={index} src="/images/userLifes.png" alt="Picture have not been found" />
-                    )
-                })}
+            <div className="gameplay-menus">
+                <div className="user-score">
+                    <span>User Score: {userScoreCount}</span>
+                </div>
+                <div className="user-lifes-container">
+                    {Array.from(Array(userHealth)).map((item, index) => {
+                        return(
+                            <img key={index} src="/images/userLifes.png" alt="Picture have not been found" />
+                        )
+                    })}
+                </div>
             </div>
+
             <canvas className="gameplay-canvas" ref={mainCanvas} style={{backgroundImage: "url(/images/canvasBackground.png)"}}></canvas>
             <input 
                 className = "gameplay-input" 
                 type = "text" 
                 placeholder = "Inputs from User"
                 ref = {userInput}
-                onChange = {() => console.log(userInput.current.value)}
             />
             {DEVELOPER_MODE && 
                 <div className="debugging-buttons">
@@ -410,6 +452,7 @@ const GameModePage = () => {
                     <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
                     <button className="btn btn-danger" onClick={() => console.log(userHealth)}>Check user health</button>
                     <button className="btn btn-primary" onClick={drawScoreLines}>Draw score lines</button>
+                    <button className="btn btn-primary" onClick={toggleIdeStateAllSprites}>Toggle idle sprite all</button>
                 </div>
             }
         </div>
