@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import swal from 'sweetalert2'
+import Cookies from 'js-cookie'
 
 import './DrillModePage_master.css'
 
@@ -76,6 +77,10 @@ const DrillModePage = () => {
             //* Then the words are over
             if(userInputCopy.current.length === listOfWords.length){
                 stopTimer()
+
+                printFinalData()
+                storeUserDrillPerformance()
+
                 swal.fire({
                     icon: "success",
                     title: "Congratulations!",
@@ -123,6 +128,52 @@ const DrillModePage = () => {
 
         setTimer((prevTimer) => prevTimer + 1)
         timerCopy.current += 1
+    }
+
+    const storeUserDrillPerformance = () => {
+        const currentLesson = getUserCookie().practice.selection
+        const finalWpm = wordsPerMinute.current
+        const finalAccuracy = typingAccuracy.current
+        const totalOfWords = parseInt(listOfWords.length / 5)
+        const totalSeconds = timerCopy.current - 1
+
+        console.log(Cookies.get("author_token"))
+
+        axios({
+            method: "POST",
+            url: "http://localhost:5000/performance/store/drillMode",
+            headers: {
+                "Authorization": `Bearer ${Cookies.get("authorToken")}`,
+                "Content-type": "application/json"
+            },
+            data: {
+                lesson: currentLesson,
+                wordsPerMinute: finalWpm,
+                accuracy: finalAccuracy,
+                totalOfWords: totalOfWords,
+                totalSeconds: totalSeconds
+            }
+        })
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err.response)
+        })
+    }
+
+    const printFinalData = () => {
+        const currentLesson = getUserCookie().practice.selection
+        const finalWpm = wordsPerMinute.current
+        const finalAccuracy = typingAccuracy.current
+        const totalOfWords = parseInt(listOfWords.length / 5)
+        const totalSeconds = timerCopy.current - 1
+
+        console.log(`Current Lesson: ${currentLesson}`)
+        console.log(`Final WPM: ${finalWpm}`)
+        console.log(`Final Accuracy: ${finalAccuracy}`)
+        console.log(`Total Words: ${totalOfWords}`)
+        console.log(`Total Seconds: ${totalSeconds}`)
     }
 
     return (
@@ -195,6 +246,7 @@ const DrillModePage = () => {
                 <div className="developer-drill-tools">
                     {/* <button className="btn btn-primary" onClick={startTimer}>Start Timer</button> */}
                     <button className="btn btn-danger" onClick={stopTimer} disabled={!isStarted.current}>Stop Timer</button>
+                    <button className="btn btn-primary" onClick={storeUserDrillPerformance}>Print Cookies</button>
                 </div>
             }
         </div>

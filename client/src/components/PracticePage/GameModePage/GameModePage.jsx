@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useLocation } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 import './GameModePage_master.css'
 
@@ -42,6 +43,7 @@ const GameModePage = () => {
     const landedAliens = useRef([])
     const alienHitCount = useRef(30)
     const userHealthCopy = useRef(3)
+    const userScoreCountCopy = useRef(0)
     const stopGeneratingAlien = useRef(false)
     const canvasScoreBoundaries = useRef({high: 0, mid: 0, low: 0})
 
@@ -143,6 +145,7 @@ const GameModePage = () => {
         alienHitCount.current = 30
 
         userHealthCopy.current = 3
+        userScoreCountCopy.current = 0
         setUserScoreCount(0)
         setUserHealth(3)
     }
@@ -203,6 +206,9 @@ const GameModePage = () => {
 
         if(isGameEnd){
             stopAnimation()
+
+            storeUserGamePerformance()
+
             defaultVariables()
 
             Swal.fire({
@@ -356,12 +362,15 @@ const GameModePage = () => {
 
     const evaluateScore = (spriteLocation) => {
         if(spriteLocation.y <= canvasScoreBoundaries.current.high){
+            userScoreCountCopy.current = userScoreCountCopy.current + SCORE_HIGH
             setUserScoreCount(prevScore => prevScore + SCORE_HIGH)
         }
         else if(spriteLocation.y <= canvasScoreBoundaries.current.mid){
+            userScoreCountCopy.current = userScoreCountCopy.current + SCORE_MID
             setUserScoreCount(prevScore => prevScore + SCORE_MID)
         }
         else if(spriteLocation.y <= canvasScoreBoundaries.current.low){
+            userScoreCountCopy.current = userScoreCountCopy.current + SCORE_LOW
             setUserScoreCount(prevScore => prevScore + SCORE_LOW)
         }
     }
@@ -410,6 +419,30 @@ const GameModePage = () => {
 
     const clearInput = () => {
         userInput.current.value = ""
+    }
+
+    const storeUserGamePerformance = () => {
+        const currentDifficulty = getUserCookie().practice.selection
+        const lastScore = userScoreCountCopy.current
+
+        axios({
+            method: "POST",
+            url: "http://localhost:5000/performance/store/gameMode",
+            headers: {
+                "Authorization": `Bearer ${Cookies.get("authorToken")}`,
+                "Content-type": "application/json"
+            },
+            data: {
+                difficulty: currentDifficulty,
+                score: lastScore
+            }
+        })
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     return (

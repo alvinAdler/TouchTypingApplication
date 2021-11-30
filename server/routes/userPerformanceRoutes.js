@@ -6,17 +6,16 @@ const GamePerformanceModel = require("../models/gamePerformanceModel")
 
 const tokenAuthenticationMWare = require("../utilities/tokenAuthenticationMWare") 
 
-router.post("/sampleDataPost", (req, res) => {
-    const currentMode = req.body.mode
+router.post("/store/:mode", tokenAuthenticationMWare, (req, res) => {
+    const currentMode = req.params.mode
 
     switch(currentMode){
         case "gameMode":
 
             const gamePerformanceDetails = {
-                userId: req.body.userId,
+                userId: req.user._id,
                 difficulty: req.body.difficulty,
                 score: req.body.score,
-                recordDate: Date.now()
             }
 
             GamePerformanceModel.create(gamePerformanceDetails, (err, doc) => {
@@ -32,17 +31,17 @@ router.post("/sampleDataPost", (req, res) => {
                     doc: doc
                 })
             })
-
             break;
+
         case "drillMode":
 
             const drillPerformnaceDetails = {
-                userId: req.body.userId,
+                userId: req.user._id,
                 lesson: req.body.lesson,
                 wordsPerMinute: req.body.wordsPerMinute,
                 accuracy: req.body.accuracy,
                 totalOfWords: req.body.totalOfWords,
-                recordDate: Date.now()
+                totalSeconds: req.body.totalSeconds
             }
 
             DrillPerformanceModel.create(drillPerformnaceDetails, (err, doc) => {
@@ -58,13 +57,17 @@ router.post("/sampleDataPost", (req, res) => {
                     doc: doc
                 })
             })
-
             break;
+        
+        default: 
+            return res.status(400).json({
+                message: "Your mode is invalid. Mode must be either `gameMode` or `drillMode`"
+            })  
     }
 })
 
-router.get("/sampleDataGet", async (req, res) => {
-    const currentMode = req.body.mode
+router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
+    const currentMode = req.params.mode
 
     switch(currentMode){
         case "gameMode":
@@ -73,10 +76,8 @@ router.get("/sampleDataGet", async (req, res) => {
 
             return res.status(200).json({
                 message: "Game mode data fetched successfully",
-                result: result
+                result: resultGamePerformance
             })
-
-            break;
 
         case "drillMode": 
 
@@ -84,7 +85,7 @@ router.get("/sampleDataGet", async (req, res) => {
 
             return res.status(200).json({
                 message: "Drill mode data fetched successfully",
-                result: result
+                result: resultDrillPerformance
             })
 
         default: 

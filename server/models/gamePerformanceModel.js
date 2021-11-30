@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const gamePerformanceSchema = new Schema({
     userId: {
-        type: String,
+        type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
     difficulty: {
@@ -16,7 +16,8 @@ const gamePerformanceSchema = new Schema({
     },
     recordDate: {
         type: Date,
-        required: true
+        required: true,
+        default: () => Date.now()
     }
 }, {versionKey: false})
 

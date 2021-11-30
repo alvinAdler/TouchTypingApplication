@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const drillPerformanceSchema = new Schema({
     userId: {
-        type: String,
+        type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
     lesson: {
@@ -22,9 +22,14 @@ const drillPerformanceSchema = new Schema({
         type: Number,
         required: true
     },
+    totalSeconds: {
+        type: Number,
+        required: true
+    },
     recordDate: {
         type: Date,
-        required: true
+        required: true,
+        default: () => Date.now()
     }
 }, {versionKey: false})
 
