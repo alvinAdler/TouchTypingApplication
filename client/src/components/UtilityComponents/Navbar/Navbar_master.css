@@ -2,11 +2,42 @@
     position: sticky;
     top: 0;
     z-index: 50;
+    background-color: #00204A;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
 }
 
-.plain-link{
-    margin: 0 5px;
-    color: black;
+.main-nav-section{
+    /* border: 3px solid red; */
+    display: flex;
+}
+
+.main-nav-section > *{
+    margin: auto 0.75rem;
+}
+
+.main-icon{
+    height: 100%;
+    width: 100%;
+    font-size: 2.5rem;
+}
+
+#nav-username, .plain-text{
     text-decoration: none;
+    font-size: 1rem;
+    color: white;
+    transition: all 150ms ease;
+}
+
+.plain-text{
     cursor: pointer;
+}
+
+.plain-text:hover{
+    color: white;
+}
+
+#nav-username{
+    cursor: default;
 }

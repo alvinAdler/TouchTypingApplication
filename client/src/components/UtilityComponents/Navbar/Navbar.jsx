@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Navbar as NavbarReact, Container, Nav } from 'react-bootstrap'
+import { FaReact } from 'react-icons/fa'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
@@ -44,22 +44,20 @@ const Navbar = () => {
 	}
 
     return (
-		<NavbarReact className="main-navbar" bg="light" expand="lg">
-			<Container>
-				<div>
-					<NavbarReact.Brand><Link to="/" className="plain-link">Main Menu</Link></NavbarReact.Brand>
-					<NavbarReact.Brand>{capitalizeString(userIdentity.username)}</NavbarReact.Brand>
-				</div>
-				<Nav>
-					{authorize.auth ?
-					<span className="plain-link" onClick={executeLogout}>Logout</span>
-					:
-					<Link to="/login" className="plain-link">Login</Link>
-					}
-					{!authorize.auth && <Link to="/register" className="plain-link">Register</Link>}
-				</Nav>
-			</Container>
-		</NavbarReact>
+		<div className="main-navbar" bg="light" expand="lg">
+			<div className="main-nav-section">
+				<Link to="/" className="plain-text"><FaReact className="main-icon"/></Link>
+				<span id="nav-username">{capitalizeString(userIdentity.username)}</span>
+			</div>
+			<div className="main-nav-section">
+				{authorize.auth ?
+				<span className="plain-text" onClick={executeLogout}>Logout</span>
+				:
+				<Link to="/login" className="plain-text">Login</Link>
+				}
+				{!authorize.auth && <Link to="/register" className="plain-text">Register</Link>}
+			</div>
+		</div>
     )
 }
 
