@@ -8,11 +8,11 @@
     border-radius: 0.5rem;
     color: white;
     background-color: #0685cf;
-    transition: all 200ms ease-in-out;
+    transition: outline 200ms ease-in-out;
 }
 
 .button-form:focus{
-    border: 3px solid white;
+    outline: 3px solid white;
 }
 
 .button-form:hover{

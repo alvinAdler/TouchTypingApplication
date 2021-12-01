@@ -1,7 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import swal from 'sweetalert2'
 
 import './LoginPage_master.css'
 
@@ -19,7 +20,6 @@ const LoginPage = () => {
 
     const history = useHistory()
     const authorize = useContext(AuthContext)
-    const location = useLocation()
 
     const logUserIn = (ev) => {
         ev.preventDefault()
@@ -42,12 +42,32 @@ const LoginPage = () => {
                 Cookies.set("authorToken", res.data.authToken)
                 Cookies.set("refreshToken", res.data.refreshToken)
 
-                authorize.setAuth(true)
-                history.push("/")
+                swal.fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: "Log in success. You will be redirected to the main menu",
+                    confirmButtonColor: "#2285e4"
+                })
+                .then(() => {
+                    authorize.setAuth(true)
+                    history.push("/")
+                })
             }
         })
         .catch((err) => {
-            console.log(err)
+            if(err.response){
+                if(!err.response.data.isLoggedIn){
+                    swal.fire({
+                        icon: "error",
+                        title: "Wrong username or password!",
+                        text: "Please recheck your username and password",
+                        confirmButtonColor: "#eb4034"
+                    })
+                }
+            }
+            else{
+
+            }
         })
     }
 

@@ -7,7 +7,7 @@
     color: white;
     outline: none;
     border-bottom: 3px solid white;
-    transition: border 200ms ease-in-out;
+    transition: outline 200ms ease-in-out;
     font-size: 1rem;
 }
 
@@ -17,5 +17,5 @@
 }
 
 .form-input-text:focus{
-    border: 3px solid white;
+    outline: 3px solid white;
 }
