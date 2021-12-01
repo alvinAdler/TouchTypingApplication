@@ -5,6 +5,9 @@ import axios from 'axios'
 import './RegisterPage_master.css'
 
 import { markLastVisitedPath } from '../Utilities/functions'
+import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
+import FormInput from '../UtilityComponents/FormInput/FormInput'
+import FormButton from '../UtilityComponents/FormButton/FormButton'
 
 const RegisterPage = () => {
 
@@ -51,28 +54,25 @@ const RegisterPage = () => {
     
     return (
         <div className="register-container">
+            <PageTitle titleName="Register"/>
             <form className="register-form" onSubmit={registerUser}>
-                <h2 className="full-span" style={{textAlign: "center"}}>Register</h2>
-                <hr className="my-4 full-span" />
-                <input 
-                className="login-input full-span" 
+                <FormInput
+                customclass="full-span"
                 type="text" 
                 placeholder="Username"
                 onChange={(ev) => setUserInput({...userInput, username: ev.target.value})}
                 />
-                <input 
-                className="login-input" 
+                <FormInput 
                 type="password" 
                 placeholder="Password"
                 onChange={(ev) => setUserInput({...userInput, password: ev.target.value})}
                 />
-                <input 
-                className="login-input" 
+                <FormInput 
                 type="password" 
                 placeholder="Confirm Password"
                 onChange={(ev) => setUserInput({...userInput, confirmPassword: ev.target.value})}
                 />
-                <button type="submit" className="btn btn-primary full-span">Register</button>
+                <FormButton customclass="full-span" buttonText="Register" type="submit"/>
             </form>
         </div>
     )

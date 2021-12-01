@@ -6,7 +6,9 @@ import Cookies from 'js-cookie'
 import './LoginPage_master.css'
 
 import AuthContext from '../context/AuthContext'
-import { markLastVisitedPath } from '../Utilities/functions'
+import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
+import FormInput from '../UtilityComponents/FormInput/FormInput'
+import FormButton from '../UtilityComponents/FormButton/FormButton'
 
 const LoginPage = () => {
 
@@ -18,10 +20,6 @@ const LoginPage = () => {
     const history = useHistory()
     const authorize = useContext(AuthContext)
     const location = useLocation()
-
-    // useEffect(() => {
-    //     markLastVisitedPath(location.pathname)
-    // }, [])
 
     const logUserIn = (ev) => {
         ev.preventDefault()
@@ -55,20 +53,19 @@ const LoginPage = () => {
 
     return (
         <div className="login-container">
+            <PageTitle titleName="Login"/>
             <form className="login-form" onSubmit={logUserIn}>
-                <h2 style={{textAlign: "center"}}>Login</h2>
-                <hr className="my-4" />
-                <input className="login-input" 
+                <FormInput
                 type="text" 
                 placeholder="Username"
                 onChange = {(ev) => setUserInput({...userInput, username: ev.target.value})}
                 />
-                <input className="login-input" 
+                <FormInput
                 type="password" 
                 placeholder="Password"
                 onChange = {(ev) => setUserInput({...userInput, password: ev.target.value})}
                 />
-                <button type="submit" className="btn btn-primary">Login</button>
+                <FormButton buttonText="Login" type="submit"/>
             </form>
         </div>
     )
