@@ -7,8 +7,8 @@
     font-size: 1rem;
     border-radius: 0.5rem;
     color: white;
-    background-color: #0685cf;
-    transition: outline 200ms ease-in-out;
+    background-color: var(--primary-button-color);
+    transition: all 150ms ease-in-out;
 }
 
 .button-form:focus{
@@ -16,5 +16,5 @@
 }
 
 .button-form:hover{
-    background-color: #0770ad;
+    background-color: var(--hover-primary-button-color);
 }

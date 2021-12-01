@@ -1,4 +1,8 @@
 :root{
+
+    --primary-color: #005792;
+    --dark-primary-color: #00204A;
+
     --key-red: #f2c9c9;
     --key-orange: #f2dec9;
     --key-yellow: #f2f1c9;
@@ -15,6 +19,9 @@
 
     --slim-white: #F2F2F2;
     --slim-black: #2b2b2b;
+
+    --primary-button-color: #0770ad;
+    --hover-primary-button-color: #0685CF;
 }
 
 *, *::before, *::after{

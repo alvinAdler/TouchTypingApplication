@@ -8,6 +8,7 @@ import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBod
 import DrillModePage from './DrillModePage/DrillModePage'
 import GameModePage from './GameModePage/GameModePage'
 import ProtectedRoute from '../UtilityComponents/ProtectedRoute/ProtectedRoute'
+import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
 
 import { markLastVisitedPath, modifyUserCookie } from '../Utilities/functions'
 
@@ -60,40 +61,42 @@ const PracticePage = (props) => {
             <Switch>
                 <Route path={`${routeMatch.path}`} exact render={() => (
                     <>
-                        <h1 style={{textAlign: "center"}}>Practice Page</h1>
-                        <AppBar color="default" position="static">
+                        <PageTitle titleName="Practice Page"/>
+                        <AppBar className="practice-nav-bar" color="default" position="static">
                             <Tabs
                             value={currentTab}
                             onChange={handleTabChange}
                             textColor="inherit"
                             variant="fullWidth"
                             >
-                                <Tab label="Drill Mode"/>
-                                <Tab label="Game Mode"/>
+                                <Tab sx={{fontWeight: 600, color: "black"}} label="Drill Mode"/>
+                                <Tab sx={{fontWeight: 600, color: "black"}} label="Game Mode"/>
                             </Tabs>
                         </AppBar>
                         <MaterialTabBody currentTab={currentTab} tabIndex={0}>
                             <div className="options-container container">
                                 <h2>Select a lesson</h2>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "homeRow"})}>Home Row</button>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "topRow"})}>Top Row</button>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "bottomRow"})}>Bottom Row</button>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "numberRow"})}>Number Row</button>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "allKeys"})}>All Keyboard Keys</button>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "commonWords"})}>Common Words</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "homeRow"})}>Home Row</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "topRow"})}>Top Row</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "bottomRow"})}>Bottom Row</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "numberRow"})}>Number Row</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "allKeys"})}>All Keyboard Keys</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "commonWords"})}>Common Words</button>
                             </div>
                         </MaterialTabBody>
                         <MaterialTabBody currentTab={currentTab} tabIndex={1}>
                             <div className="options-container container">
                                 <h2>Select a difficulty</h2>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "easy"})}>Easy</button>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "medium"})}>Medium</button>
-                                <button className="btn btn-primary" onClick={() => setSelectedPractice({...selectedPractice, selection: "hard"})}>Hard</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "easy"})}>Easy</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "medium"})}>Medium</button>
+                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "hard"})}>Hard</button>
                             </div>
                         </MaterialTabBody>
-                        <p style={{margin: 0}}>Selected mode: {camelCaseToSentenceCase(selectedPractice.mode)}</p>
-                        <p style={{margin: 0}}>Selected lesson: {camelCaseToSentenceCase(selectedPractice.selection)}</p>
-                        <button className="btn-go btn btn-primary" onClick={preparePageChange}>Go</button>
+                        <div className="mode-indicator">
+                            <span>Selected mode: {camelCaseToSentenceCase(selectedPractice.mode)}</span>
+                            <span>Selected lesson: {camelCaseToSentenceCase(selectedPractice.selection)}</span>
+                        </div>
+                        <button className="button-go" onClick={preparePageChange}>Go</button>
                     </>
                 )}/>
                 

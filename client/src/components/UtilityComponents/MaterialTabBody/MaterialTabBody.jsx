@@ -1,9 +1,10 @@
 import React from 'react'
-import Box from '@mui/material/Box'
+
+import './MaterialTabBody_master.css'
 
 const MaterialTabBody = ({children, currentTab, tabIndex}) => {
     return (
-        <div role="tabpanel" className="material-tab-container" hidden={currentTab != tabIndex} style={{backgroundColor: "#eee"}}>
+        <div role="tabpanel" className="material-tab-container" hidden={currentTab != tabIndex}>
             {children}
         </div>
     )
