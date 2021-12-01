@@ -1,14 +1,37 @@
-.page-title{
-    text-align: center;
+.app-content-container{
+    margin-top: 3rem;
 }
 
-.app-content-container{
-    padding-top: 25px;
+.main-page-container{
+    /* border: 3px solid blue; */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.main-carousel{
+    background-color: #005792;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.main-carousel *{
+    text-decoration: none;
+}
+
+.main-carousel-caption{
+    background-color: rgba(0, 87, 146, 0.8);
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+.main-carousel-caption > p{
+    font-size: 1rem;
 }
 
 .carousel-image{
     width: 100%;
-    height: 300px;
+    height: 400px;
 }
 
 .main-features{
@@ -18,14 +41,20 @@
     height: 200px;
 }
 
-.main-features > *{
+.features-section{
+    cursor: pointer;
     width: 100%;
     height: 100%;
-    background-color: grey;
+    background-color: #005792;
     color: white;
     display: flex;
+    flex-direction: column;
+    padding: 1rem;
     justify-content: center;
     align-items: center;
-    text-decoration: none;
+    text-align: center;
     border: none;
+    font-weight: 500;
+    border-radius: 1rem;
+    transition: all 150ms ease-in-out;
 }

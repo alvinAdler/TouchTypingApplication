@@ -1,0 +1,9 @@
+.page-title{
+    text-align: center;
+    align-self: center;
+    padding: 0.5rem 1rem;
+    width: 50%;
+    border-radius: 0.8rem;
+    color: white;
+    background-color: #005792;
+}

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import { Carousel } from 'react-bootstrap'
 import Cookies from 'js-cookie'
-import axios from 'axios'
 import swal from 'sweetalert2'
 
 import './App.css';
@@ -16,6 +15,7 @@ import UserPerformancePage from './components/UserPerformancePage/UserPerformanc
 import TutorialPage from './components/TutorialPage/TutorialPage';
 import ProtectedRoute from './components/UtilityComponents/ProtectedRoute/ProtectedRoute';
 import ProtectedLogin from './components/UtilityComponents/ProtectedRoute/ProtectedLogin';
+import PageTitle from './components/UtilityComponents/PageTitle/PageTitle'
 import { checkToken } from './components/Utilities/functions'
 
 const App = () => {
@@ -83,46 +83,57 @@ const App = () => {
 				<div className="app-content-container container">
 					<Switch>
 						<Route path="/" exact>
-							<h1 className="page-title">Touch Typing Application</h1>
-							<Carousel slide={false} fade={false}>
-								<Carousel.Item>
-									<img
-									className="carousel-image"
-									src="https://images.unsplash.com/photo-1615220368123-9bb8faf4221b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8c2FtcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-									alt="First slide"
-									/>
-									<Carousel.Caption>
-										<h3>First slide label</h3>
-										<p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-									</Carousel.Caption>
-								</Carousel.Item>
-								<Carousel.Item>
-									<img
-									className="carousel-image"
-									src="https://images.unsplash.com/photo-1612528443702-f6741f70a049?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c2FtcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-									alt="Second slide"
-									/>
-									<Carousel.Caption>
-										<h3>Second slide label</h3>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-									</Carousel.Caption>
-								</Carousel.Item>
-								<Carousel.Item>
-									<img
-									className="carousel-image"
-									src="https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2FtcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-									alt="Third slide"
-									/>
-									<Carousel.Caption>
-										<h3>Third slide label</h3>
-										<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-									</Carousel.Caption>
-								</Carousel.Item>
-							</Carousel>
-							<div className="main-features">
-								<button type="button" onClick={() => changePageTo("/practice")}>Practice Page</button>
-								<button type="button" onClick={() => changePageTo("/userPerformance")}>User Performance Page</button>
-								<button type="button" onClick={() => changePageTo("/tutorial")}>Tutorial Page</button>
+							<div className="main-page-container">
+								<PageTitle titleName="Touch Typing Application"/>
+								<Carousel className="main-carousel">
+									<Carousel.Item className="main-carousel-item">
+										<img
+										className="carousel-image"
+										src="/images/undraw_banner_productivity.svg"
+										alt="First slide"
+										/>
+										<Carousel.Caption className="main-carousel-caption">
+											<h2>Increase Your Productivity</h2>
+											<p>Complete more tasks with higher typing speed and accuracy</p>
+										</Carousel.Caption>
+									</Carousel.Item>
+									<Carousel.Item className="main-carousel-item">
+										<img
+										className="carousel-image"
+										src="/images/undraw_banner_speed.svg"
+										alt="Second slide"
+										/>
+										<Carousel.Caption className="main-carousel-caption">
+											<h2>Go Fast Typing Now!</h2>
+											<p>Impress the others with your typing skills</p>
+										</Carousel.Caption>
+									</Carousel.Item>
+									<Carousel.Item className="main-carousel-item">
+										<img
+										className="carousel-image"
+										src="/images/undraw_banner_accuracy.svg"
+										alt="Third slide"
+										/>
+										<Carousel.Caption className="main-carousel-caption">
+											<h2>Less Typing Error</h2>
+											<p>Present a fast and an error free work to your colleagues</p>
+										</Carousel.Caption>
+									</Carousel.Item>
+								</Carousel>
+								<div className="main-features">
+									<div className="features-section" onClick={() => changePageTo("/practice")}> 
+										<h2>Practice Page</h2>
+										<p>Enhance your typing skills with practices</p>
+									</div>
+									<div className="features-section" onClick={() => changePageTo("/userPerformance")}> 
+										<h2>User Performance Page</h2>
+										<p>Track your progress of typing</p>
+									</div>
+									<div className="features-section" onClick={() => changePageTo("/tutorial")}> 
+										<h2>Tutorial Page</h2>
+										<p>View the tutorials to get started with the application</p>
+									</div>
+								</div>
 							</div>
 						</Route>
 
