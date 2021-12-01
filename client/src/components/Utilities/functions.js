@@ -38,28 +38,34 @@ export const randomInteger = (lowerBound, upperBound) => {
     return Math.floor(Math.random() * (upperBound - lowerBound)) + lowerBound
 }
 
-export const checkToken = () => {
+export const checkToken = async () => {
 
     if(Cookies.get("authorToken") === undefined && Cookies.get("refreshToken") === undefined){
         console.log("User has not logged in")
         return {
-            data: {
-                status: false,
-                message: "No token provided"
-            }
+            status: false,
+            message: "No token provided",
+            data: undefined
         }
     }
 
-    return {
-        data: {
-            status: true,
-            message: "Sucess"
+    const result = await axios({
+        method: "POST",
+        url: "http://localhost:5500/verify",
+        headers: {
+            "Authorization": `Bearer ${Cookies.get("authorToken")}`
         }
+    })
+
+    return {
+        status: true,
+        message: "Sucess",
+        data: result
     }
 }
 
 export const deleteCookies = () => {
-    if(checkToken().data.status){
+    if(Object.keys.length > 0){
         Object.keys(Cookies.get()).forEach((cookieName) => {
             Cookies.remove(cookieName)
         })
@@ -102,14 +108,30 @@ export const logoutUser = (authorize) => {
                 }
             })
             .then((res) => {
+                console.log(res)
                 if(res.data.status){
                     deleteCookies()
                     authorize.setAuth(false)
-                    window.location.reload()
+
+                    swal.fire({
+                        icon: "success",
+                        title: "Successfully logged out!",
+                        text: "Logout is successful and the page will be reloaded",
+                        confirmButtonColor: "#2285e4"
+                    })
+                    .then(() => {
+                        window.location.reload()
+                    })
+
                 }
             })
             .catch((err) => {
-                console.log(err)
+                if(err.response){
+                    console.log(err.response)
+                }
+                if(err.message){
+                    console.log(err.message)
+                }
             })
         }
     })

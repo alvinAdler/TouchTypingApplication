@@ -16,7 +16,7 @@ import UserPerformancePage from './components/UserPerformancePage/UserPerformanc
 import TutorialPage from './components/TutorialPage/TutorialPage';
 import ProtectedRoute from './components/UtilityComponents/ProtectedRoute/ProtectedRoute';
 import ProtectedLogin from './components/UtilityComponents/ProtectedRoute/ProtectedLogin';
-import { checkToken, modifyUserCookie } from './components/Utilities/functions'
+import { checkToken } from './components/Utilities/functions'
 
 const App = () => {
 
@@ -26,49 +26,39 @@ const App = () => {
 	const location = useLocation()
 
 	useEffect(() => {
-        const onPageMount = () => {
+        const onPageMount = async () => {
 
-			if(Cookies.get("authorToken") === undefined && Cookies.get("refreshToken") === undefined){
-				console.log("User has not logged in")
-				return 
+			const result = await checkToken()
+
+			if(result.status){
+				setAuth(true)
+
+				if(Cookies.get("lastPath") !== undefined && location.pathname !== "/"){
+					history.push(Cookies.get("lastPath"))
+				}
+			}else{
+				console.log(result)
 			}
-
-            axios({
-                method: "POST",
-				url: "http://localhost:5500/verify",
-				headers: {
-					"Authorization": `Bearer ${Cookies.get("authorToken")}`
-				}
-            })
-			.then((res) => {
-				if(res.status === 200 && res.data.status){
-					console.log(res.data.message)
-					setAuth(true)
-
-					if(Cookies.get("lastPath") !== undefined && location.pathname !== "/"){
-						history.push(Cookies.get("lastPath"))
-					}
-				}
-			})
-			.catch((err) => {
-				console.log(err.response)
-			})
         }
 
         onPageMount()
     }, [])
 
-	const changePageTo = (pageDir) => {
+	const changePageTo = async (pageDir) => {
 
 		try{
-			const response = checkToken()
+			const response = await checkToken()
+			console.log(response)
 
-			if(!response.data.status){
+			if(!response.status){
 				swal.fire({
 					icon: "error",
-					title: "An error has occurred!",
+					title: "Login Required!",
 					text: "Please login to access the main features",
 					confirmButtonColor: "#2285e4"
+				})
+				.then(() => {
+					history.push("/login")
 				})
 				return
 			}
