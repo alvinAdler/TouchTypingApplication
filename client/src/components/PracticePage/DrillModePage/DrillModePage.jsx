@@ -8,16 +8,18 @@ import './DrillModePage_master.css'
 
 import useKey from '../../Utilities/useKey'
 import fingersMappingData from '../../Utilities/fingersMappingData'
-import keysArrary from '../../Utilities/keysArray'
+import { keysArray, keysArrayHold } from '../../Utilities/keysArray'
 import { 
     markLastVisitedPath, 
     getUserCookie, 
     changeTimeFormat, 
     changeAccuracyFormat ,
-    grossWpm
+    grossWpm,
+    capitalizeString,
+    checkIfUpperCase
 } from '../../Utilities/functions'
 
-const DEVELOPER_MODE = true
+const DEVELOPER_MODE = false
 const TIMER_INTERVAL = 1000 //ms
 
 const DrillModePage = () => {
@@ -26,6 +28,7 @@ const DrillModePage = () => {
     const [userInput, setUserInput] = useState("")
     const [indicator, setIndicator] = useState(false)
     const [timer, setTimer] = useState(0)
+    const [isShiftHold, setIsShiftHold] = useState(false)
 
     const sampleRef = useRef()
     const sampleCounter = useRef(16)
@@ -54,8 +57,14 @@ const DrillModePage = () => {
                 url: `http://localhost:5000/api/words/drillMode/${getUserCookie().practice.selection}`
             })
             .then((res) => {
-                currentLetter.current = res.data.words[0]
-                setListOfWords(res.data.words)
+                let temp = res.data.words.split(" ").map((item) => capitalizeString(item)).join(" ")
+                // temp = "\";! 781 " + temp
+
+                // currentLetter.current = res.data.words[0]
+                // setListOfWords(res.data.words)
+
+                currentLetter.current = temp[0]
+                setListOfWords(temp)
             })
         }
 
@@ -63,6 +72,20 @@ const DrillModePage = () => {
     }, [])
 
     useKey((ev, key) => {
+
+        console.log(ev)
+
+        if(key === "Shift"){
+            if(ev.type === "keyup"){
+                console.log("Shift is now up")
+                setIsShiftHold(!isShiftHold)
+            }
+            else{
+                console.log("Shift is now down")
+                setIsShiftHold(!isShiftHold)
+            }
+            return
+        }
 
         if(!isStarted.current){
             isStarted.current = true
@@ -80,6 +103,8 @@ const DrillModePage = () => {
 
                 printFinalData()
                 storeUserDrillPerformance()
+
+                defaultVariables()
 
                 swal.fire({
                     icon: "success",
@@ -137,8 +162,6 @@ const DrillModePage = () => {
         const totalOfWords = parseInt(listOfWords.length / 5)
         const totalSeconds = timerCopy.current - 1
 
-        console.log(Cookies.get("author_token"))
-
         axios({
             method: "POST",
             url: "http://localhost:5000/performance/store/drillMode",
@@ -176,6 +199,34 @@ const DrillModePage = () => {
         console.log(`Total Seconds: ${totalSeconds}`)
     }
 
+    const defaultVariables = () => {
+        sampleCounter.current = 16
+        anotherCounter.current = 0
+        userInputCopy.current = ""
+        timerCopy.current = 1
+        isStarted.current = false
+        typingAccuracy.current = 0
+        errorCount.current = 0
+        wordsPerMinute.current = 0
+
+        isFalseDetected = false
+
+        axios({
+            method: "GET",
+            url: `http://localhost:5000/api/words/drillMode/${getUserCookie().practice.selection}`
+        })
+        .then((res) => {
+            sampleRef.current.style.transform = `translateX(0px)`
+            currentLetter.current = res.data.words[0]
+            console.log(res)
+            setListOfWords(res.data.words)
+
+            setUserInput("")
+            setIndicator(false)
+            setTimer(0)
+        })
+    }
+
     return (
         <div className="drill-mode-container">
             <div className="word-wrapper">
@@ -209,15 +260,29 @@ const DrillModePage = () => {
                 <div className="pointer"></div>
             </div>
             <div className="text-hint-container">
-                <span>{(currentLetter.current !== "" && currentLetter.current !== undefined) && fingersMappingData[currentLetter.current.toLowerCase()].text}</span>
+                <span>
+                    {(currentLetter.current !== "" && currentLetter.current !== undefined) &&
+                        (checkIfUpperCase(currentLetter.current) && !isShiftHold ? 
+                        "Left Hand/Right Hand, Little Finger"
+                        : 
+                        fingersMappingData[currentLetter.current.toLowerCase()].text)
+                    }
+                </span>
             </div>
             <div className="keyboard-wrapper">
                 {Array.from(new Array(5)).map((item, indexOuter) => {
                     return(
                         <div key={indexOuter} className="keyboard-row utility-row">
-                            {keysArrary[indexOuter].map((item, indexInner) => {
+                            {isShiftHold ?
+                            keysArrayHold[indexOuter].map((item, indexInner) => {
                                 return(
                                     <span key={indexInner} className={`${fingersMappingData[item].keyClassName} ${item === currentLetter.current && `key-image-current ${fingersMappingData[item].highlighted}`}`}>{item}</span>
+                                )
+                            })
+                            :
+                            keysArray[indexOuter].map((item, indexInner) => {
+                                return(
+                                    <span key={indexInner} className={`${fingersMappingData[item].keyClassName} ${((item === currentLetter.current) || (checkIfUpperCase(currentLetter.current) && item === "Shift")) && `key-image-current ${fingersMappingData[item].highlighted}`}`}>{item}</span>
                                 )
                             })}
                         </div>

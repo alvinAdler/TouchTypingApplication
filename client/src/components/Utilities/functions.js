@@ -186,3 +186,11 @@ export const camelCaseToSentenceCase = (text) => {
     let afterRegex = text.replace(/([A-Z])/g, " $1")
     return afterRegex.charAt(0).toUpperCase() + afterRegex.slice(1)
 }
+
+export const checkIfUpperCase = (char) => {
+    return /^[A-Z]*$/.test(char)
+}
+
+export const isChar = (char) => {
+    return char.toLowerCase() != char.toUpperCase()
+}

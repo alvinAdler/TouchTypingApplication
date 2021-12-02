@@ -7,11 +7,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 3px solid red;
+    /* border: 3px solid red; */
 }
 
 .word-wrapper{
-    border: 3px solid green;
+    /* border: 3px solid green; */
+    background-color: #f2f2f2;
     height: 30vh;
     width: 100%;
     overflow: hidden;
@@ -19,6 +20,7 @@
     display: flex;
     align-items: center;
     position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .word-wrapper::before,
@@ -37,12 +39,12 @@
 
 .word-wrapper::before{
     left: 0;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(242, 242, 242, 1));
 }
 
 .word-wrapper::after{
     right: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));    
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(242, 242, 242, 1));    
 }
 
 .animated-text-container{
@@ -56,7 +58,6 @@
     left: 50%;
     display: flex;
     align-items: center;
-    /* border: 3px solid blue; */
 }
 
 .word-wrapper span{
@@ -103,15 +104,19 @@
 }
 
 .text-hint-container{
-    border: 3px solid blue;
+    margin: 2rem 0 1.5rem 0;
+    background-color: var(--primary-color);
+    color: #f2f2f2;
+    border-radius: 0.5rem;
     text-align: center;
+    padding: 0.5rem 2rem;
+    font-weight: bold;
 }
 
 .keyboard-wrapper{
     width: clamp(45rem, 70%, 70rem);
-    /* width: 53rem; */
     display: block;
-    padding: 1.5rem;
+    padding: 0.5rem;
     border-radius: 0.5rem;
     background-color: var(--slim-white);
 }
@@ -135,6 +140,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.2rem;
 }
 
 .size-sm{
@@ -224,7 +230,10 @@
 }
 
 .typing-utilities{
-    border: 3px solid red;
+    background-color: var(--primary-color);
+    color: #f2f2f2;
+    border-radius: 0.5rem;
+    padding: 0.5rem 2rem;
     display: flex;
     justify-content: space-around;
     width: 40%;
@@ -232,9 +241,15 @@
 }
 
 .sub-utility{
-    border: 3px solid blue;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    background-color: rgba(243, 243, 243, 0.1);
     display: flex;
     flex-direction: column;
+}
+
+.sub-utility > p{
+    font-weight: bold;
 }
 
 .sub-utility > *{
