@@ -389,12 +389,20 @@ const GameModePage = () => {
     const drawAlienHitCount = () => {
         let canvasContext = mainCanvas.current.getContext("2d")
 
-        canvasContext.font = "normal 250px monospace"
-        canvasContext.fillStyle = "rgba(255, 255, 255, 0.2)"
+        canvasContext.font = "normal 50px monospace"
+        canvasContext.fillStyle = "rgba(255, 255, 255, 0.3)"
         canvasContext.textAlign = "center"
         canvasContext.textBaseLine = "center"
 
+        canvasContext.fillText("You need to shoot", mainCanvas.current.width / 2, (mainCanvas.current.height / 5))
+
+        canvasContext.font = "normal 250px monospace"
+
         canvasContext.fillText(alienHitCount.current.toString(), mainCanvas.current.width / 2, mainCanvas.current.height / 2)
+
+        canvasContext.font = "normal 50px monospace"
+
+        canvasContext.fillText("more aliens!", mainCanvas.current.width / 2, (mainCanvas.current.height / 1.7))
     }
 
     const removeElementFromArray = (arr, element) => {
@@ -449,7 +457,7 @@ const GameModePage = () => {
         <div className="game-mode-container">
             <div className="gameplay-menus">
                 <div className="user-score">
-                    <span>User Score: {userScoreCount}</span>
+                    <span>Your Score: {userScoreCount}</span>
                 </div>
                 <div className="user-lifes-container">
                     {Array.from(Array(userHealth)).map((item, index) => {
@@ -464,11 +472,12 @@ const GameModePage = () => {
             <input 
                 className = "gameplay-input" 
                 type = "text" 
-                placeholder = "Inputs from User"
+                placeholder = "Start typing here"
                 ref = {userInput}
             />
             {DEVELOPER_MODE && 
                 <div className="debugging-buttons">
+                    <h2>Dev</h2>
                     <button className="btn btn-primary" onClick={initSprites}>Init Sprites</button>
                     <button className="btn btn-success" onClick={() => window.requestAnimationFrame(startAnimation)}>Start Animation</button>
                     <button className="btn btn-danger" onClick={stopAnimation}>Stop Animation</button>
@@ -482,10 +491,10 @@ const GameModePage = () => {
                     }}>
                         Clear Canvas
                     </button>
-                    <button className="btn btn-primary" onClick={printArrSprites}>Check Sprites Array</button>
+                    <button className="btn btn-primary" onClick={printArrSprites}>Sprites array</button>
                     <button className="btn btn-danger" onClick={() => console.log(userHealth)}>Check user health</button>
                     <button className="btn btn-primary" onClick={drawScoreLines}>Draw score lines</button>
-                    <button className="btn btn-primary" onClick={toggleIdeStateAllSprites}>Toggle idle sprite all</button>
+                    <button className="btn btn-primary" onClick={toggleIdeStateAllSprites}>Toggle idle all</button>
                 </div>
             }
         </div>

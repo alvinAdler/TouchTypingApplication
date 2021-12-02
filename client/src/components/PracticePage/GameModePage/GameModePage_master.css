@@ -11,27 +11,50 @@
     height: 70vh;
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    border: 1px solid black;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, .5);
 }
 
 .gameplay-input{
     width: 100%;
     margin-top: 15px;
     padding: 7px;
+    border: none;
+    background: none;
+    color: black;
+    border: 3px solid var(--primary-color);
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 150ms ease-in-out;
+}
+
+.gameplay-input:focus{
+    border: none;
+    outline: none;
+    border: 3px solid transparent;
+    background-color: rgba(0, 87, 146, 0.4);
+}
+
+.gameplay-input::placeholder{
+    color: black;
 }
 
 .gameplay-menus{
     display: flex;
     width: 100%;
-    border: 3px solid blue;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
     margin-bottom: 0.2rem;
     flex-direction: row;
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 .user-lifes-container{
     margin-left: auto;
     display: flex;
-    border: 3px solid red;
+    /* border: 3px solid red; */
 }
 
 .user-lifes-container > img{
@@ -40,7 +63,7 @@
 }
 
 .user-score{
-    border: 3px solid green;
+    /* border: 3px solid green; */
     display: flex;
 }
 
@@ -49,8 +72,24 @@
 }
 
 .debugging-buttons{
-    /* border: 3px solid red; */
-    align-self: stretch;
-    margin-top: 10px;
+    border-radius: 0.5rem;
+    background-color: var(--primary-color);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 2rem;
+    gap: 0 5px;
+}
+
+.debugging-buttons > *{
+    margin: 0.5rem 0;
+    display: block;
+    width: 100%;
+}
+
+.debugging-buttons > h2{
+    text-align: center;
+    color: white;
 }
 

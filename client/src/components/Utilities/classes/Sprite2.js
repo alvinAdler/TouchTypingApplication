@@ -17,7 +17,7 @@ class Sprite2{
 
         this.spriteFrameCounter = spriteFrameCounter
 
-        this.spriteDebug = true
+        this.spriteDebug = false
     }
 
     drawSprite(){
