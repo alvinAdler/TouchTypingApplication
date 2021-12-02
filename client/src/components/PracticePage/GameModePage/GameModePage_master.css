@@ -51,6 +51,41 @@
     font-weight: bold;
 }
 
+.game-action-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: .25rem;
+}
+
+.game-action-buttons > *{
+    margin: 0 .25rem;
+    display: flex;
+    color: white;
+    background-color: var(--primary-button-color);
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    padding: 0 1.2rem;
+    border-radius: .4rem;
+    cursor: pointer;
+    transition: outline 200ms ease-in-out, 
+                background-color 200ms ease-in-out;
+}
+
+.game-action-buttons > * > *{
+    margin: auto;
+}
+
+.game-action-buttons > *:hover{
+    background-color: var(--hover-primary-button-color);
+}
+
+.game-action-buttons > *:focus{
+    outline: 3px solid white;
+}
+
 .user-lifes-container{
     margin-left: auto;
     display: flex;
@@ -93,3 +128,11 @@
     color: white;
 }
 
+.disabled-button{
+    cursor: default;
+    background-color:gray;
+}
+
+.disabled-button:hover{
+    background-color: gray;
+}

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
+import { FaPause, FaPlay } from 'react-icons/fa'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { useLocation } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
 import './GameModePage_master.css'
@@ -31,6 +32,7 @@ const GameModePage = () => {
     const [listOfWords, setListOfWords] = useState([])
     const [userHealth, setUserHealth] = useState(3)
     const [userScoreCount, setUserScoreCount] = useState(0)
+    const [isGameStarted, setIsGameStarted] = useState(false)
     
     const userInput = useRef()
     const mainCanvas = useRef(null)
@@ -48,6 +50,7 @@ const GameModePage = () => {
     const canvasScoreBoundaries = useRef({high: 0, mid: 0, low: 0})
 
     const location = useLocation()
+    const history = useHistory()
 
     useEffect(() => {
         const onPageLoad = () => {
@@ -76,19 +79,6 @@ const GameModePage = () => {
                 })
                 setMainSheets(temp)
             })
-
-            axios({
-                method: "GET",
-                url: `http://localhost:5000/api/words/gameMode/${getUserCookie().practice.selection}`
-            })
-            .then((res) => {
-                setListOfWords(res.data.words)
-                SPAWN_ALIEN_PER.current = res.data.alienDropRate
-                ALIEN_VELOCITY.current = res.data.alienSpeed
-            })
-            .catch((err) => {
-                console.error(err)
-            })
         }
 
         onPageLoad()
@@ -97,8 +87,44 @@ const GameModePage = () => {
     useEffect(() => {
         if(Object.keys(mainSheets).length === 3){
             initSprites()
+
+            axios({
+                method: "GET",
+                url: `http://localhost:5000/api/words/gameMode/${getUserCookie().practice.selection}`
+            })
+            .then((response) => {
+                setListOfWords(response.data.words)
+                SPAWN_ALIEN_PER.current = response.data.alienDropRate
+                ALIEN_VELOCITY.current = response.data.alienSpeed
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+
         }
     }, [mainSheets])
+
+    useEffect(() => {
+        if(listOfWords.length > 0){
+            if(!DEVELOPER_MODE){
+                Swal.fire({
+                    icon: "question",
+                    title: "Are you ready?",
+                    text: "Click the button below to start the game!",
+                    confirmButtonColor: "#2285e4",
+                    showCancelButton: true,
+                    cancelButtonColor: "#eb4034"
+                })
+                .then((res) => {
+                    if(res.isConfirmed){
+                        startAnimation()
+                    }else{
+                        history.push("/practice")
+                    }
+                })
+            }
+        }
+    }, [listOfWords])
 
     const addNewSpriteSheet = (sheetName, sheetLocation) => {
         const promise = new Promise((resolve) => {
@@ -192,7 +218,6 @@ const GameModePage = () => {
         userInput.current.focus()
 
         clearCanvas()
-
         drawAlienHitCount()
         
         if(DEVELOPER_MODE){
@@ -200,6 +225,10 @@ const GameModePage = () => {
         }
 
         console.log("Animation on")
+
+        if(!isGameStarted){
+            setIsGameStarted(true)
+        }
 
         //Checking the end game (whether the player lose or win)
         let isGameEnd = (userHealthCopy.current === 0) || (alienHitCount.current === 0)
@@ -305,6 +334,9 @@ const GameModePage = () => {
     }
 
     const stopAnimation = () => {
+        if(isGameStarted){
+            setIsGameStarted(false)
+        }
         window.cancelAnimationFrame(stopId.current)
         console.log("Animation off")
     }
@@ -453,9 +485,33 @@ const GameModePage = () => {
         })
     }
 
+    const pauseGame = () => {
+        stopAnimation()
+        Swal.fire({
+            icon: "info",
+            title: "Game Paused!",
+            text: "Hit the button below to resume",
+            confirmButtonColor: "#2285e4"
+        })
+        .then(() => {
+            
+            setIsGameStarted(true)
+            startAnimation()
+        })
+    }
+
     return (
         <div className="game-mode-container">
             <div className="gameplay-menus">
+                <div className="game-action-buttons">
+                    <button 
+                    onClick={pauseGame}
+                    className={`${!isGameStarted && "disabled-button"}`}
+                    disabled={!isGameStarted}
+                    >
+                        <FaPause/>
+                    </button>
+                </div>
                 <div className="user-score">
                     <span>Your Score: {userScoreCount}</span>
                 </div>

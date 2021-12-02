@@ -86,7 +86,7 @@ const App = () => {
 							<div className="main-page-container">
 								<PageTitle titleName="Touch Typing Application"/>
 								<Carousel className="main-carousel">
-									<Carousel.Item className="main-carousel-item">
+									<Carousel.Item className="main-carousel-item" interval={3000}>
 										<img
 										className="carousel-image"
 										src="/images/undraw_banner_productivity.svg"
@@ -97,7 +97,7 @@ const App = () => {
 											<p>Complete more tasks with higher typing speed and accuracy</p>
 										</Carousel.Caption>
 									</Carousel.Item>
-									<Carousel.Item className="main-carousel-item">
+									<Carousel.Item className="main-carousel-item" interval={3000}>
 										<img
 										className="carousel-image"
 										src="/images/undraw_banner_speed.svg"
@@ -108,7 +108,7 @@ const App = () => {
 											<p>Impress the others with your typing skills</p>
 										</Carousel.Caption>
 									</Carousel.Item>
-									<Carousel.Item className="main-carousel-item">
+									<Carousel.Item className="main-carousel-item" interval={3000}>
 										<img
 										className="carousel-image"
 										src="/images/undraw_banner_accuracy.svg"
