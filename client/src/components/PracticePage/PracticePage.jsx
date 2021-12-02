@@ -9,10 +9,12 @@ import DrillModePage from './DrillModePage/DrillModePage'
 import GameModePage from './GameModePage/GameModePage'
 import ProtectedRoute from '../UtilityComponents/ProtectedRoute/ProtectedRoute'
 import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
+import ContentHoverButton from '../UtilityComponents/ContentHoverButton/ContentHoverButton'
+import practiceNavigationData from '../Utilities/practiceNavigationData'
 
-import { markLastVisitedPath, modifyUserCookie } from '../Utilities/functions'
+import { markLastVisitedPath, modifyUserCookie, camelCaseToSentenceCase } from '../Utilities/functions'
 
-const PracticePage = (props) => {
+const PracticePage = () => {
 
     const [currentTab, setCurrentTab] = useState(0)
     const [selectedPractice, setSelectedPractice] = useState({
@@ -51,11 +53,6 @@ const PracticePage = (props) => {
         })
     }
 
-    const camelCaseToSentenceCase = (text) => {
-        let afterRegex = text.replace(/([A-Z])/g, " $1")
-        return afterRegex.charAt(0).toUpperCase() + afterRegex.slice(1)
-    }
-
     return (
         <div className="practice-page-container">
             <Switch>
@@ -76,20 +73,39 @@ const PracticePage = (props) => {
                         <MaterialTabBody currentTab={currentTab} tabIndex={0}>
                             <div className="options-container container">
                                 <h2>Select a lesson</h2>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "homeRow"})}>Home Row</button>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "topRow"})}>Top Row</button>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "bottomRow"})}>Bottom Row</button>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "numberRow"})}>Number Row</button>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "allKeys"})}>All Keyboard Keys</button>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "commonWords"})}>Common Words</button>
+
+                                {practiceNavigationData[selectedPractice.mode].map((item, index) => {
+                                    return(
+                                        <ContentHoverButton 
+                                        key={index} 
+                                        buttonText={camelCaseToSentenceCase(item.name)} 
+                                        isSelected={item.name === selectedPractice.selection}
+                                        onClick={() => setSelectedPractice({...selectedPractice, selection: item.name})}
+                                        >
+                                            <p>{item.description}</p>
+                                        </ContentHoverButton>
+                                    )
+                                })}
+
                             </div>
                         </MaterialTabBody>
                         <MaterialTabBody currentTab={currentTab} tabIndex={1}>
                             <div className="options-container container">
                                 <h2>Select a difficulty</h2>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "easy"})}>Easy</button>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "medium"})}>Medium</button>
-                                <button className="practice-selection-button" onClick={() => setSelectedPractice({...selectedPractice, selection: "hard"})}>Hard</button>
+
+                                {practiceNavigationData[selectedPractice.mode].map((item, index) => {
+                                    return(
+                                        <ContentHoverButton 
+                                        key={index} 
+                                        buttonText={camelCaseToSentenceCase(item.name)} 
+                                        isSelected={item.name === selectedPractice.selection}
+                                        onClick={() => setSelectedPractice({...selectedPractice, selection: item.name})}
+                                        >
+                                            <p>{item.description}</p>
+                                        </ContentHoverButton>
+                                    )
+                                })}
+                                
                             </div>
                         </MaterialTabBody>
                         <div className="mode-indicator">

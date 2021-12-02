@@ -1,0 +1,13 @@
+.hover-button-container{
+    /* border: 3px solid yellow; */
+    width: 50%;
+    transition: all 200ms ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}

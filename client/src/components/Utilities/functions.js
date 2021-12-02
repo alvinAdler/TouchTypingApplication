@@ -181,3 +181,8 @@ export const changeAccuracyFormat = (accuracy) => {
 export const grossWpm = (numOfChars, minutes) => {
     return (countWord(numOfChars) / minutes).toFixed(1)
 }
+
+export const camelCaseToSentenceCase = (text) => {
+    let afterRegex = text.replace(/([A-Z])/g, " $1")
+    return afterRegex.charAt(0).toUpperCase() + afterRegex.slice(1)
+}
