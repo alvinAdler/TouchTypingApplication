@@ -57,14 +57,14 @@ const DrillModePage = () => {
                 url: `http://localhost:5000/api/words/drillMode/${getUserCookie().practice.selection}`
             })
             .then((res) => {
-                let temp = res.data.words.split(" ").map((item) => capitalizeString(item)).join(" ")
-                // temp = "\";! 781 " + temp
+                // let temp = res.data.words.split(" ").map((item) => capitalizeString(item)).join(" ")
+                // temp = "\"$^ &&; !?,. 781 " + temp
 
-                // currentLetter.current = res.data.words[0]
-                // setListOfWords(res.data.words)
+                currentLetter.current = res.data.words[0]
+                setListOfWords(res.data.words)
 
-                currentLetter.current = temp[0]
-                setListOfWords(temp)
+                // currentLetter.current = temp[0]
+                // setListOfWords(temp)
             })
         }
 
@@ -73,17 +73,8 @@ const DrillModePage = () => {
 
     useKey((ev, key) => {
 
-        console.log(ev)
-
         if(key === "Shift"){
-            if(ev.type === "keyup"){
-                console.log("Shift is now up")
-                setIsShiftHold(!isShiftHold)
-            }
-            else{
-                console.log("Shift is now down")
-                setIsShiftHold(!isShiftHold)
-            }
+            setIsShiftHold(!isShiftHold)
             return
         }
 
@@ -262,7 +253,7 @@ const DrillModePage = () => {
             <div className="text-hint-container">
                 <span>
                     {(currentLetter.current !== "" && currentLetter.current !== undefined) &&
-                        (checkIfUpperCase(currentLetter.current) && !isShiftHold ? 
+                        (fingersMappingData[currentLetter.current].isRequireShift && !isShiftHold ? 
                         "Left Hand/Right Hand, Little Finger"
                         : 
                         fingersMappingData[currentLetter.current.toLowerCase()].text)
@@ -282,7 +273,11 @@ const DrillModePage = () => {
                             :
                             keysArray[indexOuter].map((item, indexInner) => {
                                 return(
-                                    <span key={indexInner} className={`${fingersMappingData[item].keyClassName} ${((item === currentLetter.current) || (checkIfUpperCase(currentLetter.current) && item === "Shift")) && `key-image-current ${fingersMappingData[item].highlighted}`}`}>{item}</span>
+                                    <span key={indexInner} 
+                                    className={`${fingersMappingData[item].keyClassName} ${((item === currentLetter.current) || (fingersMappingData[currentLetter.current]?.isRequireShift && item === "Shift")) && 
+                                    `key-image-current ${fingersMappingData[item].highlighted}`}`}>
+                                        {item}
+                                    </span>
                                 )
                             })}
                         </div>
