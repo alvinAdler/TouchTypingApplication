@@ -19,10 +19,14 @@ import PageTitle from './components/UtilityComponents/PageTitle/PageTitle'
 import ScoreModal from './components/UtilityComponents/ScoreModal/ScoreModal'
 import { checkToken } from './components/Utilities/functions'
 
+const WPM = 98
+const ACC = 100
+const TIME = "15:00"
+
 const App = () => {
 
 	const [auth, setAuth] = useState(false)
-	const [sampleState, setSampleState] = useState(true)
+	const [sampleState, setSampleState] = useState(false)
 
 	const history = useHistory()
 	const location = useLocation()
@@ -143,7 +147,20 @@ const App = () => {
 							</div>
 							<button className="btn btn-primary" onClick={checkModal}>Check modal</button>
 							<ScoreModal isModalActive={sampleState}>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, quia. Explicabo illum alias rerum saepe culpa, libero vero autem mollitia.</p>
+								<div className="game-performance-result-container">
+									<div className="result-game-container">
+										<h3>Speed</h3>
+										<p>{WPM}<span className="performance-unit">wpm</span></p>
+									</div>
+									<div className="result-game-container">
+										<h3>Accuracy</h3>
+										<p>{ACC}<span className="performance-unit">%</span></p>
+									</div>
+									<div className="result-game-container">
+										<h3>Time</h3>
+										<p>{TIME}</p>
+									</div>
+								</div>
 							</ScoreModal>
 						</Route>
 

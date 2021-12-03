@@ -62,3 +62,37 @@
     border-radius: 1rem;
     transition: all 150ms ease-in-out;
 }
+
+/* ================================================================================= */
+
+.game-performance-result-container{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    gap: 1rem 0.5rem;
+}
+
+.result-game-container{
+    border-radius: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    flex-basis: 40%;
+    flex-grow: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.result-game-container > p{
+    margin: auto;
+    width: 100%;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.performance-unit{
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* ================================================================================= */

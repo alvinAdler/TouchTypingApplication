@@ -1,4 +1,5 @@
 .score-modal-container{
+    opacity: 0;
     z-index: 105;
     /* border: 3px solid red; */
     border: none;
@@ -10,19 +11,22 @@
     height: 60vh;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     background-color: #f2f2f2;
-
+    
     display: flex;
     flex-direction: column;
+
+    transform: scale(0);
+    transition: opacity 200ms ease-in, transform 200ms ease-in;
 }
 
 .score-modal-container *{
     z-index: 104;
 }
 
-.hidden-modal{
-    display: none;
+.active-modal{
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .result-wave-top, .result-wave-bottom{
@@ -93,11 +97,70 @@
 }
 
 .content-section{
-    border: 3px solid blue;
+    /* border: 3px solid blue; */
     margin: auto 0;
 }
 
 .buttons-section{
-    border: 3px solid red;
+    border-radius: 1rem;
+    background-color: rgba(0, 87, 146, 0.4);
+    box-shadow: 0 -20px 30px -20px rgba(0, 87, 146, 0.8);
+    padding: 0.5rem;
     margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.score-button{
+    padding: 0.5rem 1rem;
+    position: relative;
+    border: none;
+    outline: none;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    background-color: #f2f2f2;
+    border-radius: 0.5rem;
+    transition: background-color 150ms ease-in-out,
+                color 150ms ease-in-out;
+}
+
+.score-button::after{
+    --scale: 0;
+    padding: 5px 10px;
+    position: absolute;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: transform 150ms ease-in-out;
+    height: max-content;
+    width: max-content;
+    background-color: var(--hover-primary-button-color);
+    transform: scale(var(--scale));
+    transform-origin: bottom center;
+    bottom: calc(100% + 5px);
+}
+
+.score-button:hover{
+    background-color: var(--hover-primary-button-color);
+    color: #f2f2f2;
+}
+
+.score-button:hover::after{
+    --scale: 1;
+}
+
+.button-back::after{
+    content: "Back"
+}
+
+.button-repeat::after{
+    content: "Try Again"
+}
+
+.button-tomain::after{
+    content: "Back to Main Menu"
 }
