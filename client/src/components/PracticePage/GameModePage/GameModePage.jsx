@@ -10,9 +10,10 @@ import './GameModePage_master.css'
 import Tank from '../../Utilities/classes/Tank'
 import Alien from '../../Utilities/classes/Alien'
 
+import ScoreModal from '../../UtilityComponents/ScoreModal/ScoreModal'
 import { tankData, alienData, cannonBallData } from '../../Utilities/SpriteSheetData'
 import { DIRS } from '../../Utilities/Dirs'
-import { randomInteger, markLastVisitedPath, getUserCookie } from '../../Utilities/functions'
+import { randomInteger, markLastVisitedPath, getUserCookie, capitalizeString } from '../../Utilities/functions'
 
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
@@ -33,6 +34,7 @@ const GameModePage = () => {
     const [userHealth, setUserHealth] = useState(3)
     const [userScoreCount, setUserScoreCount] = useState(0)
     const [isGameStarted, setIsGameStarted] = useState(false)
+    const [showModal, setShowModal] = useState(false)
     
     const userInput = useRef()
     const mainCanvas = useRef(null)
@@ -238,26 +240,30 @@ const GameModePage = () => {
 
             storeUserGamePerformance()
 
-            defaultVariables()
+            console.log(userHealthCopy.current)
+            setShowModal(true)
 
-            Swal.fire({
-                icon: "success",
-                title: "Game Over!",
-                text: "Do you want to play again?",
-                confirmButtonColor: "#2285e4",
-                confirmButtonText: "Yes",
-                showCancelButton: true,
-                cancelButtonColor: "#eb4034",
-                cancelButtonText: "No"
-            })
-            .then((res) => {
-                if(res.isConfirmed){
-                    initSprites()
-                    startAnimation()
-                }else{
-                    history.push("/practice")
-                }
-            })
+            // defaultVariables()
+
+
+            // Swal.fire({
+            //     icon: "success",
+            //     title: "Game Over!",
+            //     text: "Do you want to play again?",
+            //     confirmButtonColor: "#2285e4",
+            //     confirmButtonText: "Yes",
+            //     showCancelButton: true,
+            //     cancelButtonColor: "#eb4034",
+            //     cancelButtonText: "No"
+            // })
+            // .then((res) => {
+            //     if(res.isConfirmed){
+            //         initSprites()
+            //         startAnimation()
+            //     }else{
+            //         history.push("/practice")
+            //     }
+            // })
 
             return
         }
@@ -541,6 +547,13 @@ const GameModePage = () => {
                 placeholder = "Start typing here"
                 ref = {userInput}
             />
+            <ScoreModal isModalActive={showModal} isSuccess={userHealthCopy.current > 0}>
+                <div className="game-performance-result">
+                    <p>Your scored: </p>
+                    <p className="result-score">{userScoreCountCopy.current}</p>
+                    <p>in the game with <span className="game-mode">{capitalizeString(getUserCookie().practice.selection)}</span> difficulty!</p>
+                </div>
+            </ScoreModal>
             {DEVELOPER_MODE && 
                 <div className="debugging-buttons">
                     <h2>Dev</h2>

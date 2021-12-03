@@ -22,6 +22,8 @@ import { checkToken } from './components/Utilities/functions'
 const WPM = 98
 const ACC = 100
 const TIME = "15:00"
+const SCORE = 9000
+const DIFF = "Hard"
 
 const App = () => {
 
@@ -146,6 +148,15 @@ const App = () => {
 								</div>
 							</div>
 							<button className="btn btn-primary" onClick={checkModal}>Check modal</button>
+
+							<ScoreModal isModalActive={sampleState}>
+								<div className="game-performance-result">
+									<p>Your scored: </p>
+									<p className="result-score">{SCORE}</p>
+									<p>in the game with <span className="game-mode">{DIFF}</span> difficulty!</p>
+								</div>
+							</ScoreModal>
+
 						</Route>
 
 						<ProtectedLogin path="/login" component={LoginPage}/>
