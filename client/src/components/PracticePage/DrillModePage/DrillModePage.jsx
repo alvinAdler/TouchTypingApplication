@@ -8,6 +8,7 @@ import './DrillModePage_master.css'
 
 import useKey from '../../Utilities/useKey'
 import fingersMappingData from '../../Utilities/fingersMappingData'
+import ScoreModal from '../../UtilityComponents/ScoreModal/ScoreModal'
 import { keysArray, keysArrayHold } from '../../Utilities/keysArray'
 import { 
     markLastVisitedPath, 
@@ -29,6 +30,7 @@ const DrillModePage = () => {
     const [indicator, setIndicator] = useState(false)
     const [timer, setTimer] = useState(0)
     const [isShiftHold, setIsShiftHold] = useState(false)
+    const [showModal, setShowModal] = useState(false)
 
     const sampleRef = useRef()
     const sampleCounter = useRef(16)
@@ -114,24 +116,27 @@ const DrillModePage = () => {
                 printFinalData()
                 storeUserDrillPerformance()
 
-                swal.fire({
-                    icon: "success",
-                    title: "Congratulations!",
-                    text: "You have completed the stage. Do you want to practice again?",
-                    confirmButtonColor: "#2285e4",
-                    confirmButtonText: "Yes",
-                    showCancelButton: true,
-                    cancelButtonColor: "#eb4034",
-                    cancelButtonText: "No"
-                })
-                .then((res) => {
-                    if(res.isConfirmed){
-                        defaultVariables()
-                    }
-                    else{
-                        history.push("/practice")
-                    }
-                })
+                setShowModal(true)
+                // defaultVariables()
+
+                // swal.fire({
+                //     icon: "success",
+                //     title: "Congratulations!",
+                //     text: "You have completed the stage. Do you want to practice again?",
+                //     confirmButtonColor: "#2285e4",
+                //     confirmButtonText: "Yes",
+                //     showCancelButton: true,
+                //     cancelButtonColor: "#eb4034",
+                //     cancelButtonText: "No"
+                // })
+                // .then((res) => {
+                //     if(res.isConfirmed){
+                //         defaultVariables()
+                //     }
+                //     else{
+                //         history.push("/practice")
+                //     }
+                // })
                 setUserInput((prev) => prev + key)
                 return
             }
@@ -331,6 +336,22 @@ const DrillModePage = () => {
                     <span>{errorCount.current}</span>
                 </div>
             </div>
+            <ScoreModal isModalActive={showModal} isSuccess={true}>
+                <div className="drill-performance-result-container">
+                    <div className="result-drill-container">
+                        <h3>Speed</h3>
+                        <p>{wordsPerMinute.current}<span className="performance-unit">wpm</span></p>
+                    </div>
+                    <div className="result-drill-container">
+                        <h3>Accuracy</h3>
+                        <p>{typingAccuracy.current}<span className="performance-unit">%</span></p>
+                    </div>
+                    <div className="result-drill-container">
+                        <h3>Time</h3>
+                        <p>{changeTimeFormat(timer)}</p>
+                    </div>
+                </div>
+            </ScoreModal>
             {DEVELOPER_MODE && 
                 <div className="developer-drill-tools">
                     {/* <button className="btn btn-primary" onClick={startTimer}>Start Timer</button> */}

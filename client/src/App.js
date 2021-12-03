@@ -146,22 +146,6 @@ const App = () => {
 								</div>
 							</div>
 							<button className="btn btn-primary" onClick={checkModal}>Check modal</button>
-							<ScoreModal isModalActive={sampleState}>
-								<div className="game-performance-result-container">
-									<div className="result-game-container">
-										<h3>Speed</h3>
-										<p>{WPM}<span className="performance-unit">wpm</span></p>
-									</div>
-									<div className="result-game-container">
-										<h3>Accuracy</h3>
-										<p>{ACC}<span className="performance-unit">%</span></p>
-									</div>
-									<div className="result-game-container">
-										<h3>Time</h3>
-										<p>{TIME}</p>
-									</div>
-								</div>
-							</ScoreModal>
 						</Route>
 
 						<ProtectedLogin path="/login" component={LoginPage}/>
