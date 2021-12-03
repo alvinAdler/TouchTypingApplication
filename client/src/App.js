@@ -16,11 +16,13 @@ import TutorialPage from './components/TutorialPage/TutorialPage';
 import ProtectedRoute from './components/UtilityComponents/ProtectedRoute/ProtectedRoute';
 import ProtectedLogin from './components/UtilityComponents/ProtectedRoute/ProtectedLogin';
 import PageTitle from './components/UtilityComponents/PageTitle/PageTitle'
+import ScoreModal from './components/UtilityComponents/ScoreModal/ScoreModal'
 import { checkToken } from './components/Utilities/functions'
 
 const App = () => {
 
 	const [auth, setAuth] = useState(false)
+	const [sampleState, setSampleState] = useState(true)
 
 	const history = useHistory()
 	const location = useLocation()
@@ -74,6 +76,10 @@ const App = () => {
 		}
 
 		history.push(pageDir)
+	}
+
+	const checkModal = () => {
+		setSampleState(!sampleState)
 	}
 
 	return(
@@ -135,6 +141,10 @@ const App = () => {
 									</div>
 								</div>
 							</div>
+							<button className="btn btn-primary" onClick={checkModal}>Check modal</button>
+							<ScoreModal isModalActive={sampleState}>
+								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, quia. Explicabo illum alias rerum saepe culpa, libero vero autem mollitia.</p>
+							</ScoreModal>
 						</Route>
 
 						<ProtectedLogin path="/login" component={LoginPage}/>
