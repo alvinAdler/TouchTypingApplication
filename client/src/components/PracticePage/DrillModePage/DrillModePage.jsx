@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import Cookies from 'js-cookie'
@@ -46,6 +46,7 @@ const DrillModePage = () => {
     let isFalseDetected = false
 
     const location = useLocation()
+    const history = useHistory()
 
     useEffect(() => {
         const onPageLoad = () => {
@@ -71,6 +72,24 @@ const DrillModePage = () => {
         onPageLoad()
     }, [])
 
+    useEffect(() => {
+        if(listOfWords.length > 0){
+            swal.fire({
+                icon: "question",
+                title: "Are you ready?",
+                text: "Click the button below to begin the practice. The counter will start as soon as you type a letter",
+                confirmButtonColor: "#2285e4",
+                showCancelButton: true,
+                cancelButtonColor: "#eb4034"
+            })
+            .then((res) => {
+                if(res.isDenied || res.isDismissed){
+                    history.push("/practice")
+                }
+            })
+        }
+    }, [listOfWords])
+
     useKey((ev, key) => {
 
         if(key === "Shift"){
@@ -95,13 +114,23 @@ const DrillModePage = () => {
                 printFinalData()
                 storeUserDrillPerformance()
 
-                defaultVariables()
-
                 swal.fire({
                     icon: "success",
                     title: "Congratulations!",
-                    text: "You have completed the stage",
-                    confirmButtonColor: "#2285e4"
+                    text: "You have completed the stage. Do you want to practice again?",
+                    confirmButtonColor: "#2285e4",
+                    confirmButtonText: "Yes",
+                    showCancelButton: true,
+                    cancelButtonColor: "#eb4034",
+                    cancelButtonText: "No"
+                })
+                .then((res) => {
+                    if(res.isConfirmed){
+                        defaultVariables()
+                    }
+                    else{
+                        history.push("/practice")
+                    }
                 })
                 setUserInput((prev) => prev + key)
                 return

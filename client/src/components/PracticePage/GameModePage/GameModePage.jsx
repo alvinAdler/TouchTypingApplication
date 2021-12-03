@@ -17,7 +17,7 @@ import { randomInteger, markLastVisitedPath, getUserCookie } from '../../Utiliti
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-const DEVELOPER_MODE = true
+const DEVELOPER_MODE = false
 
 const SCORE_HIGH = 300
 const SCORE_MID = 200
@@ -243,10 +243,20 @@ const GameModePage = () => {
             Swal.fire({
                 icon: "success",
                 title: "Game Over!",
-                text: "You completed the game"
+                text: "Do you want to play again?",
+                confirmButtonColor: "#2285e4",
+                confirmButtonText: "Yes",
+                showCancelButton: true,
+                cancelButtonColor: "#eb4034",
+                cancelButtonText: "No"
             })
-            .then(() => {
-                initSprites()
+            .then((res) => {
+                if(res.isConfirmed){
+                    initSprites()
+                    startAnimation()
+                }else{
+                    history.push("/practice")
+                }
             })
 
             return
