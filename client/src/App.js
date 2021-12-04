@@ -47,7 +47,6 @@ const App = () => {
 
 		try{
 			const response = await checkToken()
-			console.log(response)
 
 			if(!response.status){
 				swal.fire({

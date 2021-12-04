@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { AppBar, Tabs, Tab } from '@mui/material'
 import { Route, Switch, useRouteMatch, useHistory, useLocation } from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles';
 
 import './PracticePage_master.css'
 
@@ -11,6 +12,7 @@ import ProtectedRoute from '../UtilityComponents/ProtectedRoute/ProtectedRoute'
 import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
 import ContentHoverButton from '../UtilityComponents/ContentHoverButton/ContentHoverButton'
 import practiceNavigationData from '../Utilities/practiceNavigationData'
+import theme from '../Utilities/tabsTheme'
 
 import { markLastVisitedPath, modifyUserCookie, camelCaseToSentenceCase } from '../Utilities/functions'
 
@@ -59,17 +61,18 @@ const PracticePage = () => {
                 <Route path={`${routeMatch.path}`} exact render={() => (
                     <>
                         <PageTitle titleName="Practice Page"/>
-                        <AppBar className="practice-nav-bar" color="default" position="static">
-                            <Tabs
-                            value={currentTab}
-                            onChange={handleTabChange}
-                            textColor="inherit"
-                            variant="fullWidth"
-                            >
-                                <Tab sx={{fontWeight: 600, color: "black"}} label="Drill Mode"/>
-                                <Tab sx={{fontWeight: 600, color: "black"}} label="Game Mode"/>
-                            </Tabs>
-                        </AppBar>
+                        <ThemeProvider theme={theme}>
+                            <AppBar className="practice-nav-bar" position="static">
+                                <Tabs
+                                value={currentTab}
+                                onChange={handleTabChange}
+                                variant="fullWidth"
+                                >
+                                    <Tab sx={{fontWeight: 600, color: "#2b2b2b", backgroundColor: `${currentTab === 0 ? "#005792" : "#ababab"}`}} label="Drill Mode"/>
+                                    <Tab sx={{fontWeight: 600, color: "#2b2b2b", backgroundColor: `${currentTab === 1 ? "#005792" : "#ababab"}`}} label="Game Mode"/>
+                                </Tabs>
+                            </AppBar>
+                        </ThemeProvider>
                         <MaterialTabBody currentTab={currentTab} tabIndex={0}>
                             <div className="options-container container">
                                 <h2>Select a lesson</h2>

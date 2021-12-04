@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { AppBar, Tabs, Tab } from '@mui/material'
 import { useLocation } from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles';
 
 import './UserPerformancePage_master.css'
 
 import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBody'
+import theme from '../Utilities/tabsTheme'
 import { markLastVisitedPath } from '../Utilities/functions'
 
 const UserPerformancePage = () => {
@@ -23,17 +25,18 @@ const UserPerformancePage = () => {
     return (
         <div className="performance-container">
             <h1 style={{textAlign: "center"}}>User Performance Page</h1>
-            <AppBar color="default" position="static">
-                <Tabs
-                value={currentTab}
-                onChange={handleTabChange}
-                textColor="inherit"
-                variant="fullWidth"
-                >
-                    <Tab label="Drill Mode"/>
-                    <Tab label="Game Mode"/>
-                </Tabs>
-            </AppBar>
+            <ThemeProvider theme={theme}>
+                <AppBar color="default" position="static">
+                    <Tabs
+                    value={currentTab}
+                    onChange={handleTabChange}
+                    variant="fullWidth"
+                    >
+                        <Tab sx={{fontWeight: 600, color: "#2b2b2b", backgroundColor: `${currentTab === 0 ? "#005792" : "#ababab"}`}} label="Drill Mode"/>
+                        <Tab sx={{fontWeight: 600, color: "#2b2b2b", backgroundColor: `${currentTab === 1 ? "#005792" : "#ababab"}`}} label="Game Mode"/>
+                    </Tabs>
+                </AppBar>
+            </ThemeProvider>
             <MaterialTabBody currentTab={currentTab} tabIndex={0}>
                 <div className="performance-details container">
                     <div className="summary-container">

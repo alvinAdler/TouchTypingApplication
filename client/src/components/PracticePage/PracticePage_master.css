@@ -70,3 +70,7 @@
 .practice-selection-button:hover, .button-go:hover{
     background-color: var(--hover-primary-button-color);
 }
+
+.practice-tab-active{
+    background-color: red;
+}
