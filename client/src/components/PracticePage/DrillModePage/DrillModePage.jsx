@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
+import { FaPause } from 'react-icons/fa'
 import axios from 'axios'
 import swal from 'sweetalert2'
 import Cookies from 'js-cookie'
@@ -20,7 +21,7 @@ import {
     checkIfUpperCase
 } from '../../Utilities/functions'
 
-const DEVELOPER_MODE = false
+const DEVELOPER_MODE = true
 const TIMER_INTERVAL = 1000 //ms
 
 const DrillModePage = () => {
@@ -75,6 +76,9 @@ const DrillModePage = () => {
     }, [])
 
     useEffect(() => {
+        if(DEVELOPER_MODE){
+            return
+        }
         if(listOfWords.length > 0){
             swal.fire({
                 icon: "question",
@@ -218,7 +222,7 @@ const DrillModePage = () => {
         isFalseDetected = false
     }
 
-    const restartGame = () => {
+    const restartDrill = () => {
         console.log("Game Restarted")
 
         axios({
@@ -239,8 +243,28 @@ const DrillModePage = () => {
         })
     }
 
+    const pauseDrill = () => {
+        stopTimer()
+        
+        swal.fire({
+            icon: "info",
+            title: "Drill Paused!",
+            text: "Hit the button below to resume the drill",
+            confirmButtonColor: "#2285e4"
+        })
+        .then(() => {
+            startTimer()
+        })
+    }
+
     return (
         <div className="drill-mode-container">
+            <div className="drill-action-buttons">
+                <button type="button" className="action-button" onClick={(ev) => {
+                    ev.target.blur()
+                    pauseDrill()
+                }}><FaPause/></button>
+            </div>
             <div className="word-wrapper">
                 <p ref={sampleRef} className="animated-text-container">
                     {listOfWords.split("").map((item, index) => {
@@ -328,7 +352,7 @@ const DrillModePage = () => {
             isSuccess={true}
             onButtonClick= {{
                 goReturn: () => history.push("/practice"),
-                goTryAgain: restartGame,
+                goTryAgain: restartDrill,
                 goMain: () => history.push("/")
             }}    
             >
