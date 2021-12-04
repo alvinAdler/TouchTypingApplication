@@ -111,32 +111,13 @@ const DrillModePage = () => {
             userInputCopy.current = userInputCopy.current + key
             //* Then the words are over
             if(userInputCopy.current.length === listOfWords.length){
+                console.log("Did I went here?")
                 stopTimer()
 
                 printFinalData()
                 storeUserDrillPerformance()
-
                 setShowModal(true)
-                // defaultVariables()
 
-                // swal.fire({
-                //     icon: "success",
-                //     title: "Congratulations!",
-                //     text: "You have completed the stage. Do you want to practice again?",
-                //     confirmButtonColor: "#2285e4",
-                //     confirmButtonText: "Yes",
-                //     showCancelButton: true,
-                //     cancelButtonColor: "#eb4034",
-                //     cancelButtonText: "No"
-                // })
-                // .then((res) => {
-                //     if(res.isConfirmed){
-                //         defaultVariables()
-                //     }
-                //     else{
-                //         history.push("/practice")
-                //     }
-                // })
                 setUserInput((prev) => prev + key)
                 return
             }
@@ -235,20 +216,26 @@ const DrillModePage = () => {
         wordsPerMinute.current = 0
 
         isFalseDetected = false
+    }
+
+    const restartGame = () => {
+        console.log("Game Restarted")
 
         axios({
             method: "GET",
             url: `http://localhost:5000/api/words/drillMode/${getUserCookie().practice.selection}`
         })
         .then((res) => {
+            defaultVariables()
             sampleRef.current.style.transform = `translateX(0px)`
             currentLetter.current = res.data.words[0]
-            console.log(res)
+            console.log("Hey the problem is in here")
             setListOfWords(res.data.words)
 
             setUserInput("")
             setIndicator(false)
             setTimer(0)
+            setShowModal(false)
         })
     }
 
@@ -336,7 +323,15 @@ const DrillModePage = () => {
                     <span>{errorCount.current}</span>
                 </div>
             </div>
-            <ScoreModal isModalActive={showModal} isSuccess={true}>
+            <ScoreModal 
+            isModalActive={showModal} 
+            isSuccess={true}
+            onButtonClick= {{
+                goReturn: () => history.push("/practice"),
+                goTryAgain: restartGame,
+                goMain: () => history.push("/")
+            }}    
+            >
                 <div className="drill-performance-result-container">
                     <div className="result-drill-container">
                         <h3>Speed</h3>

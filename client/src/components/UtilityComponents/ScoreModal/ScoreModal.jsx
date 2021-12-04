@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { FaCheck, FaTimes, FaArrowLeft, FaRedo, FaHome } from 'react-icons/fa'
 
 import './ScoreModal_master.css'
 
 import BlackBanner from '../BlackBanner'
 
-const ScoreModal = ({isModalActive, children, isSuccess=true}) => {
+const defaultActions = {
+    goReturn: () => console.log("Button return clicked"),
+    goTryAgain: () => console.log("Button try again clicked"),
+    goMain: () => console.log("Button main menu clicked")
+}
+
+const ScoreModal = ({isModalActive, children, isSuccess=true, onButtonClick=defaultActions}) => {
+
+    const repeatButtonRef = useRef()
+
     return (
         <>
             <div className={`${isModalActive && "active-modal"} score-modal-container`}>
@@ -27,9 +36,12 @@ const ScoreModal = ({isModalActive, children, isSuccess=true}) => {
                     {children}
                 </div>
                 <div className="buttons-section">
-                    <button className="score-button button-back"><FaArrowLeft/></button>
-                    <button className="score-button button-repeat" onClick={() => console.log("Repeated pressed")}><FaRedo/></button>
-                    <button className="score-button button-tomain"><FaHome/></button>
+                    <button type="button" className="score-button button-back" onClick={onButtonClick.goReturn}><FaArrowLeft/></button>
+                    <button type="button" ref={repeatButtonRef} className="score-button button-repeat" onClick={(ev) => {
+                        ev.target.blur()
+                        onButtonClick.goTryAgain()
+                    }}><FaRedo onClick={() => repeatButtonRef.current.blur()}/></button>
+                    <button type="button" className="score-button button-tomain" onClick={onButtonClick.goMain}><FaHome/></button>
                 </div>
             </div>
             <BlackBanner isActive={isModalActive}/>

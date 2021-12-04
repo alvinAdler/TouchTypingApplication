@@ -16,14 +16,7 @@ import TutorialPage from './components/TutorialPage/TutorialPage';
 import ProtectedRoute from './components/UtilityComponents/ProtectedRoute/ProtectedRoute';
 import ProtectedLogin from './components/UtilityComponents/ProtectedRoute/ProtectedLogin';
 import PageTitle from './components/UtilityComponents/PageTitle/PageTitle'
-import ScoreModal from './components/UtilityComponents/ScoreModal/ScoreModal'
 import { checkToken } from './components/Utilities/functions'
-
-const WPM = 98
-const ACC = 100
-const TIME = "15:00"
-const SCORE = 9000
-const DIFF = "Hard"
 
 const App = () => {
 
@@ -44,8 +37,6 @@ const App = () => {
 				if(Cookies.get("lastPath") !== undefined && location.pathname !== "/"){
 					history.push(Cookies.get("lastPath"))
 				}
-			}else{
-				console.log(result)
 			}
         }
 
@@ -147,16 +138,6 @@ const App = () => {
 									</div>
 								</div>
 							</div>
-							<button className="btn btn-primary" onClick={checkModal}>Check modal</button>
-
-							<ScoreModal isModalActive={sampleState}>
-								<div className="game-performance-result">
-									<p>Your scored: </p>
-									<p className="result-score">{SCORE}</p>
-									<p>in the game with <span className="game-mode">{DIFF}</span> difficulty!</p>
-								</div>
-							</ScoreModal>
-
 						</Route>
 
 						<ProtectedLogin path="/login" component={LoginPage}/>

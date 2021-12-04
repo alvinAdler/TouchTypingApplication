@@ -243,28 +243,6 @@ const GameModePage = () => {
             console.log(userHealthCopy.current)
             setShowModal(true)
 
-            // defaultVariables()
-
-
-            // Swal.fire({
-            //     icon: "success",
-            //     title: "Game Over!",
-            //     text: "Do you want to play again?",
-            //     confirmButtonColor: "#2285e4",
-            //     confirmButtonText: "Yes",
-            //     showCancelButton: true,
-            //     cancelButtonColor: "#eb4034",
-            //     cancelButtonText: "No"
-            // })
-            // .then((res) => {
-            //     if(res.isConfirmed){
-            //         initSprites()
-            //         startAnimation()
-            //     }else{
-            //         history.push("/practice")
-            //     }
-            // })
-
             return
         }
 
@@ -516,6 +494,16 @@ const GameModePage = () => {
         })
     }
 
+    const restartGame = () => {
+        console.log("Game restarted")
+        defaultVariables()
+
+        initSprites()
+        startAnimation()
+
+        setShowModal(false)
+    }
+
     return (
         <div className="game-mode-container">
             <div className="gameplay-menus">
@@ -547,7 +535,15 @@ const GameModePage = () => {
                 placeholder = "Start typing here"
                 ref = {userInput}
             />
-            <ScoreModal isModalActive={showModal} isSuccess={userHealthCopy.current > 0}>
+            <ScoreModal 
+            isModalActive={showModal} 
+            isSuccess={userHealthCopy.current > 0}
+            onButtonClick={{
+                goReturn: () => history.push("/practice"),
+                goTryAgain: restartGame,
+                goMain: () => history.push("/")
+            }}
+            >
                 <div className="game-performance-result">
                     <p>Your scored: </p>
                     <p className="result-score">{userScoreCountCopy.current}</p>
