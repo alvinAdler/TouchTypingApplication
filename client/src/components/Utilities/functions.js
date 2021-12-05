@@ -171,7 +171,15 @@ export const countWord =  (word) => {
 }
 
 export const changeTimeFormat = (seconds) => {
+    if(!seconds){
+        return "00:00"
+    }
     return new Date(seconds * 1000).toISOString().substr(14, 5)
+}
+
+export const convertISOtoUTC = (isoFormat) => {
+    let normalizedDate = new Date(isoFormat)
+    return normalizedDate.toUTCString()
 }
 
 export const changeAccuracyFormat = (accuracy) => {

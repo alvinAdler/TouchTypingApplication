@@ -1,49 +1,185 @@
+.performance-container{
+    display: block;
+    margin-bottom: 5vh;
+}
+
+.performance-container p, 
+.performance-container h2,
+.performance-container h3,
+.performance-container h4{
+    margin: 0;
+} 
+
 .summary-container, .practices-container{
     padding: 15px;
     border-radius: 10px;
+    /* border: 3px solid yellow; */
+}
+
+.summary-container, .practices-container{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: stretch;
+    height: 100%;
+    gap: 2rem 3rem;
+}
+
+.performance-section-title{
+    color: white;
+    text-align: center;
+    /* border: 3px solid red; */
+    flex-basis: 100%;
+}
+
+.performance-sum-details{
+    /* flex-grow: 1; */
+    flex-basis: 45%;
+    background-color: #fafafa;
+    color: black;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem 1rem;
+}
+
+.performance-sum-details > *{
+    text-align: center;
+}
+
+.performance-subsection-title{
+    flex-basis: 100%;
+    font-weight: bold;
+}
+
+.performance-subsection-content{
+    flex-grow: 1;
+    background-color: rgba(0, 87, 146, 0.4);
+    padding: 0.5rem;
+    border-radius: 1rem;
+    flex-basis: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.performance-subsection-content > h4{
+    font-weight: 500;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+}
+
+.performance-subsection-content > p{
+    font-size: 3rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.performance-subsection-content > p > span{
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+/* ============================================ */
+
+.performance-table-container{
+    /* border: 3px solid red; */
+    width: 100%;
+    border-radius: 10px;
+    padding: 1rem;
+    background-color: #fafafa;
+    border-collapse: separate;
 }
 
 .performance-table{
     width: 100%;
+    /* background-color: rgba(0, 87, 146, 0.4); */
+    color: black;
+}
+
+.performance-table thead th{
+    background-color: rgba(0, 87, 146, 0.7);
+    font-size: 1.1rem;
 }
 
 .performance-table * {
-    border: 2px solid black;
-    text-align: center;
-}
-
-.summary-container{
-    display: grid;
-    grid-template-rows: repeat(2, auto-fit);
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 15px;
-}
-
-.summary-container > h4{
-    grid-column: span 2;
-    text-align: center;
-}
-
-.typing-speed, .typing-accuracy{
-    background-color: #fafafa;
-    padding: 15px;
-    border-radius: 10px;
-    display: grid;
-    grid-template-rows: repeat(2, auto-fit);
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px 5px;
-}
-
-.typing-speed > h5, .typing-accuracy > h5, 
-.typing-speed > div, .typing-accuracy > div{
-    text-align: center;
-}
-
-.typing-speed > h5, .typing-accuracy > h5,
-.typing-speed > div:last-child, .typing-accuracy > div:last-child{
-    grid-column: span 2;
-}
-
-/* .typing-speed *, .typing-accuracy *{
     border: 1px solid black;
-} */
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.row-dark{
+    background-color: rgba(0, 87, 146, 0.6);
+}
+
+.row-light{
+    background-color: rgba(0, 87, 146, 0.4);
+}
+
+
+@media only screen and (max-width: 767px) {
+    .performance-sum-details{
+        flex-basis: 100%;
+    }
+
+    .performance-table thead{
+        display: none;
+    }
+
+    .performance-table * {
+        border: none;
+    }
+
+    .performance-row{
+        padding: 1rem;
+        border-radius: 1rem;
+        display: inline-block;
+        margin-bottom: 1rem;
+        display: flex;
+        flex-flow: row wrap;
+        position: relative;
+    }
+
+    .performance-row > *{
+        flex-basis: 25%;
+    }
+
+    .data-num, .data-date, .data-selection{
+        flex-basis: 100%;
+        font-weight: 700;
+    }
+
+    .data-wpm, .data-acc, .data-word-count, .data-total-time, .data-score{
+        flex-grow: 1;
+        background-color: #f2f2f2;
+        font-weight: 500;
+    }
+
+    .data-num{
+        flex-basis: 0;
+        margin: 0 auto;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.5rem;
+        color: white;
+        background-color: var(--primary-color);
+    }
+
+    .data-score{
+        border-radius: 1rem;
+    }
+
+    .data-wpm{
+        border-top-left-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+    }
+
+    .data-total-time{
+        border-top-right-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+    }
+}

@@ -1,24 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import { AppBar, Tabs, Tab } from '@mui/material'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles';
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import swal from 'sweetalert2'
 
 import './UserPerformancePage_master.css'
 
 import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBody'
 import theme from '../Utilities/tabsTheme'
-import { markLastVisitedPath } from '../Utilities/functions'
+import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
+import { 
+    markLastVisitedPath,
+    capitalizeString,
+    camelCaseToSentenceCase,
+    changeTimeFormat,
+    convertISOtoUTC
+} from '../Utilities/functions'
 
 const UserPerformancePage = () => {
 
     const [currentTab, setCurrentTab] = useState(0)
+    const [drillPerformances, setDrillPerformances] = useState({
+        lastTenDrills: [],
+        summary: {}
+    })
+    const [gamePerformances, setGamePerformances] = useState({
+        lastTenGames: [],
+        summary: {}
+    })
+
+
     const location = useLocation()
+    const history = useHistory()
 
     useEffect(() => {
         markLastVisitedPath(location.pathname)
-
+        getPerformanceData()
     }, [])
 
     const handleTabChange = (ev, selectedTab) => {
@@ -47,17 +66,36 @@ const UserPerformancePage = () => {
         .then(axios.spread((gameData, drillData) => {
             console.log("Game Data")
             console.log(gameData.data)
+            setGamePerformances(gameData.data.result)
 
             console.log("===============")
 
             console.log("Drill Data")
-            console.log(drillData)
+            console.log(drillData.data)
+            setDrillPerformances(drillData.data.result)
         }))
+        .catch((err) => {
+            if(err.response){
+                console.log(err.response)
+            }else{
+                console.log(err.message)
+            }
+            
+            swal.fire({
+                icon: "error",
+                title: "Oops",
+                text: "Something went wrong. Please recheck your connection",
+                confirmButtonColor: "#eb4034",
+            })
+            .then((res) => {
+                history.push("/")
+            })
+        })
     }
 
     return (
         <div className="performance-container">
-            <h1 style={{textAlign: "center"}}>User Performance Page</h1>
+            <PageTitle titleName="User Performance Page"/>
             <ThemeProvider theme={theme}>
                 <AppBar color="default" position="static">
                     <Tabs
@@ -71,196 +109,141 @@ const UserPerformancePage = () => {
                 </AppBar>
             </ThemeProvider>
             <MaterialTabBody currentTab={currentTab} tabIndex={0}>
-                <div className="performance-details container">
+                <div className="performance-details">
                     <div className="summary-container">
-                        <h4>Summary</h4>
-                        <div className="typing-speed">
-                            <h5>Typing Speed</h5>
-                            <div>
-                                <h6>Lowest Typing Speed</h6>
-                                <p>50 WPM</p>
+                        <h2 className="performance-section-title">Summary</h2>
+                        <div className="performance-sum-details">
+                            <h3 className="performance-subsection-title">Typing Speed</h3>
+                            <div className="performance-subsection-content">
+                                <h4>Slowest</h4>
+                                <p>{drillPerformances.summary?.minWpm} <span>WPM</span></p>
                             </div>
-                            <div>
-                                <h6>Highest Typing Speed</h6>
-                                <p>130 WPM</p>
+                            <div className="performance-subsection-content">
+                                <h4>Fastest</h4>
+                                <p>{drillPerformances.summary?.maxWpm} <span>WPM</span></p>
                             </div>
-                            <div>
-                                <h6>Average Typing Speed</h6>
-                                <p>86 WPM</p>
-                            </div>
-                        </div>
-                        <div className="typing-accuracy">
-                            <h5>Typing Accuracy</h5>
-                            <div>
-                                <h6>Lowest Typing Accuracy</h6>
-                                <p>94%</p>
-                            </div>
-                            <div>
-                                <h6>Highest Typing Accuracy</h6>
-                                <p>100%</p>
-                            </div>
-                            <div>
-                                <h6>Average Typing Accuracy</h6>
-                                <p>98%</p>
+                            <div className="performance-subsection-content">
+                                <h4>Average</h4>
+                                <p>{drillPerformances.summary?.averageWpm} <span>WPM</span></p>
                             </div>
                         </div>
+                        <div className="performance-sum-details">
+                            <h3 className="performance-subsection-title">Typing Accuracy</h3>
+                            <div className="performance-subsection-content">
+                                <h4>Lowest</h4>
+                                <p>{drillPerformances.summary?.minAcc}%</p>
+                            </div>
+                            <div className="performance-subsection-content">
+                                <h4>Highest</h4>
+                                <p>{drillPerformances.summary?.maxAcc}%</p>
+                            </div>
+                            <div className="performance-subsection-content">
+                                <h4>Average</h4>
+                                <p>{drillPerformances.summary?.averageAcc}%</p>
+                            </div>
+                        </div>  
+                        <div className="performance-sum-details">
+                            <h3 className="performance-subsection-title">Time</h3>
+                            <div className="performance-subsection-content">
+                                <h4>Slowest</h4>
+                                <p>{changeTimeFormat(drillPerformances.summary?.slowestTime)}</p>
+                            </div>
+                            <div className="performance-subsection-content">
+                                <h4>Fastest</h4>
+                                <p>{changeTimeFormat(drillPerformances.summary?.fastestTime)}</p>
+                            </div>
+                            <div className="performance-subsection-content">
+                                <h4>Average</h4>
+                                <p>{changeTimeFormat(drillPerformances.summary?.averageTime)}</p>
+                            </div>
+                        </div>                  
                     </div>
-                    <hr className="my-4" />
+                    <hr className="my-4" style={{color: "white", backgroundColor: "white", height: "2px"}}/>
                     <div className="practices-container">
-                        <h4>Last 10 Practices</h4>
-                        <table className="performance-table">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Practice Time</th>
-                                    <th>Lowest Speed</th>
-                                    <th>Highest Speed</th>
-                                    <th>Average Speed</th>
-                                    <th>Accuracy</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>1</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>2</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>3</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>4</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>5</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <h2 className="performance-section-title">Last 10 Practices</h2>
+                        <div className="performance-table-container">
+                            <table className="performance-table">
+                                <thead>
+                                    <tr className="performance-row">
+                                        <th>No</th>
+                                        <th>Practice Date</th>
+                                        <th>Lesson</th>
+                                        <th>Words per Minute</th>
+                                        <th>Accuracy</th>
+                                        <th>Total Words</th>
+                                        <th>Total Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {drillPerformances.lastTenDrills.length > 0 &&
+                                        drillPerformances.lastTenDrills.map((item, index) => (
+                                            <tr key={index} className={`performance-row ${index % 2 === 0 ? "row-light" : "row-dark"}`}>
+                                                <td className="data-num">{index + 1}</td>
+                                                <td className="data-date">{convertISOtoUTC(item.recordDate)}</td>
+                                                <td className="data-selection">{camelCaseToSentenceCase(item.lesson)}</td>
+                                                <td className="data-wpm">{item.wordsPerMinute} wpm</td>
+                                                <td className="data-acc">{item.accuracy}%</td>
+                                                <td className="data-word-count">{item.totalOfWords} words</td>
+                                                <td className="data-total-time">{changeTimeFormat(item.totalSeconds)}</td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>                                    
                 </div>
             </MaterialTabBody>
             <MaterialTabBody currentTab={currentTab} tabIndex={1}>
-                <div className="performance-details container">
+                <div className="performance-details">
                     <div className="summary-container">
-                        <h4>Summary</h4>
-                        <div className="typing-speed">
-                            <h5>Typing Speed</h5>
-                            <div>
-                                <h6>Lowest Typing Speed</h6>
-                                <p>50 WPM</p>
+                        <h2 className="performance-section-title">Summary</h2>
+                        <div className="performance-sum-details">
+                            <h3 className="performance-subsection-title">Score</h3>
+                            <div className="performance-subsection-content">
+                                <h4>Lowest</h4>
+                                <p>{gamePerformances.summary?.minScore} <span>points</span></p>
                             </div>
-                            <div>
-                                <h6>Highest Typing Speed</h6>
-                                <p>130 WPM</p>
+                            <div className="performance-subsection-content">
+                                <h4>Highest</h4>
+                                <p>{gamePerformances.summary?.maxScore} <span>points</span></p>
                             </div>
-                            <div>
-                                <h6>Average Typing Speed</h6>
-                                <p>86 WPM</p>
+                            <div className="performance-subsection-content">
+                                <h4>Average</h4>
+                                <p>{gamePerformances.summary?.scoreAverage} <span>points</span></p>
                             </div>
-                        </div>
-                        <div className="typing-accuracy">
-                            <h5>Typing Accuracy</h5>
-                            <div>
-                                <h6>Lowest Typing Accuracy</h6>
-                                <p>94%</p>
-                            </div>
-                            <div>
-                                <h6>Highest Typing Accuracy</h6>
-                                <p>100%</p>
-                            </div>
-                            <div>
-                                <h6>Average Typing Accuracy</h6>
-                                <p>98%</p>
-                            </div>
-                        </div>
+                        </div>                 
                     </div>
-                    <hr className="my-4" />
+                    <hr className="my-4" style={{color: "white", backgroundColor: "white", height: "2px"}}/>
                     <div className="practices-container">
-                        <h4>Last 10 Practices</h4>
-                        <table className="performance-table">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Practice Time</th>
-                                    <th>Lowest Speed</th>
-                                    <th>Highest Speed</th>
-                                    <th>Average Speed</th>
-                                    <th>Accuracy</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>1</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>2</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>3</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>4</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td style={{textAlign: "center"}}>5</td>
-                                    <td>October 15, 2021 - 20:39</td>
-                                    <td>65 WPM</td>
-                                    <td>95 WPM</td>
-                                    <td>85 WPM</td>
-                                    <td>98%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>                            
+                        <h2 className="performance-section-title">Last 10 Practices</h2>
+                        <div className="performance-table-container">
+                            <table className="performance-table">
+                                <thead>
+                                    <tr className="performance-row">
+                                        <th>No</th>
+                                        <th>Practice Date</th>
+                                        <th>Difficulty</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {gamePerformances.lastTenGames.length > 0 &&
+                                        gamePerformances.lastTenGames.map((item, index) => (
+                                            <tr key={index} className={`performance-row ${index % 2 === 0 ? "row-light" : "row-dark"}`}>
+                                                <td className="data-num">{index + 1}</td>
+                                                <td className="data-date">{convertISOtoUTC(item.recordDate)}</td>
+                                                <td className="data-selection">{camelCaseToSentenceCase(item.difficulty)}</td>
+                                                <td className="data-score">{item.score} points</td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                                    
                 </div>
             </MaterialTabBody>
-            <button className="btn btn-primary" onClick={getPerformanceData}>Get Data</button>
         </div>
     )
 }
