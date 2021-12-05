@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { AppBar, Tabs, Tab } from '@mui/material'
 import { useLocation } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles';
+import axios from 'axios'
+import Cookies from 'js-cookie'
 
 import './UserPerformancePage_master.css'
 
@@ -16,10 +18,41 @@ const UserPerformancePage = () => {
 
     useEffect(() => {
         markLastVisitedPath(location.pathname)
+
     }, [])
 
     const handleTabChange = (ev, selectedTab) => {
         setCurrentTab(selectedTab)
+    }
+
+    const getPerformanceData = () => {
+        axios.all([
+            axios({
+                method: "GET",
+                url: "http://localhost:5000/performance/get/gameMode",
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${Cookies.get("authorToken")}`,
+                }
+            }),
+            axios({
+                method: "GET",
+                url: "http://localhost:5000/performance/get/drillMode",
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${Cookies.get("authorToken")}`,
+                }
+            })
+        ])
+        .then(axios.spread((gameData, drillData) => {
+            console.log("Game Data")
+            console.log(gameData.data)
+
+            console.log("===============")
+
+            console.log("Drill Data")
+            console.log(drillData)
+        }))
     }
 
     return (
@@ -227,6 +260,7 @@ const UserPerformancePage = () => {
                     </div>                            
                 </div>
             </MaterialTabBody>
+            <button className="btn btn-primary" onClick={getPerformanceData}>Get Data</button>
         </div>
     )
 }
