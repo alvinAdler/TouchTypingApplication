@@ -11,6 +11,7 @@
 .ex-header-section{
     /* border: 3px solid orange; */
     position: sticky;
+    z-index: 10;
     top: 3.5rem;
     /* border-radius: 0 0 0.5rem 0.5rem; */
     /* border-radius: 0.5rem; */

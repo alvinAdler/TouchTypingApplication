@@ -45,6 +45,11 @@ const App = () => {
 
 	const changePageTo = async (pageDir) => {
 
+		if(pageDir === "/tutorial"){
+			history.push(pageDir)
+			return
+		}
+
 		try{
 			const response = await checkToken()
 
@@ -143,7 +148,7 @@ const App = () => {
 						<ProtectedLogin path="/register" component={RegisterPage}/>
 						<ProtectedRoute path="/practice" component={PracticePage}/>
 						<ProtectedRoute path="/userPerformance" component={UserPerformancePage}/>
-						<ProtectedRoute path="/tutorial" component={TutorialPage}/>
+						<Route path="/tutorial" render={() => <TutorialPage/>}/>
 					</Switch>
 				</div>
 			</AuthContext.Provider>
