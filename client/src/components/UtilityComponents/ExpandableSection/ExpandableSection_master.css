@@ -1,0 +1,54 @@
+.expandable-section-container{
+    /* border: 3px solid red; */
+    margin: 1rem;
+    position: relative;
+}
+
+.expandable-section-container h3{
+    margin: 0;
+}
+
+.ex-header-section{
+    /* border: 3px solid orange; */
+    position: sticky;
+    top: 3.5rem;
+    /* border-radius: 0 0 0.5rem 0.5rem; */
+    /* border-radius: 0.5rem; */
+    padding: 0.5rem;
+    color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0 1rem;
+    background-color: var(--primary-button-color);
+    cursor: pointer;
+    transition: background-color 150ms ease-in-out,
+                color 150ms ease-in-out,
+                transform 150ms ease-in-out;
+}
+
+.theme-active, .ex-header-section:hover{
+    background-color: #fafafa;
+    color: var(--primary-color);
+    outline: 5px solid var(--primary-color);
+}
+
+.ex-header-section > svg{
+    font-size: 2rem;
+}
+
+.ex-content-section{
+    display: none;
+    background-color: #fafafa;
+    padding: 1rem;
+}
+
+.active-content{
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.ex-content-section > h3{
+    text-align: center;
+    margin-bottom: 1rem;
+}

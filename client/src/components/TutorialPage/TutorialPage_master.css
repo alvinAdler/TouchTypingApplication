@@ -1,4 +1,18 @@
-.tutorial-content-container > h2{
+.tutorial-content-title, .tutorial-description{
     text-align: center;
     padding: 15px;
+    color: white;
+}
+
+.tutorial-content-container{
+    padding-bottom: 1.5rem;
+}
+
+.menus-content-container{
+    /* border: 3px solid red; */
+    margin: 2rem 1rem;
+}
+
+.sub-content-forewords{
+    margin-bottom: 1rem;
 }
