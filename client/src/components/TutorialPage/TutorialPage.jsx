@@ -212,7 +212,7 @@ const TutorialPage = () => {
 
                     <ExpandableSection sectionTitle="Mechanism of The Drill Mode and The Game Mode">
                         <h3>Mechanism of The Drill Mode and The Game Mode</h3>
-                        <p className="sub-content-forewords">This is will explain the mechanism of the drill mode and the game mode of the application. This section will also explain various interactions that the user can do in each mode</p>
+                        <p className="sub-content-forewords">This section will explain the mechanism of the drill mode and the game mode of the application. This section will also explain various interactions that the user can do in each mode</p>
                         <p className="alert alert-info"><strong>Info!</strong> You can use the navigation list below to jump to the explanation of the desired mode!</p>
                         <ul>
                             <li>Drill Mode</li>
@@ -222,12 +222,145 @@ const TutorialPage = () => {
                         <div className="menus-content-container">
                             <div className="content-menu">
                                 <h4>Drill Mode</h4>
+
+                                <p>In the drill mode, the user learn touch typing by type some series of words / phrases that are displayed on the screen. In this mode, the application give the user some hints regarding the proper way of typing. As the user type, the program will evaluate the performance of the user according to several aspects. Below is the general appearance of the page.</p>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/drillMain.png" alt="Can not find picture" />
+
+                                <p>It can be seen that there are several components inside of the application. The explanation of each component will be explained below.</p>
+
+                                <h5>Word Wrapper</h5>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/drillWordWrapper.png" alt="Can not find picture" />
+
+                                <p>The Word Wrapper component responsible to display the words / phrases that the user needs to type. The user types each letter one by one until the sequence ends. As the user types more letters, the letters inside of the word wrapper will be shifted to the left; allowing more letters to appear.</p>
+
+                                <p className="alert alert-info"><strong>Info! </strong>After the mode starts, the user can straightly type the letters from their keyboard. The user does not require to type in some sort of input text.</p>
+
+                                <p>There are several color indicators that have been placed at each letter. Each indicator indicate a different status of a letter. Below are those indicators</p>
+                                
+                                <ul>
+                                    <li>The letters will be colored <strong style={{color: "#04ff00"}}>green</strong> if the user typed that letter correctly.</li>
+                                    <li>The letters will be colored <strong style={{color: "rgba(255, 0, 0, 0.5)"}}>red</strong> if the user incorrectly typed that letter.</li>
+                                    <li>The letters that are not yet typed by the user will be colored <strong>black</strong>.</li>
+                                    <li>The current letter that the user needs to type will have a <strong style={{color: "rgba(255, 0, 0, 0.5)"}}>red pointer</strong> right below that letter.</li>
+                                </ul>
+
+                                <h5>Text Hints</h5>
+
+                                <p>As previously mentioned, the program will also provide the user with the correct way to type a letter in some forms. One of the form is by using a written hint. Below is the appearance of that component</p>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/drillTextHints.png" alt="Can not find picture" />
+
+                                <p>The instruction inside of this component is pretty much straight forward. It tells the user to use which hand and which finger to type a certain letter. For example, if the user needs to type the letter "e", the user needs to use the middle finger on the left hand.</p>
+
+                                <h5>Keyboard Hints</h5>
+
+                                <p>Another type of hints that are provided to the user is the keyboard hints. This type of hints visualize the appearance of the QWERTY keyboard and highlight the currenter letter that the user needs to type. Below is the appearance of this component.</p>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/drillKeyboardHints.png" alt="Can not find picture" />
+
+                                <p>The letters inside of the keyboard hints were arranged in such a way that it imitates the realy-life hard QWERTY keyboard. The current letter that the user needs to type are hightlighted (the letter that has enhanced contrast and opacity). This keyboard hints were made in order to reduce the user's eye contact with an actual keyboard. Furthermore, the visual keyboard can also display the characters that require the "shift" key to be activated.</p>
+
+                                <h5>Performance Status Bar</h5>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/drillStatusBar.png" alt="Can not find picture" />
+
+                                <p>The performance status bar consists of several indicators related to the current typing performance of the user. Those indicators are:</p>
+
+                                <ul>
+                                    <li>
+                                        <strong>Timer: </strong>
+                                        Displays the amount of time the user need to complete the task. The timer will start as soom as the user type a letter.
+                                    </li>
+                                    <li>
+                                        <strong>Typing speed (in WPMs): </strong>
+                                        Display the typing speed of the user in words per minute. The formula used to obtain this will be explained in the next section of tutorial.
+                                    </li>
+                                    <li>
+                                        <strong>Typing accuracy (in percentages): </strong>
+                                        Display the typing accuracy of the user in percentages. The formula used to obtain this will be explained in the next section of tutorial.
+                                    </li>
+                                    <li>
+                                        <strong>Error Count: </strong>
+                                        Display the number of letters that have been typed incorrectly by the user.
+                                    </li>
+                                </ul>
+
+                                <h5>Pause Button</h5>
+
+                                <p>Belos is the appearance of the pause button</p>
+
+                                <img style={{width: "50%", height: "50%", margin: "1rem auto"}} src="/images/appScreenshots/drillPauseButton.png" alt="Can not find picture" />
+
+                                <p>The pasuse button is useful when the user want to take a little break within the on going practice. If the user clicks the pause button, a menu will show up indicating that the practice has been paused. While the user pause the practice, the system will pause the evaluation feature. Below is the appearance of the pause menu.</p>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/drillPause.png" alt="Can not find picture" />
+
+                                <p>The user can continue the practice by clicking the "Ok" button in the pause menu.</p>
+
+                                <h5>End Result</h5>
+
+                                <p>After the user finish the practice, a pop-up menu will appear that shows the system will show the typing speed, typing acuuracy, and the time it takes for the user to complete the practice. Below is the appearance of that menu.</p>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/drillResult.png" alt="Can not find picture" />
+
+                                <p>At the bottom part of the pop-up menu, there are 3 buttons. Below are the explanations of each button.</p>
+
+                                <ul>
+                                    <li>
+                                        <strong>Return Button </strong>
+                                        The return button will direct the user back to the practice selection page.
+                                    </li>
+                                    <li>
+                                        <strong>Retry Button </strong>
+                                        The retry button will allow the user to retry / repeat the current session of the practice.
+                                    </li>
+                                    <li>
+                                        <strong>Main Menu Button </strong>
+                                        The main menu button will direct the user back to the main menu
+                                    </li>
+                                </ul>
+
                             </div>
 
                             <hr className="my-4" />
 
                             <div className="content-menu">
                                 <h4>Game Mode</h4>
+
+                                <p>The game mode is more focused on the gameplay itself rather than the learning part of touch typing. Below is the general appearance of the game mode.</p>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/gameMain.png" alt="Can not find picture" />
+
+                                <p>In this mode, there are aliens falling from the sky. The user's task is to shoot down the aliens; preventing them to reach the ground. The user can shoot down an alien by typing the word that the alien carry. The user can type that word in the given user input text box. The user will gain a score whenever the user shoots down an alien. More score will be given to the user as the user shoots down an alien quicker. The user can only allow up to 2 aliens on the ground. If the third alien landed, the user lose.</p>
+
+                                <p>There are soem features that needs more explanation. Below is the explanation of those menus.</p>
+
+                                <h5>Status Bar</h5>
+
+                                <p>The status bar consists of the pause button, the user's score, and the user's life. The status bar is located at the top part of the page. Below is the appearance of the status bar.</p>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/gameStatusBar.png" alt="Can not find picture" />
+
+                                <p>In the status bar, the application displays 3 lives. Again, the user lose if the user lose all 3 lives. The status bar also displays the score of the user. The status bar also becomes the container of the action buttons such as the pause button. This pause button has the same functionality and mechanism as with the one in the drill mode.</p>
+
+                                <p className="alert alert-info"><strong>Info! </strong> The score calculation of the game mode will be explained in the next section of tutorial.</p>
+
+                                <h5>Main Canvas</h5>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/gameMainCanvas.png" alt="Can not find picture" />
+
+                                <p>The main canvas becomes the place where the gameplay occurs. This is where a bunch of characters and objects are displayed (e.g. the user's characters, aliens, etc.). The main canvas also contains the number of alien that the user need to destroy. Defaultly, the user will have to destroy at least 30 aliens in one go.</p>
+
+                                <h5>User Input</h5>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/gameUserInput.png" alt="Can not find picture" />
+
+                                <p>This is where the user give inputs to the application. The user needs to type the word that an alient carries in this input. Once the user successfully type the correct word, the user input will be cleared automatically; enabling the user to immediately type the word.</p>
+                                
+                                <p className="alert alert-info"><strong>Info!</strong> As soon as the game started, the application will automatically focus the user on the user input. The user does not need to activate the user input manually.</p>
+
                             </div>
                         </div>
 
