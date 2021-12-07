@@ -54,13 +54,50 @@ const GameModePage = () => {
     const location = useLocation()
     const history = useHistory()
 
+    window.onresize = () => {
+
+        // mainCanvas.current.width = mainCanvas.current.offSetWidth
+        // mainCanvas.current.height = mainCanvas.current.offsetHeight
+
+        // mainCanvas.current.width = window.innerWidth
+        // mainCanvas.current.height = window.innerHeight
+
+        // mainCanvas.current.style.width = "100%"
+        // mainCanvas.current.style.height = "70vh"
+
+        mainCanvas.current.width = mainCanvas.current.offsetWidth
+        mainCanvas.current.height = mainCanvas.current.offsetHeight
+
+        drawAlienHitCount()
+
+        if(DEVELOPER_MODE){
+            drawScoreLines()
+        }
+
+        relocateOffScreenSprites()
+
+        arrSprites.current.forEach((sprite) => {
+            console.log("Am I in?")
+            sprite.drawSprite()
+        })
+
+        console.log(arrSprites)
+
+
+    }
+
     useEffect(() => {
         const onPageLoad = () => {
 
             markLastVisitedPath(location.pathname)
 
+            mainCanvas.current.style.width = "100%"
+            mainCanvas.current.style.height = "70vh"
+
             mainCanvas.current.width = mainCanvas.current.offsetWidth
             mainCanvas.current.height = mainCanvas.current.offsetHeight
+
+            clearCanvas()
 
             let lineHeightLimit = mainCanvas.current.height / 3
             canvasScoreBoundaries.current = {
@@ -433,6 +470,26 @@ const GameModePage = () => {
         canvasContext.fillText("more aliens!", mainCanvas.current.width / 2, (mainCanvas.current.height / 1.7))
     }
 
+    const relocateOffScreenSprites = () => {
+
+        if(arrSprites.current.length < 1){
+            return []
+        }
+
+        for(let sprite of arrSprites.current){
+            if(sprite.name === "Tank"){
+                sprite.posX = (mainCanvas.current.width / 2) - (tankData.screenWidth / 2)
+                sprite.posY = mainCanvas.current.height - tankData.screenHeight
+                continue
+            }
+
+            if(sprite.posX < 0 || sprite.posX > mainCanvas.current.width){
+                console.log("Sprite relocated")
+                sprite.posX = randomInteger(0, mainCanvas.current.width - alienData.screenWidth)
+            }
+        }
+    }
+
     const removeElementFromArray = (arr, element) => {
         let index = arr.indexOf(element)
         if(index > -1){
@@ -507,51 +564,53 @@ const GameModePage = () => {
     }
 
     return (
-        <div className="game-mode-container">
-            <div className="gameplay-menus">
-                <div className="game-action-buttons">
-                    <button 
-                    onClick={pauseGame}
-                    className={`${!isGameStarted && "disabled-button"}`}
-                    disabled={!isGameStarted}
-                    >
-                        <FaPause/>
-                    </button>
+        <>
+            <div className="game-mode-container">
+                <div className="gameplay-menus">
+                    <div className="game-action-buttons">
+                        <button 
+                        onClick={pauseGame}
+                        className={`${!isGameStarted && "disabled-button"}`}
+                        disabled={!isGameStarted}
+                        >
+                            <FaPause/>
+                        </button>
+                    </div>
+                    <div className="user-score">
+                        <span>Your Score: {userScoreCount}</span>
+                    </div>
+                    <div className="user-lifes-container">
+                        {Array.from(Array(userHealth)).map((item, index) => {
+                            return(
+                                <img key={index} src="/images/userLifes.png" alt="Picture have not been found" />
+                            )
+                        })}
+                    </div>
                 </div>
-                <div className="user-score">
-                    <span>Your Score: {userScoreCount}</span>
-                </div>
-                <div className="user-lifes-container">
-                    {Array.from(Array(userHealth)).map((item, index) => {
-                        return(
-                            <img key={index} src="/images/userLifes.png" alt="Picture have not been found" />
-                        )
-                    })}
-                </div>
-            </div>
 
-            <canvas className="gameplay-canvas" ref={mainCanvas} style={{backgroundImage: "url(/images/canvasBackground.png)"}}></canvas>
-            <input 
-                className = "gameplay-input" 
-                type = "text" 
-                placeholder = "Start typing here"
-                ref = {userInput}
-            />
-            <ScoreModal 
-            isModalActive={showModal} 
-            isSuccess={userHealthCopy.current > 0}
-            onButtonClick={{
-                goReturn: () => history.push("/practice"),
-                goTryAgain: restartGame,
-                goMain: () => history.push("/")
-            }}
-            >
-                <div className="game-performance-result">
-                    <p>Your scored: </p>
-                    <p className="result-score">{userScoreCountCopy.current}</p>
-                    <p>in the game with <span className="game-mode">{capitalizeString(getUserCookie().practice.selection)}</span> difficulty!</p>
-                </div>
-            </ScoreModal>
+                <canvas className="gameplay-canvas" ref={mainCanvas} style={{backgroundImage: "url(/images/canvasBackground.png)"}}></canvas>
+                <input 
+                    className = "gameplay-input" 
+                    type = "text" 
+                    placeholder = "Start typing here"
+                    ref = {userInput}
+                />
+                <ScoreModal 
+                isModalActive={showModal} 
+                isSuccess={userHealthCopy.current > 0}
+                onButtonClick={{
+                    goReturn: () => history.push("/practice"),
+                    goTryAgain: restartGame,
+                    goMain: () => history.push("/")
+                }}
+                >
+                    <div className="game-performance-result">
+                        <p>Your scored: </p>
+                        <p className="result-score">{userScoreCountCopy.current}</p>
+                        <p>in the game with <span className="game-mode">{capitalizeString(getUserCookie().practice.selection)}</span> difficulty!</p>
+                    </div>
+                </ScoreModal>
+            </div>
             {DEVELOPER_MODE && 
                 <div className="debugging-buttons">
                     <h2>Dev</h2>
@@ -572,9 +631,10 @@ const GameModePage = () => {
                     <button className="btn btn-danger" onClick={() => console.log(userHealth)}>Check user health</button>
                     <button className="btn btn-primary" onClick={drawScoreLines}>Draw score lines</button>
                     <button className="btn btn-primary" onClick={toggleIdeStateAllSprites}>Toggle idle all</button>
+                    <button className="btn btn-success" onClick={() => console.log(`(${mainCanvas.current.width}, ${mainCanvas.current.height})`)}>Canvas Size</button>
                 </div>
             }
-        </div>
+        </>
     )
 }
 
