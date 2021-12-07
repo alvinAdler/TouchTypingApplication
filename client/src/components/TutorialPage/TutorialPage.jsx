@@ -365,14 +365,72 @@ const TutorialPage = () => {
                         </div>
 
                     </ExpandableSection>
-                    <ExpandableSection>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos voluptas dolore aperiam nobis sequi eum quo, inventore obcaecati eaque eos?</p>
-                    </ExpandableSection>
-                    <ExpandableSection>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos voluptas dolore aperiam nobis sequi eum quo, inventore obcaecati eaque eos?</p>
-                    </ExpandableSection>
-                    <ExpandableSection>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quos voluptas dolore aperiam nobis sequi eum quo, inventore obcaecati eaque eos?</p>
+                    <ExpandableSection sectionTitle="Performance Calculations">
+                        <h3>Performance Calculations</h3>
+                        <p className="sub-content-forewords">This section will explain regarding the formulas that have been used to measure the performance of the user throughout the practices.</p>
+                        <p className="alert alert-info"><strong>Info!</strong> You can use the navigation list below to jump to the explanation of the desired mode!</p>
+                        <ul>
+                            <li>Drill Mode Performance Calculation</li>
+                            <li>Game Mode Performance Calculation</li>
+                        </ul>
+
+                        <div className="menus-content-container">
+                            <div className="content-menu">
+                                <h4>Drill Mode Performance Calculation</h4>
+
+                                <p>The performance of the user in the drill mode was measured based on several aspects. Those aspects encompass typing speed (measured in the number of typed Words per Minute (WPM) and typing accuracy (measured in percentages). Below are the explanations for each of the aspect.</p>
+
+                                <h5>Typing Speed</h5>
+
+                                <p>As previously mentioned, the typing speed of the user is simply measured by counting the number of words that the user is able to type per 1 minute. Below is the formula used to calculate the WPM.</p>
+
+                                <code className="formula">WPM = numberOfWords / numberOfMinutes</code>
+
+                                <p className="alert alert-warning"><strong>Warning!</strong> The number of words in here refer to "every ~5 characters in the list". <strong>Example:</strong> The word "claustrophobic" is counted as 3 words and the phrase "I eat" is only counted as 1 word. White spaces and symbols are also counted as characters.</p>
+
+                                <p>The formula above is referred as Gross WPM. Gross WPM means that the typing speed is measured despite the typing mistakes that the user made. Another typing speed measurement is called Net WPM where the typing errors that the user make is affecting the overall typing speed. This make Net WPM give more accurate result in measuring typing speed.</p>
+
+                                <p className="alert alert-info"><strong>Info!</strong> The reason Gross WPM was used instead of NET WPM is that in the drill mode, the user can not advance to the next letter if the current letter is typed incorrectly. The user needs to press the correct key first before moving to the next letter. Of course, when the user make a mistake, the user does not need to press the backspace key. The program will also count it as 1 mistake despite the user make multiple mistakes on the same letter / key.</p>
+
+                                <h5>Typing Accuracy</h5>
+
+                                <p>The typing accuracy is measured by implementing a counter that will keep track of the number of typing errors that the user has made. Below is the formula.</p>
+
+                                <code className="formula">Accuracy = 100 - ((errorCount / numberOfTypedLetters) * 100)</code>
+
+                                <p><strong>Example:</strong> if the user made 4 errors (errorCount) out of 20 words (numberOfTypedLetters) that the user type, the current accuracy of the user will be 80%</p>
+
+                            </div>
+                            <div className="content-menu">
+                                <h4>Game Mode Performance Calculation</h4>
+
+                                <p>The performance calculation of the user in the game mode was rather simple. The calculation was based on the accumulation of scores that the user gained throughout the game session. Depending on how fast the user shoot down an alien, the score that the user gain will be different. Kindly check the image below.</p>
+
+                                <img className="app-screenshot" src="/images/appScreenshots/gameDevMode.png" alt="Can not find picture" />
+
+                                <p>As with the image above, the game canvas is divided into 3 regions. Those sections includes:</p>
+
+                                <ol>
+                                    <li>
+                                        <strong style={{color: "green"}}>The green area:</strong>
+                                        <p> The most top area - above the <span style={{color: "green"}}>green line</span> and below the top border of the game.</p>
+                                    </li>
+                                    <li>
+                                        <strong style={{color: "#acbf00"}}>The yellow area:</strong>
+                                        <p> The middle area - above the <span style={{color: "#acbf00"}}>yellow line</span> and below the <span style={{color: "green"}}>green line.</span></p>
+                                    </li>
+                                    <li>
+                                        <strong style={{color: "red"}}>The red area:</strong>
+                                        <p> The most bottom area - above the bottom border of the game and below the <span style={{color: "#acbf00"}}>yellow line.</span></p>
+                                    </li>
+                                </ol>
+
+                                <p>If the user shoots down alien within the <span style={{color: "green"}}>green area</span>, the user will gain 300 points. If within the <span style={{color: "#acbf00"}}>yellow area</span>, the user will gain 200 points. Lastly, if within the <span style={{color: "red"}}>red area</span>, the user will gain 100 points.</p>
+                                
+                                <p>This scoring system is the most suitable to measure the performance of the user within the game mode. The system is not complicated and it measures both the typing speed and accuracy of the user.</p>
+
+                            </div>
+                        </div>
                     </ExpandableSection>
                 </div>
             </MaterialTabBody>

@@ -16,9 +16,7 @@ import {
     getUserCookie, 
     changeTimeFormat, 
     changeAccuracyFormat ,
-    grossWpm,
-    capitalizeString,
-    checkIfUpperCase
+    grossWpm
 } from '../../Utilities/functions'
 
 const DEVELOPER_MODE = true
