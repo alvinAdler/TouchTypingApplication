@@ -24,6 +24,16 @@ const LoginPage = () => {
     const logUserIn = (ev) => {
         ev.preventDefault()
 
+        if(userInput.username === "" && userInput.password === ""){
+            swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: "Fields empty. Please fill in all fields before logging in!",
+                confirmButtonColor: "#eb4034"
+            })
+            return
+        }
+
         axios({
             method: "POST",
             url: "http://localhost:5500/login",
