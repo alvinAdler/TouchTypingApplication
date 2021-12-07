@@ -54,38 +54,6 @@ const GameModePage = () => {
     const location = useLocation()
     const history = useHistory()
 
-    window.onresize = () => {
-
-        // mainCanvas.current.width = mainCanvas.current.offSetWidth
-        // mainCanvas.current.height = mainCanvas.current.offsetHeight
-
-        // mainCanvas.current.width = window.innerWidth
-        // mainCanvas.current.height = window.innerHeight
-
-        // mainCanvas.current.style.width = "100%"
-        // mainCanvas.current.style.height = "70vh"
-
-        mainCanvas.current.width = mainCanvas.current.offsetWidth
-        mainCanvas.current.height = mainCanvas.current.offsetHeight
-
-        drawAlienHitCount()
-
-        if(DEVELOPER_MODE){
-            drawScoreLines()
-        }
-
-        relocateOffScreenSprites()
-
-        arrSprites.current.forEach((sprite) => {
-            console.log("Am I in?")
-            sprite.drawSprite()
-        })
-
-        console.log(arrSprites)
-
-
-    }
-
     useEffect(() => {
         const onPageLoad = () => {
 
@@ -121,6 +89,33 @@ const GameModePage = () => {
         }
 
         onPageLoad()
+
+        const resizeHandler = () => {
+            mainCanvas.current.width = mainCanvas.current.offsetWidth
+            mainCanvas.current.height = mainCanvas.current.offsetHeight
+    
+            drawAlienHitCount()
+    
+            if(DEVELOPER_MODE){
+                drawScoreLines()
+            }
+    
+            relocateOffScreenSprites()
+    
+            arrSprites.current.forEach((sprite) => {
+                console.log("Am I in?")
+                sprite.drawSprite()
+            })
+    
+            console.log(arrSprites)
+        }
+        
+        window.addEventListener("resize", resizeHandler, false)
+
+        return () => {
+            window.removeEventListener("resize", resizeHandler, false)
+        }
+
     }, [])
 
     useEffect(() => {
