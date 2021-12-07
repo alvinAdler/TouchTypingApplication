@@ -24,7 +24,7 @@ const LoginPage = () => {
     const logUserIn = (ev) => {
         ev.preventDefault()
 
-        if(userInput.username === "" && userInput.password === ""){
+        if(userInput.username === "" || userInput.password === ""){
             swal.fire({
                 icon: "error",
                 title: "Error!",

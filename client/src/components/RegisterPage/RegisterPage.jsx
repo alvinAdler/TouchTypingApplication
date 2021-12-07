@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 import './RegisterPage_master.css'
 
@@ -18,6 +19,7 @@ const RegisterPage = () => {
     })
 
     const location = useLocation()
+    const history = useHistory()
 
     useEffect(() => {
         markLastVisitedPath(location.pathname)
@@ -26,8 +28,23 @@ const RegisterPage = () => {
     const registerUser = (ev) => {
         ev.preventDefault()
 
+        if(userInput.username === "" || userInput.password === "" || userInput.confirmPassword === ""){
+            swal.fire({
+                icon: "error",
+                title: "Fields Empty",
+                text: "Please fill in all fields before register!",
+                confirmButtonColor: "#eb4034"
+            })
+            return
+        }
+
         if(userInput.password !== userInput.confirmPassword){
-            console.log("Password does not match. Please re-check")
+            swal.fire({
+                icon: "error",
+                title: "Password mismatch",
+                text: "Please retype the password correctly",
+                confirmButtonColor: "#eb4034"
+            })
             return
         }
 
@@ -44,10 +61,26 @@ const RegisterPage = () => {
         })
         .then((res) => {
             if(res.status === 201 && res.data.isRegistered){
-                console.log("User has been successfully registered")
+                swal.fire({
+                    icon: "success",
+                    title: "User has been successfully registered!",
+                    text: "You will be directed to the login menu",
+                    confirmButtonColor: "#2285e4"
+                })
+                .then(() => {
+                    history.push("/login")
+                })
             }
         })
         .catch((err) => {
+            if(err.response && err.response.status === 400){
+                swal.fire({
+                    icon: "error",
+                    title: "Username already exist",
+                    text: "Please choose another username",
+                    confirmButtonColor: "#eb4034"
+                })
+            }
             console.log(err.response)
         })
     }
