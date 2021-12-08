@@ -11,9 +11,9 @@ import './UserPerformancePage_master.css'
 import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBody'
 import theme from '../Utilities/tabsTheme'
 import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
+import EmptyBanner from '../UtilityComponents/EmptyBanner/EmptyBanner'
 import { 
     markLastVisitedPath,
-    capitalizeString,
     camelCaseToSentenceCase,
     changeTimeFormat,
     convertISOtoUTC
@@ -64,15 +64,22 @@ const UserPerformancePage = () => {
             })
         ])
         .then(axios.spread((gameData, drillData) => {
-            console.log("Game Data")
-            console.log(gameData.data)
-            setGamePerformances(gameData.data.result)
+            if(gameData.data.isEmpty){
+                console.log("Does not exist for game")
+            }else{
+                console.log("Game Data")
+                console.log(gameData.data)
+                setGamePerformances(gameData.data.result)
+            }
 
-            console.log("===============")
+            if(drillData.data.isEmpty){
+                console.log("Does not exist for drill")
+            }else{
+                console.log("Drill Data")
+                console.log(drillData.data)
+                setDrillPerformances(drillData.data.result)
+            }
 
-            console.log("Drill Data")
-            console.log(drillData.data)
-            setDrillPerformances(drillData.data.result)
         }))
         .catch((err) => {
             if(err.response){
@@ -112,56 +119,78 @@ const UserPerformancePage = () => {
                 <div className="performance-details">
                     <div className="summary-container">
                         <h2 className="performance-section-title">Summary</h2>
-                        <div className="performance-sum-details">
-                            <h3 className="performance-subsection-title">Typing Speed</h3>
-                            <div className="performance-subsection-content">
-                                <h4>Slowest</h4>
-                                <p>{drillPerformances.summary?.minWpm} <span>WPM</span></p>
+
+                        {Object.keys(drillPerformances.summary).length < 1 ? 
+                        <EmptyBanner 
+                        title="No data" 
+                        description="You have not take practice in the drill mode."
+                        suggestion="You can go back to the practice menu and select your favourite practice to begin! Your performance for the drill mode will be recorded here."
+                        />
+                        :
+                        <>
+                            <div className="performance-sum-details">
+                                <h3 className="performance-subsection-title">Typing Speed</h3>
+                                <div className="performance-subsection-content">
+                                    <h4>Slowest</h4>
+                                    <p>{drillPerformances.summary?.minWpm} <span>WPM</span></p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Fastest</h4>
+                                    <p>{drillPerformances.summary?.maxWpm} <span>WPM</span></p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Average</h4>
+                                    <p>{drillPerformances.summary?.averageWpm} <span>WPM</span></p>
+                                </div>
                             </div>
-                            <div className="performance-subsection-content">
-                                <h4>Fastest</h4>
-                                <p>{drillPerformances.summary?.maxWpm} <span>WPM</span></p>
-                            </div>
-                            <div className="performance-subsection-content">
-                                <h4>Average</h4>
-                                <p>{drillPerformances.summary?.averageWpm} <span>WPM</span></p>
-                            </div>
-                        </div>
-                        <div className="performance-sum-details">
-                            <h3 className="performance-subsection-title">Typing Accuracy</h3>
-                            <div className="performance-subsection-content">
-                                <h4>Lowest</h4>
-                                <p>{drillPerformances.summary?.minAcc}%</p>
-                            </div>
-                            <div className="performance-subsection-content">
-                                <h4>Highest</h4>
-                                <p>{drillPerformances.summary?.maxAcc}%</p>
-                            </div>
-                            <div className="performance-subsection-content">
-                                <h4>Average</h4>
-                                <p>{drillPerformances.summary?.averageAcc}%</p>
-                            </div>
-                        </div>  
-                        <div className="performance-sum-details">
-                            <h3 className="performance-subsection-title">Time</h3>
-                            <div className="performance-subsection-content">
-                                <h4>Slowest</h4>
-                                <p>{changeTimeFormat(drillPerformances.summary?.slowestTime)}</p>
-                            </div>
-                            <div className="performance-subsection-content">
-                                <h4>Fastest</h4>
-                                <p>{changeTimeFormat(drillPerformances.summary?.fastestTime)}</p>
-                            </div>
-                            <div className="performance-subsection-content">
-                                <h4>Average</h4>
-                                <p>{changeTimeFormat(drillPerformances.summary?.averageTime)}</p>
-                            </div>
-                        </div>                  
+                            <div className="performance-sum-details">
+                                <h3 className="performance-subsection-title">Typing Accuracy</h3>
+                                <div className="performance-subsection-content">
+                                    <h4>Lowest</h4>
+                                    <p>{drillPerformances.summary?.minAcc}%</p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Highest</h4>
+                                    <p>{drillPerformances.summary?.maxAcc}%</p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Average</h4>
+                                    <p>{drillPerformances.summary?.averageAcc}%</p>
+                                </div>
+                            </div>  
+                            <div className="performance-sum-details">
+                                <h3 className="performance-subsection-title">Time</h3>
+                                <div className="performance-subsection-content">
+                                    <h4>Slowest</h4>
+                                    <p>{changeTimeFormat(drillPerformances.summary?.slowestTime)}</p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Fastest</h4>
+                                    <p>{changeTimeFormat(drillPerformances.summary?.fastestTime)}</p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Average</h4>
+                                    <p>{changeTimeFormat(drillPerformances.summary?.averageTime)}</p>
+                                </div>
+                            </div>   
+                        </>               
+                        }
+
                     </div>
                     <hr className="my-4" style={{color: "white", backgroundColor: "white", height: "2px"}}/>
                     <div className="practices-container">
                         <h2 className="performance-section-title">Last 10 Practices</h2>
                         <div className="performance-table-container">
+                            {drillPerformances.lastTenDrills.length < 1 ?
+
+                            <EmptyBanner 
+                            title="No data" 
+                            description="You have not take practice in the drill mode."
+                            suggestion="You can go back to the practice menu and select your favourite practice to begin! Your performance for the drill mode will be recorded here."
+                            />
+
+                            :
+
                             <table className="performance-table">
                                 <thead>
                                     <tr className="performance-row">
@@ -190,6 +219,8 @@ const UserPerformancePage = () => {
                                     }
                                 </tbody>
                             </table>
+
+                            }
                         </div>
                     </div>                                    
                 </div>
@@ -198,26 +229,55 @@ const UserPerformancePage = () => {
                 <div className="performance-details">
                     <div className="summary-container">
                         <h2 className="performance-section-title">Summary</h2>
-                        <div className="performance-sum-details">
-                            <h3 className="performance-subsection-title">Score</h3>
-                            <div className="performance-subsection-content">
-                                <h4>Lowest</h4>
-                                <p>{gamePerformances.summary?.minScore} <span>points</span></p>
-                            </div>
-                            <div className="performance-subsection-content">
-                                <h4>Highest</h4>
-                                <p>{gamePerformances.summary?.maxScore} <span>points</span></p>
-                            </div>
-                            <div className="performance-subsection-content">
-                                <h4>Average</h4>
-                                <p>{gamePerformances.summary?.scoreAverage} <span>points</span></p>
-                            </div>
-                        </div>                 
+
+                        {Object.keys(gamePerformances.summary).length < 1 ? 
+
+                        <EmptyBanner 
+                        title="No data" 
+                        description="You have not take practice in the drill mode."
+                        suggestion="You can go back to the practice menu and select your favourite practice to begin! Your performance for the drill mode will be recorded here."
+                        />
+
+                        :
+
+                        <>
+                            <div className="performance-sum-details">
+                                <h3 className="performance-subsection-title">Score</h3>
+
+                                <div className="performance-subsection-content">
+                                    <h4>Lowest</h4>
+                                    <p>{gamePerformances.summary?.minScore} <span>points</span></p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Highest</h4>
+                                    <p>{gamePerformances.summary?.maxScore} <span>points</span></p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Average</h4>
+                                    <p>{gamePerformances.summary?.scoreAverage} <span>points</span></p>
+                                </div>
+
+                            </div>                 
+                        </>
+
+                        }
+
                     </div>
                     <hr className="my-4" style={{color: "white", backgroundColor: "white", height: "2px"}}/>
                     <div className="practices-container">
                         <h2 className="performance-section-title">Last 10 Practices</h2>
                         <div className="performance-table-container">
+
+                            {gamePerformances.lastTenGames.length < 1 ?
+                            
+                            <EmptyBanner 
+                            title="No data" 
+                            description="You have not take practice in the game mode."
+                            suggestion="You can go back to the practice menu and select your favourite practice to begin! Your performance for the game mode will be recorded here."
+                            />
+
+                            :
+
                             <table className="performance-table">
                                 <thead>
                                     <tr className="performance-row">
@@ -240,6 +300,9 @@ const UserPerformancePage = () => {
                                     }
                                 </tbody>
                             </table>
+
+                            }
+
                         </div>
                     </div>                                    
                 </div>

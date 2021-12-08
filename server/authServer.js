@@ -24,7 +24,7 @@ db.on("error", (err) => console.error(err))
 db.once("open", () => console.log("Connected to Databse"))
 
 const generateAccessToken = (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "1h" })
+    return jwt.sign(user, process.env.ACCESS_TOKEN, { expiresIn: "2h" })
 }
 
 const pushRefreshToken = (refreshToken) => {

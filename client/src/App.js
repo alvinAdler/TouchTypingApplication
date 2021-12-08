@@ -21,7 +21,6 @@ import { checkToken } from './components/Utilities/functions'
 const App = () => {
 
 	const [auth, setAuth] = useState(false)
-	const [sampleState, setSampleState] = useState(false)
 
 	const history = useHistory()
 	const location = useLocation()
@@ -79,9 +78,52 @@ const App = () => {
 		history.push(pageDir)
 	}
 
-	const checkModal = () => {
-		setSampleState(!sampleState)
-	}
+	// const dummyLogin = () => {
+	// 	axios({
+    //         method: "POST",
+    //         url: "http://localhost:5500/login",
+    //         headers: {
+    //             'content-type': 'application/json'
+    //         },
+    //         data: {
+    //             username: "admin",
+    //             password: "admin"
+    //         }
+    //     })
+    //     .then((res) => {
+    //         if(res.status === 200 && res.data.isLoggedIn === true){
+    //             console.log("Successfully logged in")
+
+    //             Cookies.set("authorToken", res.data.authToken)
+    //             Cookies.set("refreshToken", res.data.refreshToken)
+
+                
+    //         }
+    //     })
+	// }
+
+	// const dummyGetUser = () => {
+	// 	tokenAxios({
+    //         method: "GET",
+    //         url: "http://localhost:5000/users/getUserIdentity",
+    //         headers: {
+    //             'content-type': 'application/json'
+	// 		}
+    //     })
+    //     .then((res) => {
+    //         if(res.status === 200){
+    //             console.log("Successfully fetched data")
+
+    //             console.log(res)
+    //         }
+    //     })
+	// 	.catch((err) => {
+	// 		if(err.response){
+	// 			console.log("I am in the client")
+	// 			console.log(err.response)
+	// 		}
+	// 	})
+	// }
 
 	return(
 		<div className="App">
@@ -141,6 +183,14 @@ const App = () => {
 										<p>View the tutorials to get started with the application</p>
 									</div>
 								</div>
+								{/* <div className="network-playground">
+									<button type="button" className="btn btn-primary" onClick={dummyLogin}>
+										Send Request
+									</button>
+									<button type="button" className="btn btn-success" onClick={dummyGetUser}>
+										Get user
+									</button>
+								</div> */}
 							</div>
 						</Route>
 

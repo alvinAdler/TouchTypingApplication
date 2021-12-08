@@ -1,0 +1,19 @@
+.empty-banner-container{
+    width: max-content;
+    text-align: center;
+    width: 100%;
+    padding: 2rem;
+    margin: 1rem;
+    border-radius: 1rem;
+    background-color: rgba(242, 242, 242, 0.8);
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.empty-banner-container > *{
+    margin: 0.5rem 0;
+    /* border: 3px solid red; */
+}
+
+.empty-banner-container > h2{
+    color: var(--dark-primary-color);
+}

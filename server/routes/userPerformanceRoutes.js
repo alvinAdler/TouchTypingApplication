@@ -90,7 +90,15 @@ router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
     switch(currentMode){
         case "gameMode":
 
-            const allGamePerformance = await GamePerformanceModel.find()
+            const allGamePerformance = await GamePerformanceModel.find({userId: req.user._id})
+
+            if(allGamePerformance.length < 1){
+                return res.status(200).json({
+                    isEmpty: true,
+                    message: "No record for this game mode"
+                })
+            }
+
             const allScores = allGamePerformance.map((obj) => obj.score)
 
             let lastTenGames = allGamePerformance.slice().sort(comparisonDate).slice(0, 10)
@@ -120,6 +128,14 @@ router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
         case "drillMode":
             
             const allDrillPerformance = await DrillPerformanceModel.find({userId: req.user._id})
+
+            if(allDrillPerformance.length < 1){
+                return res.status(200).json({
+                    isEmpty: true,
+                    message: "No record for drill mode"
+                })
+            }
+
             const allDrillWpms = allDrillPerformance.map((obj) => obj.wordsPerMinute)
             const allDrillAccs = allDrillPerformance.map((obj) => obj.accuracy)
             const allDrillTimes = allDrillPerformance.map((obj) => obj.totalSeconds)

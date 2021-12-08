@@ -3,13 +3,6 @@
     margin-bottom: 5vh;
 }
 
-.performance-container p, 
-.performance-container h2,
-.performance-container h3,
-.performance-container h4{
-    margin: 0;
-} 
-
 .summary-container, .practices-container{
     padding: 15px;
     border-radius: 10px;
@@ -94,6 +87,9 @@
     padding: 1rem;
     background-color: #fafafa;
     border-collapse: separate;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .performance-table{
