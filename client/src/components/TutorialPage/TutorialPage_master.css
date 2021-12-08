@@ -36,6 +36,12 @@
     margin: 1rem auto;
 }
 
+.section-image-title{
+    width: 50%;
+    height: 20rem;
+    margin: 1rem auto;
+}
+
 .formula{
     border: 1px solid #eb4034;
     margin: 1rem auto;

@@ -11,7 +11,6 @@ import { markLastVisitedPath } from '../Utilities/functions'
 import theme from '../Utilities/tabsTheme'
 import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
 import ExpandableSection from '../UtilityComponents/ExpandableSection/ExpandableSection'
-import PlaceholderJumbotron from '../UtilityComponents/PlaceholderJumbotron/PlaceholderJumbotron'
 
 const TutorialPage = () => {
 
@@ -44,16 +43,40 @@ const TutorialPage = () => {
             <MaterialTabBody currentTab={currentTab} tabIndex={0}>
                 <div className="tutorial-content-container container">
                     <h2 className="tutorial-content-title">Theories of Touch Typing</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel quae, adipisci sint veritatis debitis tempore reiciendis qui officiis ad. Cupiditate iste aperiam saepe suscipit adipisci dolorem magni sint blanditiis eligendi.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea corporis earum aliquam similique officiis voluptatibus qui amet commodi itaque nesciunt in, eum error corrupti totam quis neque accusantium? Atque, quisquam?</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, quas quasi. Repellat iste quia qui fugiat aperiam nesciunt, recusandae maiores eum maxime explicabo pariatur. Dicta vero esse cumque accusantium autem?</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id maxime perspiciatis incidunt placeat ipsam eveniet illum aut et quas tenetur. Fugiat eligendi quasi id esse quibusdam quia repudiandae mollitia corrupti?</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At suscipit tempora similique, ut incidunt dicta consequatur corrupti, eos optio vero omnis eius id, animi numquam sit doloremque illum nulla itaque.</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam repellat modi, molestias pariatur odio eaque laudantium accusamus qui commodi aut, similique magni perferendis ducimus dolorum voluptate expedita quibusdam, saepe ullam.</p>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis doloribus, necessitatibus sequi beatae fugit at cum repellat praesentium! Consequatur, aspernatur animi nisi perspiciatis suscipit odit veniam exercitationem id commodi! Officia?</p>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam similique dolorem sint, quos quam eos consectetur distinctio voluptatem velit, doloribus aut, aliquid dicta qui dolorum impedit quo quia at molestiae.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt dolores magni quasi quae nihil, rerum quos fuga cumque beatae tempora tempore ab. Sed repudiandae libero, suscipit asperiores obcaecati itaque non.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi tempore distinctio dolore rem facilis sint corporis recusandae? Beatae amet quo, corrupti, autem quos veritatis fuga quas assumenda rerum quis ullam.</p>
+
+                    <p className="tutorial-description lead">Welcome to the History Page! This tutorial section will a brief and general information that you might need to know aboiut touch typing! Kindly use the navigation links below.</p>
+
+                    <ExpandableSection sectionTitle="General Information about Touch Typing">
+                        <h3>General Information about Touch Typing</h3>
+
+                        <img className="section-image-title" src="/images/undraw_generalInfo.svg" alt="Can not find picutre" />
+
+                        <p>
+                            Touch-typing is the ability to type on a keyboard (or any other similar devices/mechanics) with a minimum sight towards the keyboards and yet still produce an accurate result within a short time. Similarly, Barnes (1890, p. 20) also stated that “To learn to write by touch, that is, with only an occasional glance at the keyboard, sit directly in front of the machine.” Touch-typing came along with the invention of the typewriter. At that time, typists sought a way to type efficiently. Touch-typing was pretty helpful and considered the best practice to operate the typewriter. With touch-typing, the typist only needs a very minimum amount of time to find the correct letter by utilizing muscle memory (Barnes, 1890). Due to its efficiency, this method remains now to be used in many writing-related tasks.
+                        </p>
+
+                        <p>
+                            From the previous paragraph, it can be seen that learning to touch-type is very beneficial. However, within this technology era, a person can learn how to touch-type from many sources, including the internet itself. However, the internet is a broad and deep place where there are at least 4,386,485,541 users (approximated) on April 30, 2019 (Group, 2011). Considering that number, the number of available information on the internet must be somewhere near equivalent or even greater. With that number of information, confusion might occur in terms of choosing the best method to learn to touch-type. 
+                        </p>
+
+                        <p>
+                            Fortunately, a learning method called game-based learning has been developed as a “fun” way of learning. According to Plass et al. (2015, p. 259), “Game-based learning mostly emphasizes that it is a type of gameplay with defined learning outcomes”. In other words, game-based learning aims to combine a learning process with actual gameplay. The reason that supports the acknowledgment of this learning method is the number of people who are playing games casually. Lenhart et al. (2008) stated that 99% of boys and 94% of girls in America are playing digital games. One of the factors that responsible for this high number is the motivational side of a game. A game can maintain the engagement of the users for a long period by utilizing various game mechanics that are enjoyable by the users (Plass et al., 2015, p. 260). 
+                        </p>
+
+                        <p>
+                            With high percentages of game enthusiasts, various studies have been conducted to observe the efficiencies of a game in learning (game-based learning). Papastergiou (2009), through her research in 2008 with 88 high-school students, showed a positive outcome from the implementation of game-based learning. In terms of computer memory education (the topic of the research), digital game-based learning is more effective in enhancing the students’ knowledge regarding the current field as well as maintaining their motivation during the activity. Papastergiou (2009) argues that sufficient entertainment elements and learning materials are the keys to the success of game-based learning. Also, research conducted by Kerthyayana Manuaba (2017) showed the positive impacts of game-based learning. He successfully proved that text-based games have a great potential for improving reading behavior in Indonesia. He stated that among 20 participants (university students) in his research, 19 of them fully understand the reading materials from the game. 
+                        </p>
+
+                    </ExpandableSection>
+
+                    <ExpandableSection sectionTitle="History">
+                        <h3>History</h3>
+
+                        <img className="section-image-title" src="/images/undraw_history.svg" alt="Can not find picutre" />
+
+                        <p className="sub-content-forewords">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum necessitatibus esse quasi tempore velit explicabo dicta iusto deserunt voluptatem et!</p>
+
+                    </ExpandableSection>
                 </div>
             </MaterialTabBody>
             <MaterialTabBody currentTab={currentTab} tabIndex={1}>
