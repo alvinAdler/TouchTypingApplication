@@ -103,7 +103,6 @@ const GameModePage = () => {
             relocateOffScreenSprites()
     
             arrSprites.current.forEach((sprite) => {
-                console.log("Am I in?")
                 sprite.drawSprite()
             })
     

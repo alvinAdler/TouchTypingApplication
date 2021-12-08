@@ -333,7 +333,7 @@ const DrillModePage = () => {
                     <span>{changeTimeFormat(timer)}</span>
                 </div>
                 <div className="sub-utility">
-                    <p>Words Per Minute</p>
+                    <p>Words/Minute</p>
                     <span>{`${wordsPerMinute.current} wpm`}</span>
                 </div>
                 <div className="sub-utility">
@@ -341,7 +341,7 @@ const DrillModePage = () => {
                     <span>{changeAccuracyFormat(typingAccuracy.current)}</span>
                 </div>
                 <div className="sub-utility">
-                    <p>Error Count</p>
+                    <p>Errors</p>
                     <span>{errorCount.current}</span>
                 </div>
             </div>

@@ -86,11 +86,13 @@ const LoginPage = () => {
             <PageTitle titleName="Login"/>
             <form className="login-form" onSubmit={logUserIn}>
                 <FormInput
+                customclass="w-50"
                 type="text" 
                 placeholder="Username"
                 onChange = {(ev) => setUserInput({...userInput, username: ev.target.value})}
                 />
                 <FormInput
+                customclass="w-50"
                 type="password" 
                 placeholder="Password"
                 onChange = {(ev) => setUserInput({...userInput, password: ev.target.value})}
