@@ -16,7 +16,7 @@ import TutorialPage from './components/TutorialPage/TutorialPage';
 import ProtectedRoute from './components/UtilityComponents/ProtectedRoute/ProtectedRoute';
 import ProtectedLogin from './components/UtilityComponents/ProtectedRoute/ProtectedLogin';
 import PageTitle from './components/UtilityComponents/PageTitle/PageTitle'
-import { checkToken } from './components/Utilities/functions'
+import { checkToken, markLastVisitedPath } from './components/Utilities/functions'
 
 const App = () => {
 
@@ -27,6 +27,8 @@ const App = () => {
 
 	useEffect(() => {
         const onPageMount = async () => {
+
+			markLastVisitedPath(location.pathname)
 
 			const result = await checkToken()
 
