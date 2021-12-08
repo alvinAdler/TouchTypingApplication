@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { AppBar, Tabs, Tab } from '@mui/material'
+// import { AppBar, Tabs, Tab } from '@mui/material'
 import { useLocation } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles';
 
 import './TutorialPage_master.css'
 
-import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBody'
+// import MaterialTabBody from '../UtilityComponents/MaterialTabBody/MaterialTabBody'
 
 import { markLastVisitedPath } from '../Utilities/functions'
 import theme from '../Utilities/tabsTheme'
@@ -21,9 +21,10 @@ const TutorialPage = () => {
         markLastVisitedPath(location.pathname)
     }, [])
 
-    const handleTabChange = (ev, selectedTab) => {
-        setCurrentTab(selectedTab)
-    }
+    // const handleTabChange = (ev, selectedTab) => {
+    //     setCurrentTab(selectedTab)
+    // }
+
 
     return (
         <div className="tutorial-page-container">
@@ -57,17 +58,18 @@ const TutorialPage = () => {
                         </p>
 
                     </ExpandableSection>
+
                     <ExpandableSection sectionTitle="Menus">
                         <h3>Menus</h3>
                         <p className="sub-content-forewords">This is the section where you will find the explanations regarding the functionality of each menu in this application. There are 4 core menus / pages of the applicatoin of this application. Each of the menu / page will be elaborated below.</p>
                         <p className="alert alert-info"><strong>Info!</strong> You can use the navigation list below to jump to the explanation of the desired menu!</p>
-                        <ul>
-                            <li>Main Menu</li>
-                            <li>Navbar</li>
-                            <li>Login & Register</li>
-                            <li>Practice Menu</li>
-                            <li>User Performance Menu</li>
-                            <li>Tutorial Menu</li>
+                        <ul className="tutorial-sub-navigation">
+                            <li><a href="#mainMenu">Main Menu</a></li>
+                            <li><a href="#navbar">Navbar</a></li>
+                            <li><a href="#login">Login</a></li>
+                            <li><a href="#register" id="mainMenu">Register</a></li>
+                            <li><a href="#practice">Practice Menu</a></li>
+                            <li><a href="#userPerformance">User Performance Menu</a></li>
                         </ul>
 
                         <div className="menus-content-container">
@@ -80,13 +82,13 @@ const TutorialPage = () => {
 
                                 <p>The main menu contains various component. The user can access the <strong>Practice Page</strong>, <strong>User Performance Page</strong>, and <strong>Tutorial Page</strong>. More explanations for each menu will be provided at the deeper section.</p>
 
-                                <p className="alert alert-warning"><strong>Warning!</strong> This application requires the user to login before accessing some features which are the <strong>Practice Page</strong> and the <strong>User Performance Page</strong>. If the user does not have an account, the user can register themselves using the register button at the <strong>Navbar</strong> (Go to the <strong>Navbar</strong> component below for more info).</p>
+                                <p id="navbar" className="alert alert-warning"><strong>Warning!</strong> This application requires the user to login before accessing some features which are the <strong>Practice Page</strong> and the <strong>User Performance Page</strong>. If the user does not have an account, the user can register themselves using the register button at the <strong>Navbar</strong> (Go to the <strong>Navbar</strong> component below for more info).</p>
                             </div>
 
                             <hr className="my-4" />
 
 
-                            <div className="content-menu">
+                            <div id="navbar" className="content-menu">
                                 <h4>Navbar</h4>
 
                                 <p>The navbar component is a component that provides a quick access tools for the user. The navbar component has 2 state of appearance: before login and after login. Below is the appearance of the navbar before the user logs in to the application.</p>
@@ -101,7 +103,7 @@ const TutorialPage = () => {
 
                                 <img className="app-screenshot" src="/images/appScreenshots/navbarAfter.jpg" alt="Can not find picture" />
 
-                                <p>After the user logs in, the application removes the login and register button and instead replaces them with a logout button. This is necessary to prevent double login and registration attempt from the user. Furthermore, the application displays the username at the right side of the application's logo (in this case, the user logs in under the name <strong>Admin</strong>).</p>
+                                <p id="login">After the user logs in, the application removes the login and register button and instead replaces them with a logout button. This is necessary to prevent double login and registration attempt from the user. Furthermore, the application displays the username at the right side of the application's logo (in this case, the user logs in under the name <strong>Admin</strong>).</p>
                             </div>
 
                             <hr className="my-4" />
@@ -113,7 +115,7 @@ const TutorialPage = () => {
 
                                 <img className="app-screenshot" src="/images/appScreenshots/login.png" alt="Can not find picture" />
 
-                                <p>In order to login to the application, the user simply needs to enter the username and the password that has been registered to the system. Keep in mind that the user can not leave any of the login field empty prior to pressing the login button. Otherwise, the application would not let the user in. If the user entered the correct username and password, the user will be directed to the main menu.</p>
+                                <p id="register">In order to login to the application, the user simply needs to enter the username and the password that has been registered to the system. Keep in mind that the user can not leave any of the login field empty prior to pressing the login button. Otherwise, the application would not let the user in. If the user entered the correct username and password, the user will be directed to the main menu.</p>
                             </div>
 
                             <hr className="my-4" />
@@ -128,7 +130,7 @@ const TutorialPage = () => {
 
                                 <p>In order to register, the user simply need to input their desired username and password. The user will be recignized throughout the application by the username that the user created here. The user is also required to enter their password twice before the user can create an account</p>
 
-                                <p className="alert alert-danger"><strong>Warning!</strong> This application does not have a reset password feature. If by any chance the user forget the password, the user will most likely need to create another account since there is no way to restore or reset a password. <strong>Make sure to remember or store your password somewhere safe!</strong></p>
+                                <p className="alert alert-danger" id="practice"><strong>Warning!</strong> This application does not have a reset password feature. If by any chance the user forget the password, the user will most likely need to create another account since there is no way to restore or reset a password. <strong>Make sure to remember or store your password somewhere safe!</strong></p>
                             </div>
 
                             <hr className="my-4" />
@@ -155,7 +157,7 @@ const TutorialPage = () => {
 
                                 <img className="app-screenshot" src="/images/appScreenshots/practicePageGame.png" alt="Can not find picture" />
 
-                                <p>There are 3 available options that the user can select as a difficulty. The most top option has the most easy difficulty and the most bottom option has the most hard difficulty. As with the drill mode, an indicator is provided to the user regarding the description of the difficulty and the current difficulty that has been selected by the user.</p>
+                                <p id="userPerformance">There are 3 available options that the user can select as a difficulty. The most top option has the most easy difficulty and the most bottom option has the most hard difficulty. As with the drill mode, an indicator is provided to the user regarding the description of the difficulty and the current difficulty that has been selected by the user.</p>
 
                             </div>
 
@@ -210,10 +212,10 @@ const TutorialPage = () => {
                     <ExpandableSection sectionTitle="Mechanism of The Drill Mode and The Game Mode">
                         <h3>Mechanism of The Drill Mode and The Game Mode</h3>
                         <p className="sub-content-forewords">This section will explain the mechanism of the drill mode and the game mode of the application. This section will also explain various interactions that the user can do in each mode</p>
-                        <p className="alert alert-info"><strong>Info!</strong> You can use the navigation list below to jump to the explanation of the desired mode!</p>
-                        <ul>
-                            <li>Drill Mode</li>
-                            <li>Game Mode</li>
+                        <p id="drillMode" className="alert alert-info"><strong>Info!</strong> You can use the navigation list below to jump to the explanation of the desired mode!</p>
+                        <ul className="tutorial-sub-navigation">
+                            <li><a href="#drillMode">Drill Mode</a></li>
+                            <li><a href="#gameMode">Game Mode</a></li>
                         </ul>
 
                         <div className="menus-content-container">
@@ -302,7 +304,7 @@ const TutorialPage = () => {
 
                                 <img className="app-screenshot" src="/images/appScreenshots/drillResult.png" alt="Can not find picture" />
 
-                                <p>At the bottom part of the pop-up menu, there are 3 buttons. Below are the explanations of each button.</p>
+                                <p id="gameMode">At the bottom part of the pop-up menu, there are 3 buttons. Below are the explanations of each button.</p>
 
                                 <ul>
                                     <li>
@@ -362,13 +364,14 @@ const TutorialPage = () => {
                         </div>
 
                     </ExpandableSection>
+
                     <ExpandableSection sectionTitle="Performance Calculations">
                         <h3>Performance Calculations</h3>
                         <p className="sub-content-forewords">This section will explain regarding the formulas that have been used to measure the performance of the user throughout the practices.</p>
-                        <p className="alert alert-info"><strong>Info!</strong> You can use the navigation list below to jump to the explanation of the desired mode!</p>
-                        <ul>
-                            <li>Drill Mode Performance Calculation</li>
-                            <li>Game Mode Performance Calculation</li>
+                        <p className="alert alert-info" id="drillPerformance"><strong>Info!</strong> You can use the navigation list below to jump to the explanation of the desired mode!</p>
+                        <ul className="tutorial-sub-navigation">
+                            <li><a href="#drillPerformance">Drill Mode Performance Calculation</a></li>
+                            <li><a href="#gamePerformance">Game Mode Performance Calculation</a></li>
                         </ul>
 
                         <div className="menus-content-container">
@@ -393,11 +396,14 @@ const TutorialPage = () => {
 
                                 <p>The typing accuracy is measured by implementing a counter that will keep track of the number of typing errors that the user has made. Below is the formula.</p>
 
-                                <code className="formula">Accuracy = 100 - ((errorCount / numberOfTypedLetters) * 100)</code>
+                                <code id="gamePerformance" className="formula">Accuracy = 100 - ((errorCount / numberOfTypedLetters) * 100)</code>
 
                                 <p><strong>Example:</strong> if the user made 4 errors (errorCount) out of 20 words (numberOfTypedLetters) that the user type, the current accuracy of the user will be 80%</p>
 
                             </div>
+
+                            <hr className="my-4" />
+
                             <div className="content-menu">
                                 <h4>Game Mode Performance Calculation</h4>
 
