@@ -29,23 +29,20 @@ const TutorialPage = () => {
         <div className="tutorial-page-container">
             <PageTitle titleName="Tutorial Page"/>
             <ThemeProvider theme={theme}>
-                <AppBar color="default" position="static">
+                {/* <AppBar color="default" position="static">
                     <Tabs
                     value={currentTab}
                     onChange={handleTabChange}
                     variant="fullWidth"
-                    >
-                        <Tab sx={{fontWeight: 600, color: "#2b2b2b", backgroundColor: `${currentTab === 0 ? "#005792" : "#ababab"}`}} label="Touch Typing Theories"/>
-                        <Tab sx={{fontWeight: 600, color: "#2b2b2b", backgroundColor: `${currentTab === 1 ? "#005792" : "#ababab"}`}} label="How to Use the App"/>
+                    >   
+                        <Tab sx={{fontWeight: 600, color: "#2b2b2b", backgroundColor: `${currentTab === 0 ? "#005792" : "#ababab"}`}} label="Main Tutorial"/>
                     </Tabs>
-                </AppBar>
+                </AppBar> */}
             </ThemeProvider>
-            <MaterialTabBody currentTab={currentTab} tabIndex={0}>
-                <div className="tutorial-content-container container">
-                    <h2 className="tutorial-content-title">Theories of Touch Typing</h2>
-
-                    <p className="tutorial-description lead">Welcome to the History Page! This tutorial section will a brief and general information that you might need to know aboiut touch typing! Kindly use the navigation links below.</p>
-
+            {/* <MaterialTabBody currentTab={currentTab} tabIndex={0}> */}
+                <div className="tutorial-content-container">
+                    {/* <h2 className="tutorial-content-title">Tutorials</h2> */}
+                    <p className="tutorial-description lead">Welcome to the tutorial page! This is the page where you can find various tutorial regarding how to operate the application. These tutorials are served using expandable cards that you can click on. Please select the cards below according to your needs.</p>
                     <ExpandableSection sectionTitle="General Information about Touch Typing">
                         <h3>General Information about Touch Typing</h3>
 
@@ -59,30 +56,7 @@ const TutorialPage = () => {
                             From the previous paragraph, it can be seen that learning to touch-type is very beneficial. However, within this technology era, a person can learn how to touch-type from many sources, including the internet itself. However, the internet is a broad and deep place where there are at least 4,386,485,541 users (approximated) on April 30, 2019 (Group, 2011). Considering that number, the number of available information on the internet must be somewhere near equivalent or even greater. With that number of information, confusion might occur in terms of choosing the best method to learn to touch-type. 
                         </p>
 
-                        <p>
-                            Fortunately, a learning method called game-based learning has been developed as a “fun” way of learning. According to Plass et al. (2015, p. 259), “Game-based learning mostly emphasizes that it is a type of gameplay with defined learning outcomes”. In other words, game-based learning aims to combine a learning process with actual gameplay. The reason that supports the acknowledgment of this learning method is the number of people who are playing games casually. Lenhart et al. (2008) stated that 99% of boys and 94% of girls in America are playing digital games. One of the factors that responsible for this high number is the motivational side of a game. A game can maintain the engagement of the users for a long period by utilizing various game mechanics that are enjoyable by the users (Plass et al., 2015, p. 260). 
-                        </p>
-
-                        <p>
-                            With high percentages of game enthusiasts, various studies have been conducted to observe the efficiencies of a game in learning (game-based learning). Papastergiou (2009), through her research in 2008 with 88 high-school students, showed a positive outcome from the implementation of game-based learning. In terms of computer memory education (the topic of the research), digital game-based learning is more effective in enhancing the students’ knowledge regarding the current field as well as maintaining their motivation during the activity. Papastergiou (2009) argues that sufficient entertainment elements and learning materials are the keys to the success of game-based learning. Also, research conducted by Kerthyayana Manuaba (2017) showed the positive impacts of game-based learning. He successfully proved that text-based games have a great potential for improving reading behavior in Indonesia. He stated that among 20 participants (university students) in his research, 19 of them fully understand the reading materials from the game. 
-                        </p>
-
                     </ExpandableSection>
-
-                    <ExpandableSection sectionTitle="History">
-                        <h3>History</h3>
-
-                        <img className="section-image-title" src="/images/undraw_history.svg" alt="Can not find picutre" />
-
-                        <p className="sub-content-forewords">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum necessitatibus esse quasi tempore velit explicabo dicta iusto deserunt voluptatem et!</p>
-
-                    </ExpandableSection>
-                </div>
-            </MaterialTabBody>
-            <MaterialTabBody currentTab={currentTab} tabIndex={1}>
-                <div className="tutorial-content-container">
-                    <h2 className="tutorial-content-title">How to Use The Application</h2>
-                    <p className="tutorial-description lead">Welcome to the tutorial page! This is the page where you can find various tutorial regarding how to operate the application. Ther tutorials are served using expandable cards that you can click on. Please select the cards below according to your needs.</p>
                     <ExpandableSection sectionTitle="Menus">
                         <h3>Menus</h3>
                         <p className="sub-content-forewords">This is the section where you will find the explanations regarding the functionality of each menu in this application. There are 4 core menus / pages of the applicatoin of this application. Each of the menu / page will be elaborated below.</p>
@@ -456,7 +430,7 @@ const TutorialPage = () => {
                         </div>
                     </ExpandableSection>
                 </div>
-            </MaterialTabBody>
+            {/* </MaterialTabBody> */}
         </div>
     )
 }

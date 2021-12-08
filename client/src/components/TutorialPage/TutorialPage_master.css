@@ -6,6 +6,8 @@
 
 .tutorial-content-container{
     padding-bottom: 1.5rem;
+    border-radius: 1rem;
+    background-color: var(--primary-color);
 }
 
 .menus-content-container{
