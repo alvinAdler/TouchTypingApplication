@@ -109,12 +109,20 @@
     text-align: center;
 }
 
-.row-dark{
+/* .row-dark{
     background-color: rgba(0, 87, 146, 0.6);
 }
 
 .row-light{
     background-color: rgba(0, 87, 146, 0.4);
+} */
+
+.row-dark{
+    background-color: rgba(0, 87, 146, 0.4);
+}
+
+.row-light{
+    background-color: #f2f2f2;
 }
 
 
