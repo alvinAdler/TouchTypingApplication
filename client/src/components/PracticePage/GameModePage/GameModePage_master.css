@@ -108,28 +108,6 @@
     margin: auto;
 }
 
-.debugging-buttons{
-    border-radius: 0.5rem;
-    background-color: var(--primary-color);
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0 2rem;
-    gap: 0 5px;
-}
-
-.debugging-buttons > *{
-    margin: 0.5rem 0;
-    display: block;
-    width: 100%;
-}
-
-.debugging-buttons > h2{
-    text-align: center;
-    color: white;
-}
-
 .disabled-button{
     cursor: default;
     background-color:gray;
@@ -164,4 +142,42 @@
 
 .game-mode{
     font-weight: 800;
+}
+
+.debugging-buttons{
+    background-color: var(--primary-color);
+    position: fixed;
+    left: 0;
+    top: 50%;
+    padding: 0 2rem;
+    gap: 0 5px;
+    margin: 0;
+    transform: translateY(-50%);
+}
+
+.debugging-buttons > *{
+    margin: 0.5rem 0;
+    display: block;
+    width: 100%;
+}
+
+.debugging-buttons > h2{
+    text-align: center;
+    cursor: pointer;
+    color: white;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    background-color: var(--hover-primary-button-color);
+    border-radius: 1rem;
+}
+
+.hide-game-dev-tool{
+    bottom: 0;
+    left: 0;
+    top: initial;
+    transform: initial;
+}
+
+.hide-game-dev-tool > button{
+    display: none;
 }

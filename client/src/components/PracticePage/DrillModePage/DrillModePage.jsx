@@ -20,7 +20,7 @@ import {
     capitalizeString
 } from '../../Utilities/functions'
 
-const DEVELOPER_MODE = false
+const DEVELOPER_MODE = true
 const TIMER_INTERVAL = 1000 //ms
 
 const DrillModePage = () => {

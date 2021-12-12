@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { FaPause, FaPlay } from 'react-icons/fa'
+import { FaPause, FaTimes } from 'react-icons/fa'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import Cookies from 'js-cookie'
@@ -35,6 +35,7 @@ const GameModePage = () => {
     const [userScoreCount, setUserScoreCount] = useState(0)
     const [isGameStarted, setIsGameStarted] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [isDevToolVisible, setIsDevToolVisible] = useState(false)
     
     const userInput = useRef()
     const mainCanvas = useRef(null)
@@ -629,8 +630,8 @@ const startAnimation = () => {
                 </ScoreModal>
             </div>
             {DEVELOPER_MODE && 
-                <div className="debugging-buttons">
-                    <h2>Dev</h2>
+                <div className={`${!isDevToolVisible && "hide-game-dev-tool"} debugging-buttons`}>
+                    <h2 onClick={() => setIsDevToolVisible(!isDevToolVisible)}>Dev</h2>
                     <button className="btn btn-primary" onClick={initSprites}>Init Sprites</button>
                     <button className="btn btn-success" onClick={() => window.requestAnimationFrame(startAnimation)}>Start Animation</button>
                     <button className="btn btn-danger" onClick={stopAnimation}>Stop Animation</button>
