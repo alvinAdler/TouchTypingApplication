@@ -154,7 +154,7 @@ const DrillModePage = () => {
     const evaluationFunction = () => {
         
         //* Check for typing accuracy
-        let currentNumOfLetters = userInputCopy.current.length
+        let currentNumOfLetters = userInputCopy.current.length === 0 ? 1 : userInputCopy.current.length
         typingAccuracy.current = errorCount.current === 0 ? 100 : 100 - ((errorCount.current / currentNumOfLetters) * 100).toFixed(1)
 
         //* Check for wpm
@@ -232,7 +232,6 @@ const DrillModePage = () => {
             defaultVariables()
             mainTextRef.current.style.transform = `translateX(0px)`
             currentLetter.current = res.data.words[0]
-            console.log("Hey the problem is in here")
             setListOfWords(res.data.words)
 
             setUserInput("")

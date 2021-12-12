@@ -18,7 +18,7 @@ import { randomInteger, markLastVisitedPath, getUserCookie, capitalizeString } f
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-const DEVELOPER_MODE = true
+const DEVELOPER_MODE = false
 
 const SCORE_HIGH = 300
 const SCORE_MID = 200
