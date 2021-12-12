@@ -16,10 +16,11 @@ import {
     getUserCookie, 
     changeTimeFormat, 
     changeAccuracyFormat ,
-    grossWpm
+    grossWpm,
+    capitalizeString
 } from '../../Utilities/functions'
 
-const DEVELOPER_MODE = true
+const DEVELOPER_MODE = false
 const TIMER_INTERVAL = 1000 //ms
 
 const DrillModePage = () => {
@@ -31,10 +32,10 @@ const DrillModePage = () => {
     const [isShiftHold, setIsShiftHold] = useState(false)
     const [showModal, setShowModal] = useState(false)
 
-    const sampleRef = useRef()
-    const sampleCounter = useRef(16)
+    const mainTextRef = useRef()
+    const translateCounter = useRef(16)
     const currentLetter = useRef("")
-    const anotherCounter = useRef(0)
+    const indexTracker = useRef(0)
     const interval = useRef()
     const userInputCopy = useRef("")
     const timerCopy = useRef(1)
@@ -124,12 +125,12 @@ const DrillModePage = () => {
                 return
             }
 
-            anotherCounter.current += 1
+            indexTracker.current += 1
 
-            sampleRef.current.style.transform = `translateX(-${sampleCounter.current}px)`
-            sampleCounter.current += 16
+            mainTextRef.current.style.transform = `translateX(-${translateCounter.current}px)`
+            translateCounter.current += 16
 
-            currentLetter.current = listOfWords[anotherCounter.current]
+            currentLetter.current = listOfWords[indexTracker.current]
 
             setUserInput((prev) => prev + key)
 
@@ -208,8 +209,8 @@ const DrillModePage = () => {
     }
 
     const defaultVariables = () => {
-        sampleCounter.current = 16
-        anotherCounter.current = 0
+        translateCounter.current = 16
+        indexTracker.current = 0
         userInputCopy.current = ""
         timerCopy.current = 1
         isStarted.current = false
@@ -229,7 +230,7 @@ const DrillModePage = () => {
         })
         .then((res) => {
             defaultVariables()
-            sampleRef.current.style.transform = `translateX(0px)`
+            mainTextRef.current.style.transform = `translateX(0px)`
             currentLetter.current = res.data.words[0]
             console.log("Hey the problem is in here")
             setListOfWords(res.data.words)
@@ -264,13 +265,13 @@ const DrillModePage = () => {
                 }}><FaPause/></button>
             </div>
             <div className="word-wrapper">
-                <p ref={sampleRef} className="animated-text-container">
+                <p ref={mainTextRef} className="animated-text-container">
                     {listOfWords.split("").map((item, index) => {
 
                         if(userInput.charAt(index) === item && !isFalseDetected){
                             return <span className="word-true" key={index}>{item}</span>
                         }
-                        else if(anotherCounter.current === index){
+                        else if(indexTracker.current === index){
                             if(indicator){
                                 return(
                                     <span className="word-false current" key={index}>
@@ -310,7 +311,9 @@ const DrillModePage = () => {
                             {isShiftHold ?
                             keysArrayHold[indexOuter].map((item, indexInner) => {
                                 return(
-                                    <span key={indexInner} className={`${fingersMappingData[item].keyClassName} ${item === currentLetter.current && `key-image-current ${fingersMappingData[item].highlighted}`}`}>{item}</span>
+                                    <span key={indexInner} className={`${fingersMappingData[item].keyClassName} ${item === currentLetter.current && `key-image-current ${fingersMappingData[item].highlighted}`}`}>
+                                        {item}
+                                    </span>
                                 )
                             })
                             :

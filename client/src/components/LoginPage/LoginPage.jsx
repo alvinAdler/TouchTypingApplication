@@ -75,9 +75,7 @@ const LoginPage = () => {
                     })
                 }
             }
-            else{
-
-            }
+            console.log(err)
         })
     }
 

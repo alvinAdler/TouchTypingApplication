@@ -18,7 +18,7 @@ import { randomInteger, markLastVisitedPath, getUserCookie, capitalizeString } f
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-const DEVELOPER_MODE = true
+const DEVELOPER_MODE = false
 
 const SCORE_HIGH = 300
 const SCORE_MID = 200
@@ -150,7 +150,7 @@ const GameModePage = () => {
                 })
                 .then((res) => {
                     if(res.isConfirmed){
-                        startAnimation()
+                        window.requestAnimationFrame(startAnimation)
                     }else{
                         history.push("/practice")
                     }
@@ -248,117 +248,117 @@ const GameModePage = () => {
         })
     }
 
-    const startAnimation = () => {  
+const startAnimation = () => {  
 
-        userInput.current.focus()
+    userInput.current.focus()
 
-        clearCanvas()
-        drawAlienHitCount()
-        
-        if(DEVELOPER_MODE){
-            drawScoreLines()
-        }
-
-        console.log("Animation on")
-
-        if(!isGameStarted){
-            setIsGameStarted(true)
-        }
-
-        //Checking the end game (whether the player lose or win)
-        let isGameEnd = (userHealthCopy.current === 0) || (alienHitCount.current === 0)
-
-        if(isGameEnd){
-            stopAnimation()
-
-            storeUserGamePerformance()
-
-            console.log(userHealthCopy.current)
-            setShowModal(true)
-
-            return
-        }
-
-        if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER.current){
-            timeCounter.current = 0
-            if(!stopGeneratingAlien.current){
-                generateRandomAlien()
-            }
-        }
-
-        //* Check for sprites that has the word that the user type
-        let matchingSprites = checkKeywordExistence()
-        if(matchingSprites.length > 0){
-
-            let sprite = matchingSprites[matchingSprites.length - 1]
-            let tank = arrSprites.current[arrSprites.current.length - 1]
-
-            tank.posX = sprite.posX - (tank.spriteData.screenWidth / 2) + (sprite.spriteData.screenWidth / 2)
-            shootCannon()
-
-            possibleCollision.current.push({
-                alien: sprite,
-                cannonBall: arrSprites.current[0]
-            })
-
-            evaluateScore({x: matchingSprites[0].posX, y: matchingSprites[0].posY})
-
-            clearInput()
-        }
-
-        arrSprites.current.forEach((sprite) => {
-            updateSprite(sprite)
-
-            possibleCollision.current.forEach((item) => {
-                if(isColliding(item.alien, item.cannonBall)){
-                    //* If the cannonball collides with the alien, remove the cannonball from --
-                    //* -- the array of sprites and remove the current item from the array of items that might collide.
-
-                    let currentAlien = arrSprites.current[arrSprites.current.indexOf(item.alien)]
-                    removeElementFromArray(arrSprites.current, item.cannonBall)
-                    removeElementFromArray(possibleCollision.current, item)
-
-                    //*Change the animation of the alien to become the "destroyed" animation. 
-                    currentAlien.idleSprite = true
-                    currentAlien.dir = "DESTROY"
-                    currentAlien.spriteFrameCounter = 0
-
-                    alienHitCount.current -= 1
-                }
-            })
-
-            //* If an alien already reached the land, then stop the alien and adjust the posY of the alien to match the land
-            if(sprite.name === "Alien" && sprite.dir !== "HITSGROUND" && (sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height)){
-                sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
-                sprite.idleSprite = true
-                arrSprites.current[arrSprites.current.indexOf(sprite)].dir = "HITSGROUND"
-
-                //* Push the current item to a specific array.
-                landedAliens.current.push(sprite)
-                setUserHealth(prevState => prevState - 1)
-                userHealthCopy.current -= 1
-            }
-            //Just in case if the cannonball goes offscreen
-            else if(sprite.name === "Cannon Ball" && (sprite.posY <= 0)){
-                removeElementFromArray(arrSprites.current, sprite)
-            }
-        })
-
-        arrSprites.current.forEach((sprite) => {
-            sprite.drawSprite()
-        })
-
-        //* Update frame once every *FRAME_TRANS_LIMIT*. This will take effect in the updateSprite function.
-        if(frameCounter.current < FRAME_TRANS_LIMIT){
-            frameCounter.current += 1
-        }
-        else{
-            frameCounter.current = 0
-        }
-        timeCounter.current += 1
-
-        stopId.current = window.requestAnimationFrame(startAnimation)
+    clearCanvas()
+    drawAlienHitCount()
+    
+    if(DEVELOPER_MODE){
+        drawScoreLines()
     }
+
+    console.log("Animation on")
+
+    if(!isGameStarted){
+        setIsGameStarted(true)
+    }
+
+    //Checking the end game (whether the player lose or win)
+    let isGameEnd = (userHealthCopy.current === 0) || (alienHitCount.current === 0)
+
+    if(isGameEnd){
+        stopAnimation()
+
+        storeUserGamePerformance()
+
+        console.log(userHealthCopy.current)
+        setShowModal(true)
+
+        return
+    }
+
+    if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER.current){
+        timeCounter.current = 0
+        if(!stopGeneratingAlien.current){
+            generateRandomAlien()
+        }
+    }
+
+    //* Check for sprites that has the word that the user type
+    let matchingSprites = checkKeywordExistence()
+    if(matchingSprites.length > 0){
+
+        let sprite = matchingSprites[matchingSprites.length - 1]
+        let tank = arrSprites.current[arrSprites.current.length - 1]
+
+        tank.posX = sprite.posX - (tank.spriteData.screenWidth / 2) + (sprite.spriteData.screenWidth / 2)
+        shootCannon()
+
+        possibleCollision.current.push({
+            alien: sprite,
+            cannonBall: arrSprites.current[0]
+        })
+
+        evaluateScore({x: matchingSprites[0].posX, y: matchingSprites[0].posY})
+
+        clearInput()
+    }
+
+    arrSprites.current.forEach((sprite) => {
+        updateSprite(sprite)
+
+        possibleCollision.current.forEach((item) => {
+            if(isColliding(item.alien, item.cannonBall)){
+                //* If the cannonball collides with the alien, remove the cannonball from --
+                //* -- the array of sprites and remove the current item from the array of items that might collide.
+
+                let currentAlien = arrSprites.current[arrSprites.current.indexOf(item.alien)]
+                removeElementFromArray(arrSprites.current, item.cannonBall)
+                removeElementFromArray(possibleCollision.current, item)
+
+                //*Change the animation of the alien to become the "destroyed" animation. 
+                currentAlien.idleSprite = true
+                currentAlien.dir = "DESTROY"
+                currentAlien.spriteFrameCounter = 0
+
+                alienHitCount.current -= 1
+            }
+        })
+
+        //* If an alien already reached the land, then stop the alien and adjust the posY of the alien to match the land
+        if(sprite.name === "Alien" && sprite.dir !== "HITSGROUND" && (sprite.posY + sprite.spriteData.screenHeight >= mainCanvas.current.height)){
+            sprite.posY = mainCanvas.current.height - sprite.spriteData.screenHeight
+            sprite.idleSprite = true
+            arrSprites.current[arrSprites.current.indexOf(sprite)].dir = "HITSGROUND"
+
+            //* Push the current item to a specific array.
+            landedAliens.current.push(sprite)
+            setUserHealth(prevState => prevState - 1)
+            userHealthCopy.current -= 1
+        }
+        //Just in case if the cannonball goes offscreen
+        else if(sprite.name === "Cannon Ball" && (sprite.posY <= 0)){
+            removeElementFromArray(arrSprites.current, sprite)
+        }
+    })
+
+    arrSprites.current.forEach((sprite) => {
+        sprite.drawSprite()
+    })
+
+    //* Update frame once every *FRAME_TRANS_LIMIT*. This will take effect in the updateSprite function.
+    if(frameCounter.current < FRAME_TRANS_LIMIT){
+        frameCounter.current += 1
+    }
+    else{
+        frameCounter.current = 0
+    }
+    timeCounter.current += 1
+
+    stopId.current = window.requestAnimationFrame(startAnimation)
+}
 
     const stopAnimation = () => {
         if(isGameStarted){
@@ -467,7 +467,7 @@ const GameModePage = () => {
     const relocateOffScreenSprites = () => {
 
         if(arrSprites.current.length < 1){
-            return []
+            return
         }
 
         for(let sprite of arrSprites.current){
