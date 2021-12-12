@@ -116,6 +116,11 @@ const DrillModePage = () => {
             if(userInputCopy.current.length === listOfWords.length){
                 console.log("Did I went here?")
                 stopTimer()
+                
+                let currentNumOfLetters = userInputCopy.current.length === 0 ? 1 : userInputCopy.current.length
+                typingAccuracy.current = errorCount.current === 0 ? 100 : 100 - ((errorCount.current / currentNumOfLetters) * 100).toFixed(1)
+
+                wordsPerMinute.current = grossWpm(userInputCopy.current, timerCopy.current / 60)
 
                 printFinalData()
                 storeUserDrillPerformance()
@@ -258,10 +263,10 @@ const DrillModePage = () => {
     return (
         <div className="drill-mode-container">
             <div className="drill-action-buttons">
-                <button type="button" className="action-button" onClick={(ev) => {
+                <button type="button" className="action-button" disabled={!isStarted.current} onClick={(ev) => {
                     ev.target.blur()
                     pauseDrill()
-                }}><FaPause/></button>
+                }}><FaPause onClick={() => document.querySelector(".action-button").blur()}/></button>
             </div>
             <div className="word-wrapper">
                 <p ref={mainTextRef} className="animated-text-container">
