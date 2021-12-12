@@ -6,6 +6,7 @@ const CANNONBALL_VELOCITY = {
     y: 20
 }
 
+
 class Tank extends Sprite2{
     constructor(name, main, spriteSheet, spriteData, initPositions, initVelocities, initDir, frameCounter, idleSprite,
     cannonBallSpriteSheet, cannonBallData){

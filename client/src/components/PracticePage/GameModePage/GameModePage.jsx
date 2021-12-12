@@ -18,7 +18,7 @@ import { randomInteger, markLastVisitedPath, getUserCookie, capitalizeString } f
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-const DEVELOPER_MODE = false
+const DEVELOPER_MODE = true
 
 const SCORE_HIGH = 300
 const SCORE_MID = 200
@@ -105,8 +105,6 @@ const GameModePage = () => {
             arrSprites.current.forEach((sprite) => {
                 sprite.drawSprite()
             })
-    
-            console.log(arrSprites)
         }
         
         window.addEventListener("resize", resizeHandler, false)
@@ -394,7 +392,8 @@ const startAnimation = () => {
             },
             mainSheets["alienSpriteSheet"], alienData,
             {
-                posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
+                posX: mainCanvas.current.width - 100,
+                // posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
                 posY: -90
             },
             {
@@ -466,11 +465,34 @@ const startAnimation = () => {
 
     const relocateOffScreenSprites = () => {
 
+        let isColliding = false
+        let alien = null
+        let cannonBall = null
+
         if(arrSprites.current.length < 1){
             return
         }
 
+        for(let pair of possibleCollision.current){
+            alien = pair.alien
+            cannonBall = pair.cannonBall
+
+            if((alien.posX < 0 || alien.posX > mainCanvas.current.width) || 
+            (cannonBall.posX < 0 || cannonBall.posX > mainCanvas.current.width)){
+                let relocatedX = randomInteger(0, mainCanvas.current.width - alienData.screenWidth)
+
+                alien.posX = relocatedX
+                cannonBall.posX = relocatedX + (alienData.screenWidth / 2) - (cannonBallData.screenWidth / 2)
+            }
+        }
+
         for(let sprite of arrSprites.current){
+
+            isColliding = possibleCollision.current.some((pair) => (pair.alien === sprite || pair.cannonBall == sprite))
+            if(isColliding){
+                continue
+            }
+            
             if(sprite.name === "Tank"){
                 sprite.posX = (mainCanvas.current.width / 2) - (tankData.screenWidth / 2)
                 sprite.posY = mainCanvas.current.height - tankData.screenHeight
@@ -478,6 +500,7 @@ const startAnimation = () => {
             }
 
             if(sprite.posX < 0 || sprite.posX > mainCanvas.current.width){
+                console.log(sprite)
                 console.log("Sprite relocated")
                 sprite.posX = randomInteger(0, mainCanvas.current.width - alienData.screenWidth)
             }
