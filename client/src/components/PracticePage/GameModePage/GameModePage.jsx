@@ -18,7 +18,7 @@ import { randomInteger, markLastVisitedPath, getUserCookie, capitalizeString } f
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-const DEVELOPER_MODE = false
+const DEVELOPER_MODE = true
 
 const SCORE_HIGH = 300
 const SCORE_MID = 200
@@ -393,8 +393,7 @@ const startAnimation = () => {
             },
             mainSheets["alienSpriteSheet"], alienData,
             {
-                posX: mainCanvas.current.width - 100,
-                // posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
+                posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
                 posY: -90
             },
             {

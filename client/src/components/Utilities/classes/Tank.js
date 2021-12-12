@@ -2,8 +2,8 @@ import Sprite2 from "./Sprite2";
 import CannonBall from './CannonBall.js'
 
 const CANNONBALL_VELOCITY = {
-    x: 20,
-    y: 20
+    x: 5,
+    y: 5
 }
 
 
