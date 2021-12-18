@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { FaPause, FaTimes } from 'react-icons/fa'
+import { FaPause } from 'react-icons/fa'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import Cookies from 'js-cookie'
@@ -488,7 +488,7 @@ const startAnimation = () => {
 
         for(let sprite of arrSprites.current){
 
-            isColliding = possibleCollision.current.some((pair) => (pair.alien === sprite || pair.cannonBall == sprite))
+            isColliding = possibleCollision.current.some((pair) => (pair.alien === sprite || pair.cannonBall === sprite))
             if(isColliding){
                 continue
             }
@@ -599,7 +599,7 @@ const startAnimation = () => {
                     <div className="user-lifes-container">
                         {Array.from(Array(userHealth)).map((item, index) => {
                             return(
-                                <img key={index} src="/images/userLifes.png" alt="Picture have not been found" />
+                                <img key={index} src="/images/userLifes.png" alt="User Live" />
                             )
                         })}
                     </div>

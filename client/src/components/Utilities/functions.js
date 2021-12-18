@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import swal from 'sweetalert2'
@@ -199,5 +198,5 @@ export const checkIfUpperCase = (char) => {
 }
 
 export const isChar = (char) => {
-    return char.toLowerCase() != char.toUpperCase()
+    return char.toLowerCase() !== char.toUpperCase()
 }

@@ -17,7 +17,7 @@ import {
     changeTimeFormat, 
     changeAccuracyFormat ,
     grossWpm,
-    capitalizeString
+    // capitalizeString
 } from '../../Utilities/functions'
 
 const DEVELOPER_MODE = true

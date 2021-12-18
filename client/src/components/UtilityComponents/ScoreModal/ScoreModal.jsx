@@ -18,8 +18,8 @@ const ScoreModal = ({isModalActive, children, isSuccess=true, onButtonClick=defa
     return (
         <>
             <div className={`${isModalActive && "active-modal"} score-modal-container`}>
-                <img className="result-wave-top" src="/images/wave_scoreTop.svg" alt="Can not find picture" />
-                <img className="result-wave-bottom" src="/images/wave_scoreBottom.svg" alt="Can not find picture" />
+                <img className="result-wave-top" src="/images/wave_scoreTop.svg" alt="Pattern Top" />
+                <img className="result-wave-bottom" src="/images/wave_scoreBottom.svg" alt="Pattern Bottom" />
                 <h2 className="performance-modal-title">Result</h2>
                 {isSuccess ?
                 <div className="performance-marker performance-success">

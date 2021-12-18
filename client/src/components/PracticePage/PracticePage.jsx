@@ -34,6 +34,7 @@ const PracticePage = () => {
     const handleTabChange = (event, selectedTab) => {
         setCurrentTab(selectedTab)
         switch(selectedTab){
+            default:
             case 0:
                 setSelectedPractice({mode: "drillMode", selection: "homeRow"})
                 break;
