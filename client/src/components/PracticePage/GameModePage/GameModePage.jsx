@@ -18,7 +18,7 @@ import { randomInteger, markLastVisitedPath, getUserCookie, capitalizeString } f
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-const DEVELOPER_MODE = true
+const DEVELOPER_MODE = false
 
 const SCORE_HIGH = 300
 const SCORE_MID = 200
@@ -109,6 +109,9 @@ const GameModePage = () => {
         }
         
         window.addEventListener("resize", resizeHandler, false)
+        window.onhashchange = () => {
+            console.log("Something")
+        }
 
         return () => {
             window.removeEventListener("resize", resizeHandler, false)
@@ -149,6 +152,7 @@ const GameModePage = () => {
                 })
                 .then((res) => {
                     if(res.isConfirmed){
+                        userInput.current.focus()
                         window.requestAnimationFrame(startAnimation)
                     }else{
                         history.push("/practice")
@@ -248,8 +252,6 @@ const GameModePage = () => {
     }
 
 const startAnimation = () => {  
-
-    userInput.current.focus()
 
     clearCanvas()
     drawAlienHitCount()
