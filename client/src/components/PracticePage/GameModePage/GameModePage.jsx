@@ -18,7 +18,7 @@ import { randomInteger, markLastVisitedPath, getUserCookie, capitalizeString } f
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
 
-const DEVELOPER_MODE = false
+const DEVELOPER_MODE = true
 
 const SCORE_HIGH = 300
 const SCORE_MID = 200
@@ -117,6 +117,8 @@ const GameModePage = () => {
             window.removeEventListener("resize", resizeHandler, false)
             stopAnimation()
             defaultVariables()
+            document.querySelector(".swal2-container")?.remove()
+            document.querySelector("body").style.overflowY = "auto"
         }
 
     }, [])
@@ -577,11 +579,13 @@ const GameModePage = () => {
     const restartGame = () => {
         console.log("Game restarted")
         defaultVariables()
+        clearInput()
 
         initSprites()
         startAnimation()
 
         setShowModal(false)
+        userInput.current.focus()
     }
 
     return (

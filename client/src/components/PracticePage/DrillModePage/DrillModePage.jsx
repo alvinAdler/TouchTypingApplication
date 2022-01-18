@@ -75,6 +75,8 @@ const DrillModePage = () => {
 
         return () => {
             stopTimer()
+            document.querySelector(".swal2-container")?.remove()
+            document.querySelector("body").style.overflowY = "auto"
         }
     }, [])
 
