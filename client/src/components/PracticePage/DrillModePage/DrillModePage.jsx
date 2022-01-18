@@ -20,7 +20,7 @@ import {
     // capitalizeString
 } from '../../Utilities/functions'
 
-const DEVELOPER_MODE = false
+const DEVELOPER_MODE = true
 const TIMER_INTERVAL = 1000 //ms
 
 const DrillModePage = () => {
@@ -72,6 +72,10 @@ const DrillModePage = () => {
         }
 
         onPageLoad()
+
+        return () => {
+            stopTimer()
+        }
     }, [])
 
     useEffect(() => {
@@ -114,7 +118,6 @@ const DrillModePage = () => {
             userInputCopy.current = userInputCopy.current + key
             //* Then the words are over
             if(userInputCopy.current.length === listOfWords.length){
-                console.log("Did I went here?")
                 stopTimer()
                 
                 let currentNumOfLetters = userInputCopy.current.length === 0 ? 1 : userInputCopy.current.length
