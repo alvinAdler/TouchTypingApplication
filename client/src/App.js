@@ -32,7 +32,7 @@ const App = () => {
 
 			const result = await checkToken()
 
-			if(result.status){
+			if(result.data?.status){
 				setAuth(true)
 
 				if(Cookies.get("lastPath") !== undefined && location.pathname !== "/"){
@@ -54,7 +54,7 @@ const App = () => {
 		try{
 			const response = await checkToken()
 
-			if(!response.status){
+			if(!response.data?.status){
 				swal.fire({
 					icon: "error",
 					title: "Login Required!",
