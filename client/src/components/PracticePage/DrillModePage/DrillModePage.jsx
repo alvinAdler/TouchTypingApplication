@@ -364,7 +364,7 @@ const DrillModePage = () => {
                 goReturn: () => history.push("/practice"),
                 goTryAgain: restartDrill,
                 goMain: () => history.push("/")
-            }}    
+            }}
             >
                 <div className="drill-performance-result-container">
                     <div className="result-drill-container">
