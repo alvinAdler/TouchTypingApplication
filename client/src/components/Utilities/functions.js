@@ -184,8 +184,8 @@ export const countWord =  (word) => {
     return Math.floor(word.length / 5)
 }
 
-export const grossWpm = (numOfChars, minutes) => {
-    return (countWord(numOfChars) / minutes).toFixed(1)
+export const grossWpm = (words, minutes) => {
+    return (countWord(words) / minutes).toFixed(1)
 }
 
 export const camelCaseToSentenceCase = (text) => {
