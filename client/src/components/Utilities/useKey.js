@@ -17,16 +17,15 @@ const useKey = (callback) => {
     useEffect(() => {
         const handle = (ev) => {
             if(ev.type === "keyup" && ev.key === "Shift"){
-                // callbackRef.current(ev, ev.key)
-                callback(ev, ev.key)
+                callbackRef.current(ev, ev.key)
                 return
             }
 
             if(ev.repeat || blackListedKeys.includes(ev.key) || ev.ctrlKey || ev.altKey || ev.type === "keyup"){
                 return
             }
-            // callbackRef.current(ev, ev.key)
-            callback(ev, ev.key)
+
+            callbackRef.current(ev, ev.key)
         }
         
         window.addEventListener('keydown', (ev) => {
@@ -41,7 +40,7 @@ const useKey = (callback) => {
             document.removeEventListener("keydown", handle)
             document.removeEventListener("keyup", handle)
         }
-    })
+    }, [])
 }
 
 export default useKey
