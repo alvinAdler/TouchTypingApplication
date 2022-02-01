@@ -320,15 +320,20 @@ const GameModePage = () => {
                     //* -- the array of sprites and remove the current item from the array of items that might collide.
 
                     let currentAlien = arrSprites.current[arrSprites.current.indexOf(item.alien)]
-                    removeElementFromArray(arrSprites.current, item.cannonBall)
-                    removeElementFromArray(possibleCollision.current, item)
+                    
+                    if(currentAlien){
+                        removeElementFromArray(arrSprites.current, item.cannonBall)
+                        removeElementFromArray(possibleCollision.current, item)
 
-                    //*Change the animation of the alien to become the "destroyed" animation. 
-                    currentAlien.idleSprite = true
-                    currentAlien.dir = "DESTROY"
-                    currentAlien.spriteFrameCounter = 0
+                        //*Change the animation of the alien to become the "destroyed" animation. 
+                        currentAlien.idleSprite = true
+                        currentAlien.dir = "DESTROY"
+                        currentAlien.spriteFrameCounter = 0
 
-                    alienHitCount.current -= 1
+                        alienHitCount.current -= 1
+                    }else{
+                        removeElementFromArray(possibleCollision.current, item)
+                    }
                 }
             })
 
@@ -657,6 +662,7 @@ const GameModePage = () => {
                     <button className="btn btn-primary" onClick={drawScoreLines}>Draw score lines</button>
                     <button className="btn btn-primary" onClick={toggleIdeStateAllSprites}>Toggle idle all</button>
                     <button className="btn btn-success" onClick={() => console.log(`(${mainCanvas.current.width}, ${mainCanvas.current.height})`)}>Canvas Size</button>
+                    <button className="btn btn-primary" onClick={() => console.log(possibleCollision.current)}>Possible Collisions</button>
                 </div>
             }
         </>
