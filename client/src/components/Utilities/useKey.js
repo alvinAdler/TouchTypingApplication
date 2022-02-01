@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const blackListedKeys = [
-    "Control", "Meta", "Alt", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight", "Backspace", "Tab", "Escape", "Enter",
+    "Control", "Meta", "Alt", "ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight", "Backspace", "Tab", "Escape", "Enter", "CapsLock",
     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
     "Insert", "Delete"
 ]
@@ -17,14 +17,16 @@ const useKey = (callback) => {
     useEffect(() => {
         const handle = (ev) => {
             if(ev.type === "keyup" && ev.key === "Shift"){
-                callbackRef.current(ev, ev.key)
+                // callbackRef.current(ev, ev.key)
+                callback(ev, ev.key)
                 return
             }
 
             if(ev.repeat || blackListedKeys.includes(ev.key) || ev.ctrlKey || ev.altKey || ev.type === "keyup"){
                 return
             }
-            callbackRef.current(ev, ev.key)
+            // callbackRef.current(ev, ev.key)
+            callback(ev, ev.key)
         }
         
         window.addEventListener('keydown', (ev) => {
