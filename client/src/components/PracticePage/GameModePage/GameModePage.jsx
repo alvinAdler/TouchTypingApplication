@@ -412,7 +412,7 @@ const GameModePage = () => {
             mainSheets["alienSpriteSheet"], alienData,
             {
                 posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
-                posY: 200
+                posY: -90
             },
             {
                 velX: ALIEN_VELOCITY.current,
