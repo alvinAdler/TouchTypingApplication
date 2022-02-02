@@ -257,7 +257,14 @@ const GameModePage = () => {
 
     const startAnimation = () => {  
 
-        clearCanvas()
+        try{
+            clearCanvas()
+        }
+        catch(err){
+            stopAnimation()
+            return
+        }
+
         drawAlienHitCount()
         
         if(DEVELOPER_MODE){
@@ -405,7 +412,7 @@ const GameModePage = () => {
             mainSheets["alienSpriteSheet"], alienData,
             {
                 posX: randomInteger(0, mainCanvas.current.width - alienData.screenWidth),
-                posY: -90
+                posY: 200
             },
             {
                 velX: ALIEN_VELOCITY.current,
