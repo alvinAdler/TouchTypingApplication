@@ -291,7 +291,7 @@ const GameModePage = () => {
             return
         }
 
-        if(timeCounter.current >= FRAME_PER_SECOND * 5){
+        if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER.current){
             timeCounter.current = 0
             if(!stopGeneratingAlien.current){
                 generateRandomAlien()
@@ -421,7 +421,7 @@ const GameModePage = () => {
             "DOWN",
             0,
             false,
-            "sample"
+            listOfWords[randomInteger(0, listOfWords.length - 1)]
         ))
     }
 
