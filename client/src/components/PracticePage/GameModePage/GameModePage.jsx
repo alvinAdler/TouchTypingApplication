@@ -291,7 +291,7 @@ const GameModePage = () => {
             return
         }
 
-        if(timeCounter.current >= FRAME_PER_SECOND * SPAWN_ALIEN_PER.current){
+        if(timeCounter.current >= FRAME_PER_SECOND * 5){
             timeCounter.current = 0
             if(!stopGeneratingAlien.current){
                 generateRandomAlien()
@@ -313,7 +313,7 @@ const GameModePage = () => {
                 cannonBall: arrSprites.current[0]
             })
 
-            evaluateScore({x: matchingSprites[0].posX, y: matchingSprites[0].posY})
+            evaluateScore({x: matchingSprites[matchingSprites.length - 1].posX, y: matchingSprites[matchingSprites.length - 1].posY})
 
             clearInput()
         }
@@ -421,7 +421,7 @@ const GameModePage = () => {
             "DOWN",
             0,
             false,
-            listOfWords[randomInteger(0, listOfWords.length - 1)]
+            "sample"
         ))
     }
 
