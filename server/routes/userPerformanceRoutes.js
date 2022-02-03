@@ -99,7 +99,7 @@ router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
                 })
             }
 
-            const allScores = allGamePerformance.map((obj) => obj.score)
+            // const allScores = allGamePerformance.map((obj) => obj.score)
 
             let lastTenGames = allGamePerformance.slice().sort(comparisonDate).slice(0, 10)
             lastTenGames = lastTenGames.map((obj) => ({
@@ -108,10 +108,12 @@ router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
                 recordDate: obj.recordDate
             }))
 
-            const maxScore = Math.max.apply(Math, allScores)
-            const minScore = Math.min.apply(Math, allScores)
+            const lastTenScores = lastTenGames.map((obj) => obj.score)
+
+            const maxScore = Math.max.apply(Math, lastTenScores)
+            const minScore = Math.min.apply(Math, lastTenScores)
             
-            const scoreAverage = findAverage(allScores).toFixed(1)
+            const scoreAverage = findAverage(lastTenScores).toFixed(1)
             
             return res.status(200).json({
                 message: "Game mode data fetched successfully",
@@ -136,9 +138,9 @@ router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
                 })
             }
 
-            const allDrillWpms = allDrillPerformance.map((obj) => obj.wordsPerMinute)
-            const allDrillAccs = allDrillPerformance.map((obj) => obj.accuracy)
-            const allDrillTimes = allDrillPerformance.map((obj) => obj.totalSeconds)
+            // const allDrillWpms = allDrillPerformance.map((obj) => obj.wordsPerMinute)
+            // const allDrillAccs = allDrillPerformance.map((obj) => obj.accuracy)
+            // const allDrillTimes = allDrillPerformance.map((obj) => obj.totalSeconds)
             
             let lastTenDrills = allDrillPerformance.slice().sort(comparisonDate).slice(0, 10)
             lastTenDrills = lastTenDrills.map((obj) => ({
@@ -150,16 +152,20 @@ router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
                 wordsPerMinute: obj.wordsPerMinute
             }))
 
-            const maxWpm = Math.max.apply(Math, allDrillWpms)
-            const minWpm = Math.min.apply(Math, allDrillWpms)
-            const maxAcc = Math.max.apply(Math, allDrillAccs)
-            const minAcc = Math.min.apply(Math, allDrillAccs)
-            const fastestTime = Math.min.apply(Math, allDrillTimes)
-            const slowestTime = Math.max.apply(Math, allDrillTimes)
+            const lastTenDrillsWPM = lastTenDrills.map((obj) => obj.wordsPerMinute)
+            const lastTenDrillsAcc = lastTenDrills.map((obj) => obj.accuracy)
+            const lastTenDrillsTimes = lastTenDrills.map((obj) => obj.totalSeconds)
 
-            const averageWpm = findAverage(allDrillWpms).toFixed(1)
-            const averageAcc = findAverage(allDrillAccs).toFixed(1)
-            const averageTime = findAverage(allDrillTimes).toFixed(1)
+            const maxWpm = Math.max.apply(Math, lastTenDrillsWPM)
+            const minWpm = Math.min.apply(Math, lastTenDrillsWPM)
+            const maxAcc = Math.max.apply(Math, lastTenDrillsAcc)
+            const minAcc = Math.min.apply(Math, lastTenDrillsAcc)
+            const fastestTime = Math.min.apply(Math, lastTenDrillsTimes)
+            const slowestTime = Math.max.apply(Math, lastTenDrillsTimes)
+
+            const averageWpm = findAverage(lastTenDrills.map((item) => item.wordsPerMinute)).toFixed(1)
+            const averageAcc = findAverage(lastTenDrills.map((item) => item.accuracy)).toFixed(1)
+            const averageTime = findAverage(lastTenDrills.map((item) => item.totalSeconds)).toFixed(1)
 
             return res.status(200).json({
                 message: "Drill mode data fetched successfully",
