@@ -1,0 +1,19 @@
+.toggle-button-container{
+    border: 3px solid gray;
+    width: max-content;
+    border-radius: 50%;
+    padding: 0.25rem;
+    display: flex;
+    background: none;
+}
+
+.toggle-button-container > *{
+    font-size: 1.75rem;
+    color: gray;
+    margin: auto;
+}
+
+.toggle-button-active{
+    border-color: var(--slim-white);
+    color: white;
+}

@@ -12,9 +12,10 @@
     align-items: center;
     text-align: center;
     padding: 20px;
+    position: relative;
 }
 
-.options-container > h2{
+.options-container h2{
     color: white;
 }
 
@@ -73,4 +74,10 @@
 
 .practice-tab-active{
     background-color: red;
+}
+
+.timed-mode-toggle{
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
 }

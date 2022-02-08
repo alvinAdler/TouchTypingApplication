@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { AppBar, Tabs, Tab } from '@mui/material'
 import { Route, Switch, useRouteMatch, useHistory, useLocation } from 'react-router-dom'
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles'
 
 import './PracticePage_master.css'
 
@@ -11,6 +11,7 @@ import GameModePage from './GameModePage/GameModePage'
 import ProtectedRoute from '../UtilityComponents/ProtectedRoute/ProtectedRoute'
 import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
 import ContentHoverButton from '../UtilityComponents/ContentHoverButton/ContentHoverButton'
+import ToggleButton from '../UtilityComponents/ToggleButton/ToggleButton'
 import practiceNavigationData from '../Utilities/practiceNavigationData'
 import theme from '../Utilities/tabsTheme'
 
@@ -19,6 +20,7 @@ import { markLastVisitedPath, modifyUserCookie, camelCaseToSentenceCase } from '
 const PracticePage = () => {
 
     const [currentTab, setCurrentTab] = useState(0)
+    const [timeMode, setTimeMode] = useState(false);
     const [selectedPractice, setSelectedPractice] = useState({
         mode: "drillMode",
         selection: "homeRow"
@@ -90,6 +92,13 @@ const PracticePage = () => {
                                         </ContentHoverButton>
                                     )
                                 })}
+
+                                
+                                <ToggleButton 
+                                customClass="timed-mode-toggle"
+                                toggleState={timeMode}
+                                setToggleState={setTimeMode}
+                                />
 
                             </div>
                         </MaterialTabBody>
