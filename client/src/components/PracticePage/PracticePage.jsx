@@ -11,7 +11,6 @@ import GameModePage from './GameModePage/GameModePage'
 import ProtectedRoute from '../UtilityComponents/ProtectedRoute/ProtectedRoute'
 import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
 import ContentHoverButton from '../UtilityComponents/ContentHoverButton/ContentHoverButton'
-import ToggleButton from '../UtilityComponents/ToggleButton/ToggleButton'
 import practiceNavigationData from '../Utilities/practiceNavigationData'
 import theme from '../Utilities/tabsTheme'
 
@@ -92,14 +91,6 @@ const PracticePage = () => {
                                         </ContentHoverButton>
                                     )
                                 })}
-
-                                
-                                <ToggleButton 
-                                customClass="timed-mode-toggle"
-                                toggleState={timeMode}
-                                setToggleState={setTimeMode}
-                                />
-
                             </div>
                         </MaterialTabBody>
                         <MaterialTabBody currentTab={currentTab} tabIndex={1}>
