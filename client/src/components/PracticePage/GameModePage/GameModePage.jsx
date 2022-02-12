@@ -580,7 +580,8 @@ const GameModePage = () => {
             },
             data: {
                 difficulty: currentDifficulty,
-                score: lastScore
+                score: lastScore,
+                totalSeconds: sessionTimer.current
             }
         })
         .then((res) => {
@@ -664,6 +665,7 @@ const GameModePage = () => {
                         <p>Your scored: </p>
                         <p className="result-score">{userScoreCountCopy.current}</p>
                         <p>in the game with <span className="game-mode">{capitalizeString(getUserCookie().practice.selection)}</span> difficulty!</p>
+                        <p>Your total time is: <span className="game-mode">{changeTimeFormat(sessionTimer.current)}</span></p>
                     </div>
                 </ScoreModal>
             </div>

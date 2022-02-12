@@ -257,6 +257,24 @@ const UserPerformancePage = () => {
                                     <p>{gamePerformances.summary?.scoreAverage} <span>points</span></p>
                                 </div>
 
+                            </div> 
+
+                            <div className="performance-sum-details">
+                                <h3 className="performance-subsection-title">Time</h3>
+
+                                <div className="performance-subsection-content">
+                                    <h4>Slowest</h4>
+                                    <p>{changeTimeFormat(gamePerformances.summary?.maxTime)}</p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Fastest</h4>
+                                    <p>{changeTimeFormat(gamePerformances.summary?.minTime)}</p>
+                                </div>
+                                <div className="performance-subsection-content">
+                                    <h4>Average</h4>
+                                    <p>{changeTimeFormat(gamePerformances.summary?.timeAverage)}</p>
+                                </div>
+
                             </div>                 
                         </>
 
@@ -285,6 +303,7 @@ const UserPerformancePage = () => {
                                         <th>Practice Date</th>
                                         <th>Difficulty</th>
                                         <th>Score</th>
+                                        <th>Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -295,6 +314,7 @@ const UserPerformancePage = () => {
                                                 <td className="data-date">{convertISOtoUTC(item.recordDate)}</td>
                                                 <td className="data-selection">{camelCaseToSentenceCase(item.difficulty)}</td>
                                                 <td className="data-score">{item.score} points</td>
+                                                <td className="data-score">{changeTimeFormat(item.totalSeconds)}</td>
                                             </tr>
                                         ))
                                     }

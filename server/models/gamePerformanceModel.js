@@ -14,6 +14,10 @@ const gamePerformanceSchema = new Schema({
         type: Number,
         required: true
     },
+    totalSeconds: {
+        type: Number, 
+        required: true
+    },
     recordDate: {
         type: Date,
         required: true,

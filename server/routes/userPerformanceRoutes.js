@@ -34,6 +34,7 @@ router.post("/store/:mode", tokenAuthenticationMWare, (req, res) => {
                 userId: req.user._id,
                 difficulty: req.body.difficulty,
                 score: req.body.score,
+                totalSeconds: req.body.totalSeconds
             }
 
             GamePerformanceModel.create(gamePerformanceDetails, (err, doc) => {
@@ -105,15 +106,20 @@ router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
             lastTenGames = lastTenGames.map((obj) => ({
                 difficulty: obj.difficulty,
                 score: obj.score,
-                recordDate: obj.recordDate
+                recordDate: obj.recordDate,
+                totalSeconds: obj.totalSeconds
             }))
 
             const lastTenScores = lastTenGames.map((obj) => obj.score)
+            const lastTenTimes = lastTenGames.map((obj) => obj.totalSeconds)
 
             const maxScore = Math.max.apply(Math, lastTenScores)
             const minScore = Math.min.apply(Math, lastTenScores)
-            
-            const scoreAverage = findAverage(lastTenScores).toFixed(1)
+            const scoreAverage = parseFloat(findAverage(lastTenScores).toFixed(1))
+
+            const maxTime = Math.max.apply(Math, lastTenTimes)
+            const minTime = Math.min.apply(Math, lastTenTimes)
+            const timeAverage = parseFloat(findAverage(lastTenTimes).toFixed(1))
             
             return res.status(200).json({
                 message: "Game mode data fetched successfully",
@@ -122,7 +128,10 @@ router.get("/get/:mode", tokenAuthenticationMWare, async (req, res) => {
                     summary: {
                         maxScore,
                         minScore,
-                        scoreAverage
+                        scoreAverage,
+                        maxTime,
+                        minTime,
+                        timeAverage
                     }
                 }
             })
