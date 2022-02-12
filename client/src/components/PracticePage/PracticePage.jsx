@@ -47,7 +47,7 @@ const PracticePage = () => {
 
     const preparePageChange = () => {
 
-        modifyUserCookie("practice", selectedPractice)
+        modifyUserCookie(selectedPractice.mode, selectedPractice.selection)
 
         history.push({
             pathname: `${routeMatch.path}/${selectedPractice.mode}`,

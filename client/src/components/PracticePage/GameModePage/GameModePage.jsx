@@ -138,7 +138,7 @@ const GameModePage = () => {
 
             axios({
                 method: "GET",
-                url: `http://localhost:5000/api/words/gameMode/${getUserCookie().practice.selection}`
+                url: `http://localhost:5000/api/words/gameMode/${getUserCookie().gameMode}`
             })
             .then((response) => {
                 setListOfWords(response.data.words)
@@ -421,6 +421,16 @@ const GameModePage = () => {
     }
 
     const generateRandomAlien = () => {
+
+        let speedModifier = 0
+
+        if(alienHitCount.current <= 10){
+            speedModifier = getUserCookie().gameMode === "easy" ? 0.5 : 1
+        }
+        else if(alienHitCount.current <= 20){
+            speedModifier = getUserCookie().gameMode === "easy" ? 0.25 : 0.5
+        }
+
         arrSprites.current.unshift(new Alien(
             "Alien",
             {
@@ -433,8 +443,8 @@ const GameModePage = () => {
                 posY: -90
             },
             {
-                velX: ALIEN_VELOCITY.current,
-                velY: ALIEN_VELOCITY.current
+                velX: ALIEN_VELOCITY.current + speedModifier,
+                velY: ALIEN_VELOCITY.current + speedModifier
             },
             "DOWN",
             0,
@@ -568,7 +578,7 @@ const GameModePage = () => {
     }
 
     const storeUserGamePerformance = () => {
-        const currentDifficulty = getUserCookie().practice.selection
+        const currentDifficulty = getUserCookie().gameMode
         const lastScore = userScoreCountCopy.current
 
         axios({
@@ -664,7 +674,7 @@ const GameModePage = () => {
                     <div className="game-performance-result">
                         <p>Your scored: </p>
                         <p className="result-score">{userScoreCountCopy.current}</p>
-                        <p>in the game with <span className="game-mode">{capitalizeString(getUserCookie().practice.selection)}</span> difficulty!</p>
+                        <p>in the game with <span className="game-mode">{capitalizeString(getUserCookie().gameMode)}</span> difficulty!</p>
                         <p>Your total time is: <span className="game-mode">{changeTimeFormat(sessionTimer.current)}</span></p>
                     </div>
                 </ScoreModal>

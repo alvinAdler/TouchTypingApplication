@@ -57,7 +57,7 @@ const DrillModePage = () => {
 
             axios({
                 method: "GET",
-                url: `http://localhost:5000/api/words/drillMode/${getUserCookie().practice.selection}`
+                url: `http://localhost:5000/api/words/drillMode/${getUserCookie().drillMode}`
             })
             .then((res) => {
                 // let temp = res.data.words.split(" ").map((item) => capitalizeString(item)).join(" ")
@@ -175,7 +175,7 @@ const DrillModePage = () => {
     }
 
     const storeUserDrillPerformance = () => {
-        const currentLesson = getUserCookie().practice.selection
+        const currentLesson = getUserCookie().drillMode
         const finalWpm = wordsPerMinute.current
         const finalAccuracy = typingAccuracy.current
         const totalOfWords = parseInt(listOfWords.length / 5)
@@ -205,7 +205,7 @@ const DrillModePage = () => {
     }
 
     const printFinalData = () => {
-        const currentLesson = getUserCookie().practice.selection
+        const currentLesson = getUserCookie().drillMode
         const finalWpm = wordsPerMinute.current
         const finalAccuracy = typingAccuracy.current
         const totalOfWords = parseInt(listOfWords.length / 5)
@@ -236,7 +236,7 @@ const DrillModePage = () => {
 
         axios({
             method: "GET",
-            url: `http://localhost:5000/api/words/drillMode/${getUserCookie().practice.selection}`
+            url: `http://localhost:5000/api/words/drillMode/${getUserCookie().drillMode}`
         })
         .then((res) => {
             defaultVariables()

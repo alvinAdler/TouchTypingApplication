@@ -10,6 +10,7 @@ import AuthContext from '../context/AuthContext'
 import PageTitle from '../UtilityComponents/PageTitle/PageTitle'
 import FormInput from '../UtilityComponents/FormInput/FormInput'
 import FormButton from '../UtilityComponents/FormButton/FormButton'
+import { modifyUserCookie } from '../Utilities/functions'
 
 const LoginPage = () => {
 
@@ -51,6 +52,8 @@ const LoginPage = () => {
 
                 Cookies.set("authorToken", res.data.authToken)
                 Cookies.set("refreshToken", res.data.refreshToken)
+                modifyUserCookie("gameMode", "easy")
+			    modifyUserCookie("drillMode", "homeRow")
 
                 swal.fire({
                     icon: "success",
