@@ -34,7 +34,6 @@ const App = () => {
 
 			if(result.data?.status){
 				setAuth(true)
-
 				if(Cookies.get("lastPath") !== undefined && location.pathname !== "/"){
 					history.push(Cookies.get("lastPath"))
 				}

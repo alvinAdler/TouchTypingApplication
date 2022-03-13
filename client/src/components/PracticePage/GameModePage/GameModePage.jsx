@@ -13,7 +13,13 @@ import Alien from '../../Utilities/classes/Alien'
 import ScoreModal from '../../UtilityComponents/ScoreModal/ScoreModal'
 import { tankData, alienData, cannonBallData } from '../../Utilities/SpriteSheetData'
 import { DIRS } from '../../Utilities/Dirs'
-import { randomInteger, markLastVisitedPath, getUserCookie, capitalizeString } from '../../Utilities/functions'
+import { 
+    randomInteger, 
+    markLastVisitedPath, 
+    getUserCookie, 
+    capitalizeString,
+    changeTimeFormat
+} from '../../Utilities/functions'
 
 const FRAME_TRANS_LIMIT = 5
 const FRAME_PER_SECOND = 60
@@ -33,9 +39,9 @@ const GameModePage = () => {
     const [listOfWords, setListOfWords] = useState([])
     const [userHealth, setUserHealth] = useState(3)
     const [userScoreCount, setUserScoreCount] = useState(0)
-    const [isGameStarted, setIsGameStarted] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [isDevToolVisible, setIsDevToolVisible] = useState(false)
+    const [sessionTimerCopy, setSessionTimerCopy] = useState(0)
     
     const userInput = useRef()
     const mainCanvas = useRef(null)
@@ -51,6 +57,9 @@ const GameModePage = () => {
     const userScoreCountCopy = useRef(0)
     const stopGeneratingAlien = useRef(false)
     const canvasScoreBoundaries = useRef({high: 0, mid: 0, low: 0})
+    const interval = useRef(0)
+    const sessionTimer = useRef(sessionTimerCopy)
+    const isGameStarted = useRef(false)
 
     const location = useLocation()
     const history = useHistory()
@@ -129,7 +138,7 @@ const GameModePage = () => {
 
             axios({
                 method: "GET",
-                url: `http://localhost:5000/api/words/gameMode/${getUserCookie().practice.selection}`
+                url: `http://localhost:5000/api/words/gameMode/${getUserCookie().gameMode}`
             })
             .then((response) => {
                 setListOfWords(response.data.words)
@@ -211,11 +220,13 @@ const GameModePage = () => {
         possibleCollision.current = []
         landedAliens.current = []
         alienHitCount.current = 30
+        sessionTimer.current = 0
 
         userHealthCopy.current = 3
         userScoreCountCopy.current = 0
         setUserScoreCount(0)
         setUserHealth(3)
+        setSessionTimerCopy(0)
     }
 
     const initSprites = () => {
@@ -273,8 +284,14 @@ const GameModePage = () => {
 
         console.log("Animation on")
 
-        if(!isGameStarted){
-            setIsGameStarted(true)
+        if(!isGameStarted.current){
+            interval.current = setInterval(() => {
+                console.log(`The timer is: ${sessionTimer.current}`)
+                sessionTimer.current += 1
+                setSessionTimerCopy(prevTimer => prevTimer + 1)
+            }, 1000)
+
+            isGameStarted.current = true
         }
 
         //Checking the end game (whether the player lose or win)
@@ -378,9 +395,10 @@ const GameModePage = () => {
     }
 
     const stopAnimation = () => {
-        if(isGameStarted){
-            setIsGameStarted(false)
+        if(isGameStarted.current){
+            isGameStarted.current = false
         }
+        clearInterval(interval.current)
         window.cancelAnimationFrame(stopId.current)
         console.log("Animation off")
     }
@@ -403,6 +421,16 @@ const GameModePage = () => {
     }
 
     const generateRandomAlien = () => {
+
+        let speedModifier = 0
+
+        if(alienHitCount.current <= 10){
+            speedModifier = getUserCookie().gameMode === "easy" ? 0.5 : 1
+        }
+        else if(alienHitCount.current <= 20){
+            speedModifier = getUserCookie().gameMode === "easy" ? 0.25 : 0.5
+        }
+
         arrSprites.current.unshift(new Alien(
             "Alien",
             {
@@ -415,8 +443,8 @@ const GameModePage = () => {
                 posY: -90
             },
             {
-                velX: ALIEN_VELOCITY.current,
-                velY: ALIEN_VELOCITY.current
+                velX: ALIEN_VELOCITY.current + speedModifier,
+                velY: ALIEN_VELOCITY.current + speedModifier
             },
             "DOWN",
             0,
@@ -550,7 +578,7 @@ const GameModePage = () => {
     }
 
     const storeUserGamePerformance = () => {
-        const currentDifficulty = getUserCookie().practice.selection
+        const currentDifficulty = getUserCookie().gameMode
         const lastScore = userScoreCountCopy.current
 
         axios({
@@ -562,7 +590,8 @@ const GameModePage = () => {
             },
             data: {
                 difficulty: currentDifficulty,
-                score: lastScore
+                score: lastScore,
+                totalSeconds: sessionTimer.current
             }
         })
         .then((res) => {
@@ -583,7 +612,7 @@ const GameModePage = () => {
         })
         .then(() => {
             
-            setIsGameStarted(true)
+            isGameStarted.current = true
             startAnimation()
         })
     }
@@ -607,8 +636,8 @@ const GameModePage = () => {
                     <div className="game-action-buttons">
                         <button 
                         onClick={pauseGame}
-                        className={`${!isGameStarted && "disabled-button"}`}
-                        disabled={!isGameStarted}
+                        className={`${!isGameStarted.current && "disabled-button"}`}
+                        disabled={!isGameStarted.current}
                         >
                             <FaPause/>
                         </button>
@@ -616,6 +645,7 @@ const GameModePage = () => {
                     <div className="user-score">
                         <span>Your Score: {userScoreCount}</span>
                     </div>
+                    <span className="session-timer">{changeTimeFormat(sessionTimerCopy)}</span>
                     <div className="user-lifes-container">
                         {Array.from(Array(userHealth)).map((item, index) => {
                             return(
@@ -644,7 +674,8 @@ const GameModePage = () => {
                     <div className="game-performance-result">
                         <p>Your scored: </p>
                         <p className="result-score">{userScoreCountCopy.current}</p>
-                        <p>in the game with <span className="game-mode">{capitalizeString(getUserCookie().practice.selection)}</span> difficulty!</p>
+                        <p>in the game with <span className="game-mode">{capitalizeString(getUserCookie().gameMode)}</span> difficulty!</p>
+                        <p>Your total time is: <span className="game-mode">{changeTimeFormat(sessionTimer.current)}</span></p>
                     </div>
                 </ScoreModal>
             </div>
