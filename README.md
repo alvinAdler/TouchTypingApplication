@@ -63,4 +63,6 @@ ___
 
 ## How to use the application
 
-Below is the tutorial to use various features of the application.
+Below is the tutorial to use various features of the application:
+
+1. 
